@@ -4,8 +4,13 @@ The dockerfile builds an image with a basic shell environment with
 Python 2.7 and NEST 2.12.0 with OpenMPI, matplotlib, Scipy, MUSIC and 
 libneurosim.
 
+## Getting the repository
+
+    git clone https://github.com/steffengraber/nest-docker.git
+
 ## Creating the docker image
 
+    cd nest-docker
     docker build -t nest/docker-nest-2.12 .
 
 ## Starting
