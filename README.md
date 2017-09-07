@@ -1,8 +1,8 @@
 # Docker image for the NEST simulator (v2.12.0)
 
 The dockerfile builds an image with a basic shell environment with 
-Python 2.7 and NEST 2.12.0 with OpenMPI, matplotlib, Scipy, MUSIC and 
-libneurosim.
+Python 2.7 and [NEST 2.12.0](https://github.com/nest/nest-simulator) with 
+OpenMPI, matplotlib, Scipy, MUSIC and libneurosim.
 
 ## Getting the repository
 
