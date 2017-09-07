@@ -20,8 +20,9 @@ OpenMPI, matplotlib, Scipy, MUSIC and libneurosim.
 ## Sharing files with host machine
 
     # Replace YOURPYFOLDER with the folder on our host.
-    # /home/nest/py is the folder in the docker
-    docker run --user nest -v ~/YOURPYFOLDER:/home/nest/py \
+    # /home/nest/data is the folder in the docker
+    
+    docker run --user nest -v ~/YOURPYFOLDER:/home/nest/data \
       -it nest/docker-nest-2.12 /bin/bash
 
     

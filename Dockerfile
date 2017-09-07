@@ -89,8 +89,8 @@ RUN su nest -c 'make install'
 # RUN su nest -c 'make installcheck'
 # RUN su nest -c 'source /home/nest/nest-install/bin/nest_vars.sh'
 WORKDIR /home/nest/
+RUN su nest -c mkdir data
 
 RUN su nest -c "echo '. /home/nest/nest-install/bin/nest_vars.sh' >> /home/nest/.bashrc"
 RUN apt-get install nano -y
-RUN mkdir py
 RUN apt-get autoremove
