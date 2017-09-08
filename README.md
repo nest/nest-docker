@@ -11,16 +11,28 @@ OpenMPI, matplotlib, Scipy, MUSIC and libneurosim.
 ## Creating the docker image
 
     cd nest-docker
-    docker build -t nest/docker-nest-2.12 .
-
+    
+    # Build the image with variables (On|Off)
+        
+    docker build \
+        --build-arg WITH_MPI=On \
+        --build-arg WITH_GSL=On \
+        --build-arg WITH_MUSIC=On \
+        --build-arg WITH_LIBNEUROSIM=On \
+        -t nest/docker-nest-2.12 .
+    
+    # For other configuration options please change the 'Dockerfile'.
+    # See: <https://github.com/nest/nest-simulator/blob/master/README.md> 
+    
 ## Starting
 
-    docker run --user nest -it nest/docker-nest-2.12 /bin/bash
+    # docker run --user nest -it nest/docker-nest-2.12 /bin/bash
+
     
 ## Sharing files with host machine
 
     # Replace YOURPYFOLDER with the folder on our host.
-    # /home/nest/data is the folder in the docker
+    # /home/nest/data is the folder in the docker.
     
     docker run --user nest -v ~/YOURPYFOLDER:/home/nest/data \
       -it nest/docker-nest-2.12 /bin/bash

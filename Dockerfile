@@ -1,7 +1,13 @@
 # Pull base image.
 FROM ubuntu:16.04
 
+ARG WITH_MPI
+ARG WITH_GSL
+ARG WITH_MUSIC
+ARG WITH_LIBNEUROSIM
+
 RUN apt-get update
+# RUN apt-get upgrade
 
 # install basics
 RUN apt-get install -y software-properties-common \
@@ -35,6 +41,7 @@ RUN pip install setuptools
 RUN pip install cython==0.23.4
 
 # Install OpenMPI.
+# TODO: conditional install
 RUN apt-get install -y openmpi-bin libopenmpi-dev
 
 # Install nose framework for the Python testsuite.
@@ -50,6 +57,7 @@ RUN apt-get install -y libpcre3 libpcre3-dev
 RUN apt-get install -y jq
 
 # Install current MUSIC version  (/usr/local/lib)
+# TODO: conditional install
 WORKDIR /tmp
 RUN apt-get install -y python-mpi4py
 RUN git clone https://github.com/INCF/MUSIC.git music
@@ -62,10 +70,10 @@ RUN make
 RUN make install
 
 # Install libneurosim (/usr/local/lib)
+# TODO: conditional install
 WORKDIR /tmp
 RUN git clone https://github.com/INCF/libneurosim.git libneurosim
 WORKDIR /tmp/libneurosim
-RUN ls -la
 RUN chmod +x autogen.sh
 RUN ./autogen.sh 
 RUN chmod +x configure
@@ -83,14 +91,21 @@ RUN su nest -c 'tar -xvzf nest-2.12.0.tar.gz'
 RUN su nest -c 'mkdir /home/nest/nest-build'
 RUN su nest -c 'mkdir /home/nest/nest-install'
 WORKDIR /home/nest/nest-build
-RUN su nest -c 'cmake -DCMAKE_INSTALL_PREFIX:PATH=/home/nest/nest-install -Dwith-python:BOOL=ON -Dwith-mpi:BOOL=ON -Dwith-mpi:BOOL=ON -Dwith-gsl:BOOL=ON /usr/local/lib -Dwith-libneurosim:BOOL=ON /usr/local/lib -Dwith-music=ON /usr/local/lib ../nest-2.12.0'
+RUN su nest -c 'cmake -DCMAKE_INSTALL_PREFIX:PATH=/home/nest/nest-install \
+    -Dwith-mpi:BOOL=$WITH_MPI \
+    -Dwith-gsl:BOOL=$WITH_GSL /usr/local/lib \
+    -Dwith-libneurosim:BOOL=$WITH_LIBNEUROSIM /usr/local/lib \
+    -Dwith-music=$WITH_MUSIC /usr/local/lib ../nest-2.12.0'
 RUN su nest -c 'make'
 RUN su nest -c 'make install'
 # RUN su nest -c 'make installcheck'
-# RUN su nest -c 'source /home/nest/nest-install/bin/nest_vars.sh'
-WORKDIR /home/nest/
-RUN su nest -c mkdir data
 
+WORKDIR /home/nest/
+RUN mkdir data
+RUN chown -R nest:nest data/
+
+# Load NEST with every start.
 RUN su nest -c "echo '. /home/nest/nest-install/bin/nest_vars.sh' >> /home/nest/.bashrc"
+
 RUN apt-get install nano -y
 RUN apt-get autoremove
