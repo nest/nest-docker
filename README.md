@@ -23,7 +23,24 @@ OpenMPI, matplotlib, Scipy, MUSIC and libneurosim.
     
     # For other configuration options please change the 'Dockerfile'.
     # See: <https://github.com/nest/nest-simulator/blob/master/README.md> 
+
+## Use it interactive
+
+
+	# Replace YOURPYFOLDER with the folder on our host.
+	# YOURFOLDER is the folder with your python scripts.
+    # /home/nest/data is the folder in the docker.
     
+    docker run -it --rm --user nest --name my_app  \
+      -v ~/YOURPYFOLDER:/home/nest/data \
+      -w /home/nest/data  \
+      nest/docker-nest-2.12
+
+After the prompt 'Your python script:' enter the filename of the script 
+you want to start. Only the filename without any path. Be sure to enter 
+the right 'YOURFOLDER'.
+
+
 ## Starting
 
     # docker run --user nest -it nest/docker-nest-2.12 /bin/bash

@@ -109,3 +109,8 @@ RUN su nest -c "echo '. /home/nest/nest-install/bin/nest_vars.sh' >> /home/nest/
 
 RUN apt-get install nano -y
 RUN apt-get autoremove
+
+COPY ./script/entrypoint.sh /home/nest/
+RUN chown nest:nest /home/nest/entrypoint.sh
+RUN chmod +x /home/nest/entrypoint.sh
+ENTRYPOINT ["/home/nest/entrypoint.sh"]
