@@ -39,26 +39,3 @@ OpenMPI, matplotlib, Scipy, MUSIC and libneurosim.
 After the prompt 'Your python script:' enter the filename of the script 
 you want to start. Only the filename without any path. Be sure to enter 
 the right 'YOURFOLDER'.
-
-
-## Starting
-
-    # docker run --user nest -it nest/docker-nest-2.12 /bin/bash
-
-    
-## Sharing files with host machine
-
-    # Replace YOURPYFOLDER with the folder on our host.
-    # /home/nest/data is the folder in the docker.
-    
-    docker run --user nest -v ~/YOURPYFOLDER:/home/nest/data \
-      -it nest/docker-nest-2.12 /bin/bash
-
-    
-## First steps
-
-    python
-    >>> import nest
-    >>> nest.help()
-
-
