@@ -4,6 +4,9 @@ The dockerfile builds an image with a basic shell environment with
 Python 2.7 and [NEST 2.12.0](https://github.com/nest/nest-simulator) with 
 OpenMPI, matplotlib, Scipy, MUSIC and libneurosim.
 
+(If you want to use NEST with Jupyter Notebooks see: 
+[./notebook/README.md]())
+
 ## Getting the repository
 
     git clone https://github.com/steffengraber/nest-docker.git
