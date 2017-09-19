@@ -10,8 +10,10 @@ Jupyter Notebook with Python3 and Nest 2.12.0.
 
 ## Build the image with variables (On|Off)
 
-    cd nest-docker/notebook
-    
+    cd nest-docker/
+    git checkout py3-notebook 
+    cd notebook/
+       
     docker build \
         --build-arg WITH_MPI=On \
         --build-arg WITH_GSL=On \
