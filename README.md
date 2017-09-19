@@ -24,6 +24,8 @@ OpenMPI, matplotlib, Scipy, MUSIC and libneurosim.
 For other configuration options please change the 'Dockerfile'.
 See: <https://github.com/nest/nest-simulator/blob/master/README.md> 
 
+The image size is ~1,25GB.
+
 ## Use it interactive
 
 	# Replace YOURPYFOLDER with the folder on our host.
