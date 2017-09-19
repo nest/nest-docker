@@ -39,3 +39,16 @@ The image size is ~1,25GB.
 After the prompt 'Your python script:' enter the filename of the script 
 you want to start. Only the filename without any path. Be sure to enter 
 the right 'YOURFOLDER'.
+
+
+## Tip
+
+To easily share the image use 'docker save' and 'docker load'.
+
+### Export a docker image
+
+    docker save nest/docker-nest-2.12 | gzip -c > nest-docker.tar.gz
+
+### Import it:
+
+    gunzip -c nest-docker.tar.gz | docker load
