@@ -24,7 +24,7 @@ Jupyter Notebook with Python3 and Nest 2.12.0.
 ## Use it interactive
     
     docker run --user nest -it --rm \
-        -v YOURPYFOLDER:/home/nest/data \
+        -v ~/YOURPYFOLDER:/home/nest/data \
         -p 8080:8080 \
         nest/docker-nest-2.12-py3juno
 
