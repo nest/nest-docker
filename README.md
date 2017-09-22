@@ -1,54 +1,78 @@
-# Docker image for the NEST simulator (v2.12.0)
+# Docker image for the NEST simulator
 
-The dockerfile builds an image with a basic shell environment with 
-Python 2.7 and [NEST 2.12.0](https://github.com/nest/nest-simulator) with 
-OpenMPI, matplotlib, Scipy, MUSIC and libneurosim.
+The master dockerfile [./master/Dockerfile]() builds an image with a basic 
+shell environment with Python 3, OpenMPI, matplotlib, Scipy, MUSIC, 
+libneurosim and Jupyter Notebook.
+
+The NEST 2.12.0 dockerfile [./nest-2.12.0/Dockerfile]() use the master image 
+and integrates [NEST 2.12.0](https://github.com/nest/nest-simulator).
+
+You need a working docker environment. (https://docs.docker.com/)
 
 ## Getting the repository
 
     git clone https://github.com/steffengraber/nest-docker.git
 
-## Creating the docker image
+## 1-2-3
 
-    cd nest-docker
+1.  Build the master image
     
-    # Build the image with variables (On|Off)
+    docker build -t nest/docker-master ./master
+    
+2.  Build the NEST image
         
-    docker build \
-        --build-arg WITH_MPI=On \
-        --build-arg WITH_GSL=On \
-        --build-arg WITH_MUSIC=On \
-        --build-arg WITH_LIBNEUROSIM=On \
-        -t nest/docker-nest-2.12 .
+        # For NEST 2.12.0
+        docker build \
+            --build-arg WITH_MPI=On \
+            --build-arg WITH_GSL=On \
+            --build-arg WITH_MUSIC=On \
+            --build-arg WITH_LIBNEUROSIM=On \
+            -t nest/docker-nest-2.12.0 ./nest-2.12.0
     
-For other configuration options please change the 'Dockerfile'.
-See: <https://github.com/nest/nest-simulator/blob/master/README.md> 
-
-The image size is ~1,25GB.
-
-## Use it interactive
-
-	# Replace YOURPYFOLDER with the folder on our host.
-	# YOURFOLDER is the folder with your python scripts.
-    # /home/nest/data is the folder in the docker.
+    For other/more configuration options please change the 'Dockerfile'. See:
+    <https://github.com/nest/nest-simulator/blob/v2.12.0/README.md> 
     
-    docker run -it --rm --user nest --name my_app  \
-      -v YOURPYFOLDER:/home/nest/data \
-      nest/docker-nest-2.12
+3.  Run and use it
+    
+    - with Jupyter Notebook
+    
+            docker run -it --rm --user nest --name my_app \
+                 -v ~/YOURPYFOLDER:/home/nest/data \
+                -p 8080:8080 nest/docker-nest-2.12.0 notebook
+        
+      Open the displayed URL in your browser and have fun with Jupyter 
+      Notebook and NEST.
+        
+    - in interactive mode
+    
+            docker run -it --rm --user nest --name my_app \
+                -v ~/YOURPYFOLDER:/home/nest/data \
+                -p 8080:8080 nest/docker-nest-2.12.0 interactive
+    
+      After the prompt 'Your python script:' enter the filename of the script 
+      you want to start. Only the filename without any path. Be sure to enter 
+      the right 'YOURFOLDER'.
+    
+    - as virtual image
+        
+            docker run -it --rm --user nest --name my_app \
+                -v ~/YOURPYFOLDER:/home/nest/data \
+                -p 8080:8080 nest/docker-nest-2.12.0 /bin/bash
+        
+      You are logged in as user 'nest'. Enter 'python3' and in the 
+      python-shell 'import nest'. A 'nest.help()' should display the main 
+      help page.
 
-After the prompt 'Your python script:' enter the filename of the script 
-you want to start. Only the filename without any path. Be sure to enter 
-the right 'YOURFOLDER'.
+## Docker 
 
+-   Delete ALL images
 
-## Tip
+        docker rmi $(docker images -a -q)
 
-To easily share the image use 'docker save' and 'docker load'.
+-   Export a docker image
 
-### Export a docker image
+        docker save nest/docker-nest-2.12.0 | gzip -c > nest-docker.tar.gz
 
-    docker save nest/docker-nest-2.12 | gzip -c > nest-docker.tar.gz
+-   Import a docker image
 
-### Import it:
-
-    gunzip -c nest-docker.tar.gz | docker load
+        gunzip -c nest-docker.tar.gz | docker load
