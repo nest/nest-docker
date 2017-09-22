@@ -1,4 +1,4 @@
-# Docker image for the NEST simulator (v2.12.0)
+# Docker image for the NEST simulator
 
 The master dockerfile [./master/Dockerfile]() builds an image with a basic 
 shell environment with Python 3, OpenMPI, matplotlib, Scipy, MUSIC, 
@@ -7,6 +7,7 @@ libneurosim and Jupyter Notebook.
 The NEST 2.12.0 dockerfile [./nest-2.12.0/Dockerfile]() use the master image 
 and integrates [NEST 2.12.0](https://github.com/nest/nest-simulator).
 
+You need a working docker environment. (https://docs.docker.com/)
 
 ## Getting the repository
 
@@ -33,34 +34,34 @@ and integrates [NEST 2.12.0](https://github.com/nest/nest-simulator).
     
 3.  Run and use it
     
-    -   with Jupyter Notebook
+    - with Jupyter Notebook
     
             docker run -it --rm --user nest --name my_app \
                  -v ~/YOURPYFOLDER:/home/nest/data \
                 -p 8080:8080 nest/docker-nest-2.12.0 notebook
         
-        Open the displayed URL in your browser and have fun with Jupyter 
-        Notebook and NEST.
+      Open the displayed URL in your browser and have fun with Jupyter 
+      Notebook and NEST.
         
-    -   in interactive mode
+    - in interactive mode
     
             docker run -it --rm --user nest --name my_app \
                 -v ~/YOURPYFOLDER:/home/nest/data \
                 -p 8080:8080 nest/docker-nest-2.12.0 interactive
     
-        After the prompt 'Your python script:' enter the filename of the script 
-        you want to start. Only the filename without any path. Be sure to enter 
-        the right 'YOURFOLDER'.
+      After the prompt 'Your python script:' enter the filename of the script 
+      you want to start. Only the filename without any path. Be sure to enter 
+      the right 'YOURFOLDER'.
     
-    -   as virtual image
+    - as virtual image
         
             docker run -it --rm --user nest --name my_app \
                 -v ~/YOURPYFOLDER:/home/nest/data \
                 -p 8080:8080 nest/docker-nest-2.12.0 /bin/bash
         
-        You are logged in as user 'nest'. Enter 'python3' and in the 
-        python-shell 'import nest'. A 'nest.help()' should display the main 
-        help page.
+      You are logged in as user 'nest'. Enter 'python3' and in the 
+      python-shell 'import nest'. A 'nest.help()' should display the main 
+      help page.
 
 ## Docker 
 
