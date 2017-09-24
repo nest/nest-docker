@@ -13,6 +13,7 @@ You need a working docker environment. (https://docs.docker.com/)
 ## Getting the repository
 
     git clone https://github.com/steffengraber/nest-docker.git
+    cd nest-docker
 
 ## 1 - 2 - 3
 

@@ -1,3 +1,3 @@
 # The Master Dockerfile
 
-    docker build -t nest/docker-master ./master
+    docker build -t nest/docker-master .

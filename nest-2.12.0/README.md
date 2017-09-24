@@ -8,6 +8,6 @@ The 'entrypoint.sh' enables the use of different mode.
             --build-arg WITH_GSL=On \
             --build-arg WITH_MUSIC=On \
             --build-arg WITH_LIBNEUROSIM=On \
-            -t nest/docker-nest-2.12.0 ./nest-2.12.0
+            -t nest/docker-nest-2.12.0 .
             
  
