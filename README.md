@@ -6,7 +6,7 @@ libneurosim and Jupyter Notebook.
 
 The NEST 2.12.0 dockerfile [./nest-2.12.0/Dockerfile]() use the master image 
 and integrates [NEST 2.12.0](https://github.com/nest/nest-simulator). 
-NEST ist buils with python3. If you want to change this, modify the Dockerfile.
+NEST is build with python3. If you want to change this, modify the Dockerfile.
 
 You need a working docker environment. (https://docs.docker.com/)
 
@@ -32,6 +32,14 @@ Three simple steps to get started.
         --build-arg WITH_MUSIC=On \
         --build-arg WITH_LIBNEUROSIM=On \
         -t nest/docker-nest-2.12.0 ./nest-2.12.0
+        
+    # For NEST 2.14.0
+    docker build \
+        --build-arg WITH_MPI=On \
+        --build-arg WITH_GSL=On \
+        --build-arg WITH_MUSIC=On \
+        --build-arg WITH_LIBNEUROSIM=On \
+        -t nest/docker-nest-2.14.0 ./nest-2.14.0
 
 For other/more configuration options please change the 'Dockerfile'. See:
 <https://github.com/nest/nest-simulator/blob/v2.12.0/README.md> 
@@ -43,7 +51,11 @@ For other/more configuration options please change the 'Dockerfile'. See:
         docker run -it --rm --user nest --name my_app \
             -v ~/YOURPYFOLDER:/home/nest/data \
             -p 8080:8080 nest/docker-nest-2.12.0 notebook
-    
+        
+        docker run -it --rm --user nest --name my_app \
+            -v ~/YOURPYFOLDER:/home/nest/data \
+            -p 8080:8080 nest/docker-nest-2.14.0 notebook    
+                    
     Open the displayed URL in your browser and have fun with Jupyter 
     Notebook and NEST.
     
@@ -52,6 +64,10 @@ For other/more configuration options please change the 'Dockerfile'. See:
         docker run -it --rm --user nest --name my_app \
             -v ~/YOURPYFOLDER:/home/nest/data \
             -p 8080:8080 nest/docker-nest-2.12.0 interactive
+         
+        docker run -it --rm --user nest --name my_app \
+            -v ~/YOURPYFOLDER:/home/nest/data \
+            -p 8080:8080 nest/docker-nest-2.14.0 interactive
 
     After the prompt 'Your python script:' enter the filename of the script 
     you want to start. Only the filename without any path. Be sure to enter 
@@ -62,7 +78,11 @@ For other/more configuration options please change the 'Dockerfile'. See:
         docker run -it --rm --user nest --name my_app \
             -v ~/YOURPYFOLDER:/home/nest/data \
             -p 8080:8080 nest/docker-nest-2.12.0 /bin/bash
-    
+        
+        docker run -it --rm --user nest --name my_app \
+            -v ~/YOURPYFOLDER:/home/nest/data \
+            -p 8080:8080 nest/docker-nest-2.14.0 /bin/bash
+            
     You are logged in as user 'nest'. Enter 'python3' and in the 
     python-shell 'import nest'. A 'nest.help()' should display the main 
     help page.
