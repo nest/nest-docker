@@ -9,9 +9,10 @@ ARG WITH_LIBNEUROSIM
 RUN adduser --disabled-login --gecos 'NEST' --home /home/nest nest && \
     adduser nest sudo
 
-# Install NEST 2.12.0
+# Install NEST 2.14.0
 RUN mkdir data && \
     chown -R nest:nest /home/nest
+
 WORKDIR /home/nest
 
 USER nest
@@ -28,14 +29,13 @@ RUN cmake -DCMAKE_INSTALL_PREFIX:PATH=/home/nest/nest-install \
     -Dwith-mpi:BOOL=$WITH_MPI \
     -Dwith-gsl:BOOL=$WITH_GSL /usr/local/lib \
     -Dwith-libneurosim:BOOL=$WITH_LIBNEUROSIM /usr/local/lib \
-    -Dwith-music=$WITH_MUSIC /usr/local/lib ../nest-simulator-2.14.0
-RUN make && make install
+    -Dwith-music=$WITH_MUSIC /usr/local/lib ../nest-simulator-2.14.0 && \
+    make && make install && \
+    echo '. /home/nest/nest-install/bin/nest_vars.sh' >> /home/nest/.bashrc
+
 # RUN su nest -c 'make installcheck'
 
 WORKDIR /home/nest/
-
-# Load NEST with every start.
-RUN echo '. /home/nest/nest-install/bin/nest_vars.sh' >> /home/nest/.bashrc
 
 USER root
 RUN rm -rf /home/nest/nest-build && rm /home/nest/v2.14.0.tar.gz

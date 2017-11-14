@@ -89,9 +89,9 @@ For other/more configuration options please change the 'Dockerfile'. See:
 
 ## Docker 
 
--   Delete ALL images (use with caution)
+-   Delete ALL images (USE WITH CAUTION!)
 
-        docker rmi $(docker images -a -q)
+        docker system prune -fa --volumes
 
 -   Export a docker image
 

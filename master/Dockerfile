@@ -65,21 +65,19 @@ WORKDIR /tmp
 RUN git clone https://github.com/INCF/MUSIC.git music
 WORKDIR /tmp/music
 WORKDIR /tmp/music
-RUN chmod +x autogen.sh && \
-    ./autogen.sh && \
+RUN chmod +x autogen.sh
+RUN ./autogen.sh && \
     chmod +x configure && \
-    ./configure && \
-    make && make install
+    ./configure && make && make install
 
 # Install libneurosim (/usr/local/lib)
 WORKDIR /tmp
 RUN git clone https://github.com/INCF/libneurosim.git libneurosim
 WORKDIR /tmp/libneurosim
-RUN chmod +x autogen.sh && \
-    ./autogen.sh && \
+RUN chmod +x autogen.sh
+RUN ./autogen.sh && \
     chmod +x configure && \
-    ./configure && \
-    make &&  make install
+    ./configure && make &&  make install
 
 EXPOSE 8080
 RUN apt-get autoremove && rm -rf /tmp/*
