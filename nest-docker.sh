@@ -48,14 +48,28 @@ fi
 case $command in
     provision)
         echo
-        echo "Provisioning needs an argument: '2.12.0', '2.14.0' or 'all'."
+        echo "Provisioning needs an argument: 'latest' 'nightly' '2.12.0', '2.14.0' or 'all'."
         echo
         while test $# -gt 0; do
             case "$1" in
+            nightly)
+                echo "1 - Build the NEST nightly image"
+                echo
+                docker build -t nest/docker-nest-nightly ./nightly
+                echo
+                echo "Finished!"
+                ;;
+            latest)
+                echo "1 - Build the NEST latest image"
+                echo
+                docker build -t nest/docker-nest-latest ./latest
+                echo
+                echo "Finished!"
+                ;;
             2.12.0)
                 echo "1 - Build the master image"
                 echo
-                docker build -t nest/docker-master ./master
+                docker build -t nest/docker-master ./src/master
                 echo
                 echo "2 -Build the NEST image for NEST 2.12.0"
                 echo
@@ -64,14 +78,14 @@ case $command in
                     --build-arg WITH_GSL=On \
                     --build-arg WITH_MUSIC=On \
                     --build-arg WITH_LIBNEUROSIM=On \
-                    -t nest/docker-nest-2.12.0 ./nest-2.12.0
+                    -t nest/docker-nest-2.12.0 ./src/nest-2.12.0
                 echo
                 echo "Finished!"
                 ;;
             2.14.0)
                 echo "1 - Build the master image"
                 echo
-                docker build -t nest/docker-master ./master
+                docker build -t nest/docker-master ./src/master
                 echo
                 echo "2 -Build the NEST image for NEST 2.14.0"
                 echo
@@ -80,12 +94,12 @@ case $command in
                     --build-arg WITH_GSL=On \
                     --build-arg WITH_MUSIC=On \
                     --build-arg WITH_LIBNEUROSIM=On \
-                    -t nest/docker-nest-2.14.0 ./nest-2.14.0
+                    -t nest/docker-nest-2.14.0 ./src/nest-2.14.0
                 ;;
             all)
                 echo "1 - Build the master image"
                 echo
-                docker build -t nest/docker-master ./master
+                docker build -t nest/docker-master ./src/master
                 echo
                 echo "2 -Build the NEST image for NEST 2.12.0 and NEST 2.14.0"
                 echo
@@ -94,14 +108,14 @@ case $command in
                     --build-arg WITH_GSL=On \
                     --build-arg WITH_MUSIC=On \
                     --build-arg WITH_LIBNEUROSIM=On \
-                    -t nest/docker-nest-2.12.0 ./nest-2.12.0
+                    -t nest/docker-nest-2.12.0 ./src/nest-2.12.0
 
                 docker build \
                     --build-arg WITH_MPI=On \
                     --build-arg WITH_GSL=On \
                     --build-arg WITH_MUSIC=On \
                     --build-arg WITH_LIBNEUROSIM=On \
-                    -t nest/docker-nest-2.14.0 ./nest-2.14.0
+                    -t nest/docker-nest-2.14.0 ./src/nest-2.14.0
                 echo
                 echo "Finished!"
                 ;;
@@ -128,7 +142,7 @@ case $command in
         case "$1" in
             notebook)
                 case "$2" in
-                    2.12.0 | 2.14.0)
+                    nightly | latest | 2.12.0 | 2.14.0)
                     echo "Run NEST-$2 with Jupyter Notebook".
                     echo
                     docker run -it --rm --user nest --name my_app \
@@ -144,7 +158,7 @@ case $command in
             ;;
             interactive)
                 case "$2" in
-                    2.12.0 | 2.14.0)
+                    nightly | latest | 2.12.0 | 2.14.0)
                     echo "Run NEST-$2 in interactive mode."
                     echo
                     docker run -it --rm --user nest --name my_app \
@@ -160,7 +174,7 @@ case $command in
             ;;
             virtual)
                 case "$2" in
-                    2.12.0 | 2.14.0)
+                    nightly | latest | 2.12.0 | 2.14.0)
                     echo "Run NEST-$2 like a virtual machine."
                     echo
                     docker run -it --rm --user nest --name my_app \
@@ -188,7 +202,7 @@ case $command in
         echo "Stops every container and delete the NEST Images."
         echo
         docker stop $(docker ps -a -q)
-        docker rmi nest/docker-master  nest/docker-nest-2.12.0 nest/docker-nest-2.14.0
+        docker images -a | grep "nest" | awk '{print $3}' | xargs docker rmi
 	    echo
 	    echo "Done!"
 	    echo

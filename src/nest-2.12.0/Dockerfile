@@ -11,7 +11,7 @@ RUN adduser --disabled-login --gecos 'NEST' --home /home/nest nest && \
 
 # Install NEST 2.14.0
 RUN mkdir data && \
-    chown -R nest:nest /home/nest
+    chown nest:nest /home/nest /home/nest/data /home/nest/.bashrc
 
 WORKDIR /home/nest
 

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-
-# check_code_style.sh
+#
+# entrypoint.sh
 #
 # This file is part of NEST.
 #
@@ -19,17 +19,14 @@
 # You should have received a copy of the GNU General Public License
 # along with NEST.  If not, see <http://www.gnu.org/licenses/>.
 
-# This script performs a static code analysis and can be used to verify
-# if a source file fulfills the NEST coding style guidelines.
-# Run ./extras/check_code_style.sh --help for more detailed information.
-
 set -e
 
 # NEST environment
-source /home/nest/nest-install/bin/nest_vars.sh
+# source /home/nest/nest-install/bin/nest_vars.sh
 
 
 if [ "$1" = 'notebook' ]; then
+    # cd /home/nest
     exec jupyter notebook --ip="*" --port=8080 --no-browser
 fi
 
@@ -38,7 +35,7 @@ if [ "$1" = 'interactive' ]; then
 	echo Starting: $name
 
 	# Start
-	exec /home/nest/miniconda/envs/py3/bin/python /home/nest/data/$name
+	exec /usr/bin/python3 /home/nest/data/$name
 fi
 
 exec "$@"
