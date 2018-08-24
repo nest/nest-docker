@@ -4,23 +4,23 @@ Currently the following docker images are provided
 
 -   Minimal install
 
-    -   nest/docker-nest-latest (~970MB)
+    -   nest/docker-nest-latest (~950MB)
         Installs the latest stable release (ppa:nest-simulator/nest).
 
-    -   nest/docker-nest-nightly (~970MB)
+    -   nest/docker-nest-nightly (~950MB)
         Installs the latest nightly build (ppa:nest-simulator/nest-nightly).
 
 -   Complete install from scratch
     'WITH_MPI=On', 'WITH_GSL=On', 'WITH_MUSIC=On' and 'WITH_LIBNEUROSIM=On'
 
-    -   nest/docker-nest-2.12.0 (~3.4GB)
-    -   nest/docker-nest-2.14.0 (~3.4GB)
+    -   nest/docker-nest-2.12.0 (~1.1GB)
+    -   nest/docker-nest-2.14.0 (~1.1GB)
 
-    NOTE: For building both an extra docker image (~3,2GB) is created. It can be deleted later.
+    NOTE: For building both an extra docker image ('nest/docker-master' ~1.1MB) is created. It can be deleted later.
 
 ## Usage
 
-    nest_docker.sh [--help] <command> [<args>] [<version>]
+    sh nest_docker.sh [--help] <command> [<args>] [<version>]
 
     --help      print this usage information.
     <command>   can be either 'provision', 'run' or ''.
@@ -34,7 +34,12 @@ Currently the following docker images are provided
 ## 1 - 2 (- 3)
 
 In the following, VESRION is the kind of docker image you want to use
-(right now 'latest', 'nightly', '2.12.0' or 2.14.0').
+
+    - 'latest' - minimal install of latest NEST release
+    - 'nightly' - minimal install of latest MEST master branch
+    - '2.12.0' - complete install of NEST 2.12.0
+    - '2.14.0' - complete install of NEST 2.14.0
+    - 'all' - with 'all' you get all
 
 Two little steps to get started
 
@@ -42,17 +47,12 @@ Two little steps to get started
 
     sh nest-docker.sh provision VERSION
 
-(You can adapt some configuration options in nest-docker.sh. For other/more
-configuration options please change the 'Dockerfile'. See:
-<https://github.com/nest/nest-simulator/blob/v2.12.0/README.md>)
-
 ### 2 - Run
 
 -   with Jupyter Notebook
 
-        sh nest-docker.sh run notebook VERSION  
+        sh nest-docker.sh run notebook VERSION
 
-    VESRION is 2.12.0, 2.14.0 or all.               
     Open the displayed URL in your browser and have fun with Jupyter
     Notebook and NEST.
 
@@ -74,9 +74,9 @@ configuration options please change the 'Dockerfile'. See:
 
 ### (3) - Delete the NEST Images
 
-    sh nest-docker.sh
+    sh nest-docker.sh clean
 
-Be careful. This stops EVERY container and delete the EVERY NEST Images.
+Be careful. This stops EVERY container and delete then EVERY NEST Images.
 
 ## Useful Docker commands
 

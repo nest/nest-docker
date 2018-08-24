@@ -52,49 +52,29 @@ case $command in
         echo
         while test $# -gt 0; do
             case "$1" in
-            nightly)
-                echo "1 - Build the NEST nightly image"
+            nightly | latest)
+                echo "1 - Build the NEST $1 image"
                 echo
-                docker build -t nest/docker-nest-nightly ./nightly
-                echo
-                echo "Finished!"
-                ;;
-            latest)
-                echo "1 - Build the NEST latest image"
-                echo
-                docker build -t nest/docker-nest-latest ./latest
+                docker build -t nest/docker-nest-"$1" ./"$1"
                 echo
                 echo "Finished!"
                 ;;
-            2.12.0)
+
+            2.12.0 | 2.14.0)
                 echo "1 - Build the master image"
                 echo
                 docker build -t nest/docker-master ./src/master
                 echo
-                echo "2 -Build the NEST image for NEST 2.12.0"
+                echo "2 -Build the NEST image for NEST $1"
                 echo
                 docker build \
                     --build-arg WITH_MPI=On \
                     --build-arg WITH_GSL=On \
                     --build-arg WITH_MUSIC=On \
                     --build-arg WITH_LIBNEUROSIM=On \
-                    -t nest/docker-nest-2.12.0 ./src/nest-2.12.0
+                    -t nest/docker-nest-"$1" ./src/nest-"$1"
                 echo
                 echo "Finished!"
-                ;;
-            2.14.0)
-                echo "1 - Build the master image"
-                echo
-                docker build -t nest/docker-master ./src/master
-                echo
-                echo "2 -Build the NEST image for NEST 2.14.0"
-                echo
-                docker build \
-                    --build-arg WITH_MPI=On \
-                    --build-arg WITH_GSL=On \
-                    --build-arg WITH_MUSIC=On \
-                    --build-arg WITH_LIBNEUROSIM=On \
-                    -t nest/docker-nest-2.14.0 ./src/nest-2.14.0
                 ;;
             all)
                 echo "1 - Build the master image"
@@ -117,6 +97,15 @@ case $command in
                     --build-arg WITH_LIBNEUROSIM=On \
                     -t nest/docker-nest-2.14.0 ./src/nest-2.14.0
                 echo
+                echo "3 - Build the NEST nightly image"
+                echo
+                docker build -t nest/docker-nest-nightly ./nightly
+                echo
+                echo "Finished!"
+                echo "4 - Build the NEST latest image"
+                echo
+                docker build -t nest/docker-nest-latest ./latest
+                echo
                 echo "Finished!"
                 ;;
             *)
@@ -135,7 +124,8 @@ case $command in
         echo "  - 'interactive VESRION'"
         echo "  - 'virtual VERSION'"
         echo
-        echo "VERSION ist the version of NEST (e.g. 2.12.0 or 2.14.0)"
+        echo "VERSION is the version of NEST"
+        echo "(e.g. latest, nightly, 2.12.0 or 2.14.0)"
         echo
     LOCALDIR="$(pwd)"
     while test $# -gt 1; do
