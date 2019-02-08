@@ -1,4 +1,0 @@
-deb http://neurodebian.ovgu.de/debian data main contrib non-free
-#deb-src http://neurodebian.ovgu.de/debian data main contrib non-free
-deb http://neurodebian.ovgu.de/debian bionic main contrib non-free
-#deb-src http://neurodebian.ovgu.de/debian bionic main contrib non-free
