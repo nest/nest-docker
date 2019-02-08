@@ -6,6 +6,7 @@ source /opt/nest/bin/nest_vars.sh
 
 
 if [ "$1" = 'notebook' ]; then
+    cd ./data
     exec jupyter notebook --ip="*" --port=8080 --no-browser
 fi
 

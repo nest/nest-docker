@@ -1,4 +1,4 @@
-FROM neurodebian:bionic as builder
+FROM buildpack-deps:bionic as builder
 MAINTAINER "Steffen Graber" <s.graber@fz-juelich.de>
 
 ENV TERM=xterm \
@@ -6,59 +6,50 @@ ENV TERM=xterm \
     DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update && apt-get install -y \
-    build-essential \
     cmake \
     cython3 \
+    jq \
     libgsl-dev \
     libltdl7 \
     libltdl-dev \
-    libncurses5-dev \
-    libreadline6-dev \
-    python3.6-dev \
-    python3-numpy \
-    python3-scipy \
-    python3-matplotlib \
-    python3-ipython \
-    python3-nose \
-    wget \
-    git \
-    unzip \
-    build-essential \
-    autoconf \
-    cmake \
-    openmpi-bin \
+    libmusic1v5 \
+    libmusic-dev \
     libopenmpi-dev \
-    vera++ \
-    pep8 \
     libpcre3 \
     libpcre3-dev \
-    jq \
-    libmusic1v5 \
     music-bin \
-    libmusic-dev \
-    python-dev \
+    openmpi-bin \
+    pep8 \
+    python3.6-dev \
     python3-dev \
-    python3-setuptools \
-    python3-path \
-    python3-statsmodels \
+    python3-ipython \
     python3-jupyter-core \
+    python3-matplotlib \
     python3-mpi4py \
+    python3-nose \
+    python3-numpy \
     python3-pandas \
-    cython3  && \
+    python3-path \
+    python3-scipy \
+    python3-setuptools \
+    python3-statsmodels \
+    python-dev \
+    vera++ \
+    wget  && \
     apt-get autoremove -y && \
     rm -rf /var/lib/apt/lists/*
 
-RUN cd /tmp && \
-    git clone https://github.com/INCF/libneurosim.git libneurosim && \
-    cd /tmp/libneurosim && \
-    chmod +x autogen.sh && \
-    ./autogen.sh && \
-    chmod +x configure && \
-    ./configure --with-python=3 && make &&  make install &&\
-    rm -rf /tmp/*
+# RUN cd /tmp && \
+#    git clone https://github.com/INCF/libneurosim.git libneurosim && \
+#    cd /tmp/libneurosim && \
+#    chmod +x autogen.sh && \
+#    ./autogen.sh && \
+#    chmod +x configure && \
+#    ./configure --with-python=3 && make &&  make install &&\
+#    rm -rf /tmp/*
 ###############################################################################
 ##
-## If you want libneurosim you need to install it in teh end-image, too
+## If you want libneurosim you need to install it in the min-image, too
 ##
 ###############################################################################
 
@@ -81,26 +72,27 @@ RUN wget https://github.com/nest/nest-simulator/archive/v2.16.0.tar.gz && \
 
 ###############################################################################
 
-FROM ubuntu:18.04
+FROM ubuntu:bionic
 MAINTAINER "Steffen Graber" <s.graber@fz-juelich.de>
 
 ENV TERM=xterm \
     TZ=Europe/Berlin \
     DEBIAN_FRONTEND=noninteractive
 
-RUN apt-get update && apt-get install -y \
+RUN apt-get update && apt-get install -y  \
+        jupyter-notebook \
         libgsl-dev  \
         libltdl7 \
-        libpython3.6 \
         libmusic1v5 \
+        libopenmpi-dev \
+        libpython3.6 \
         music-bin \
         openmpi-bin \
-        python3-numpy \
-        python3-scipy \
+        openssh-client \
         python3-matplotlib \
-        jupyter \
-        jupyter-notebook \
-        python3-mpi4py  && \
+        python3-mpi4py \
+        python3-numpy \
+        python3-scipy && \
     apt-get autoremove -y && \
     rm -rf /var/lib/apt/lists/* && \
     ln -s /usr/bin/python3 /usr/bin/python
@@ -115,10 +107,11 @@ RUN adduser --disabled-login --gecos 'NEST' --home /home/nest nest && \
 
 COPY --from=builder /opt/nest /opt/nest
 
+
 COPY ./entrypoint.sh /home/nest/
 RUN chown nest:nest /home/nest/entrypoint.sh && \
     chmod +x /home/nest/entrypoint.sh && \
     echo '. /opt/nest/bin/nest_vars.sh' >> /home/nest/.bashrc
-#EXPOSE 8080
-#WORKDIR /home/nest
+EXPOSE 8080
+WORKDIR /home/nest
 ENTRYPOINT ["/home/nest/entrypoint.sh"]
