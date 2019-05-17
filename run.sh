@@ -56,26 +56,18 @@ case $command in
             master | 2.12.0 | 2.14.0 | 2.16.0)
                 echo "Build the NEST image for NEST $1"
                 echo
-                docker build \
-                    -t nest/docker-nest:"$1" ./src/"$1"
+                docker build -t nest/docker-nest:"$1" ./src/"$1"
                 echo
                 echo "Finished!"
                 ;;
             all)
-                echo "Build the NEST image for NEST 2.12.0, 2.14.0, \
-                      2.16.0 and master"
+                echo "Build the NEST image for NEST 2.12.0, 2.14.0,"
+                echo "2.16.0 and master"
                 echo
-                docker build \
-                       -t nest/docker-nest:2.12.0 ./src/2.12.0
-
-                docker build \
-                       -t nest/docker-nest:2.14.0 ./src/2.14.0
-
-                docker build \
-                       -t nest/docker-nest:2.16.0 ./src/2.16.0
-
-                docker build \
-                       -t nest/docker-nest:master ./src/master
+                docker build -t nest/docker-nest:2.12.0 ./src/2.12.0
+                docker build -t nest/docker-nest:2.14.0 ./src/2.14.0
+                docker build -t nest/docker-nest:2.16.0 ./src/2.16.0
+                docker build -t nest/docker-nest:master ./src/master
                 echo
                 echo "Finished!"
                 ;;
@@ -103,7 +95,7 @@ case $command in
         case "$1" in
             notebook)
                 case "$2" in
-                    master| 2.12.0 | 2.14.0 | 2.16.0)
+                    master | 2.12.0 | 2.14.0 | 2.16.0)
                     echo "Run NEST-$2 with Jupyter Notebook".
                     echo
                     docker run -it --rm --user nest --name my_app \
@@ -119,7 +111,7 @@ case $command in
             ;;
             interactive)
                 case "$2" in
-                    master| 2.12.0 | 2.14.0 | 2.16.0)
+                    master | 2.12.0 | 2.14.0 | 2.16.0)
                     echo "Run NEST-$2 in interactive mode."
                     echo
                     docker run -it --rm --user nest --name my_app \
@@ -135,7 +127,7 @@ case $command in
             ;;
             virtual)
                 case "$2" in
-                    master| 2.12.0 | 2.14.0 | 2.16.0)
+                    master | 2.12.0 | 2.14.0 | 2.16.0)
                     echo "Run NEST-$2 like a virtual machine."
                     echo
                     docker run -it --rm --user nest --name my_app \

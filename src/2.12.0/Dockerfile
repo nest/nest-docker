@@ -67,7 +67,7 @@ RUN apt-get update && apt-get install -y \
 
 RUN wget https://github.com/nest/nest-simulator/archive/v2.12.0.tar.gz && \
 	mkdir nest-build && \
-	tar -xvzf nest-2.12.0.tar.gz && \
+	tar -xvzf v2.12.0.tar.gz && \
 	cd  nest-build && \
 	cmake -DCMAKE_INSTALL_PREFIX:PATH=/opt/nest/ \
 		-Dwith-optimize=ON \
@@ -80,7 +80,7 @@ RUN wget https://github.com/nest/nest-simulator/archive/v2.12.0.tar.gz && \
         -DPYNEUROSIM_LIBRARY=/usr/local/lib \
         -Dwith-libneurosim:BOOL=$WITH_LIBNEUROSIM /usr/local/lib \
         -Dwith-music:BOOL=$WITH_MUSIC /usr/lib \
-		../nest-2.12.0 && \
+		../nest-simulator-2.12.0 && \
 	make && \
 	make install
 
