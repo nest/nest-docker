@@ -68,8 +68,8 @@ RUN apt-get update && apt-get install -y \
 RUN wget https://github.com/nest/nest-simulator/archive/v2.14.0.tar.gz && \
 	mkdir nest-build && \
 	tar -xvzf v2.14.0.tar.gz && \
-	cd  nest-build && \
-	cmake -DCMAKE_INSTALL_PREFIX:PATH=/opt/nest/ \
+	cd  nest-build
+RUN	cmake -DCMAKE_INSTALL_PREFIX:PATH=/opt/nest/ \
 		-Dwith-optimize=ON \
 		-Dwith-warning=ON \
 		-Dwith-boost=ON \
