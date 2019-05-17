@@ -1,4 +1,4 @@
-FROM buildpack-deps:bionic as builder
+FROM buildpack-deps:bionic as builderslim216
 MAINTAINER "Steffen Graber" <s.graber@fz-juelich.de>
 
 ENV TERM=xterm \
@@ -61,7 +61,7 @@ RUN adduser --disabled-login --gecos 'NEST' --home /home/nest nest && \
 
 WORKDIR /home/nest
 
-COPY --from=builder /opt/nest /opt/nest
+COPY --from=builderslim216 /opt/nest /opt/nest
 
 COPY ./entrypoint.sh /home/nest/
 RUN chown nest:nest /home/nest/entrypoint.sh && \

@@ -1,4 +1,4 @@
-FROM buildpack-deps:bionic as buildermaster
+FROM buildpack-deps:bionic as builder212
 MAINTAINER "Steffen Graber" <s.graber@fz-juelich.de>
 
 ARG WITH_MPI=ON
@@ -65,24 +65,21 @@ RUN apt-get update && apt-get install -y \
 ##
 ###############################################################################
 
-RUN wget https://github.com/nest/nest-simulator/archive/master.tar.gz && \
-  mkdir nest-build && \
-  tar zxf master.tar.gz && \
-  cd  nest-build && \
-  cmake -DCMAKE_INSTALL_PREFIX:PATH=/opt/nest/ \
-        -Dwith-optimize=ON \
-		-Dwith-warning=ON \
-		-Dwith-boost=ON \
-        -Dwith-python=3 \
-        -Dwith-ltdl:BOOL=ON /usr/lib \
+RUN wget https://github.com/nest/nest-simulator/archive/v2.12.0.tar.gz && \
+	mkdir nest-build && \
+	tar -xvzf nest-2.12.0.tar.gz && \
+	cd  nest-build && \
+	cmake -DCMAKE_INSTALL_PREFIX:PATH=/opt/nest/ \
+		-Dwith-python=3 \
+		-Dwith-ltdl:BOOL=ON /usr/lib \
         -Dwith-mpi:BOOL=$WITH_MPI \
         -Dwith-gsl:BOOL=$WITH_GSL /usr/local/lib \
         -DPYNEUROSIM_LIBRARY=/usr/local/lib \
         -Dwith-libneurosim:BOOL=$WITH_LIBNEUROSIM /usr/local/lib \
         -Dwith-music:BOOL=$WITH_MUSIC /usr/lib \
-        ../nest-simulator-master && \
-  make && \
-  make install
+		../nest-2.12.0 && \
+	make && \
+	make install
 
 
 ###############################################################################
@@ -120,7 +117,7 @@ RUN adduser --disabled-login --gecos 'NEST' --home /home/nest nest && \
 
 # WORKDIR /home/nest
 
-COPY --from=buildermaster /opt/nest /opt/nest
+COPY --from=builder212 /opt/nest /opt/nest
 
 
 COPY ./entrypoint.sh /home/nest/
