@@ -38,7 +38,7 @@ You can change this on top of every 'dockerfile'.
 
 In the following, VERSION is the kind of docker image you want to use
 
-    - 'master' - complete install of latest NEST releaseh
+    - 'master' - complete install of latest NEST release
     - '2.12.0' - complete install of NEST 2.12.0
     - '2.14.0' - complete install of NEST 2.14.0
     - '2.16.0' - complete install of NEST 2.16.0
@@ -50,11 +50,12 @@ Two little steps to get started
 
     sh run.sh provision VERSION
     
-After every build of a NEST docker image there are two more images - the one 
+Be careful with the version 'all'. This really takes a long time. 
+    
+After every build of a NEST docker image, there are two more images - the one 
 with the name of the NEST version (e.g. 'nest/nest-docker-master') and 
 another without any name. The latest you can delete.
-If you want to know more about these so called 'multi-stage builds', find 
-more information here: 
+More information about this so called 'multi-stage build' here: 
 <https://docs.docker.com/develop/develop-images/multistage-build/>
 
 ### 2 - Run
