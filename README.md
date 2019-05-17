@@ -6,10 +6,10 @@ If you know how to use docker, you know how to use NEST.
 
 Currently the following docker images are provided
 
-    - nest/docker-nest-master (~???GB)
-    - nest/docker-nest-2.12.0 (~???GB)
-    - nest/docker-nest-2.14.0 (~???GB)
-    - nest/docker-nest-2.16.0 (~???GB)
+    - nest/docker-nest:master (~???GB)
+    - nest/docker-nest:2.12.0 (~???GB)
+    - nest/docker-nest:2.14.0 (~???GB)
+    - nest/docker-nest:2.16.0 (~???GB)
     
 Thea are build with these environment variable:
 
@@ -97,7 +97,7 @@ Be careful. This stops EVERY container and delete then EVERY NEST Images.
 
 -   Export a docker image
 
-        docker save nest/docker-nest-2.12.0 | gzip -c > nest-docker.tar.gz
+        docker save nest/docker-nest:2.12.0 | gzip -c > nest-docker.tar.gz
 
 -   Import a docker image
 

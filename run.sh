@@ -48,8 +48,8 @@ fi
 case $command in
     provision)
         echo
-        echo "Provisioning needs an argument: 'master' '2.12.0', '2.14.0',
-        '2.16.0' or 'all'."
+        echo "Provisioning needs an argument: 'master' '2.12.0', '2.14.0',"
+        echo "'2.16.0' or 'all'."
         echo
         while test $# -gt 0; do
             case "$1" in
@@ -57,7 +57,7 @@ case $command in
                 echo "Build the NEST image for NEST $1"
                 echo
                 docker build \
-                    -t nest/docker-nest-"$1" ./src/"$1"
+                    -t nest/docker-nest:"$1" ./src/"$1"
                 echo
                 echo "Finished!"
                 ;;
@@ -66,16 +66,16 @@ case $command in
                       2.16.0 and master"
                 echo
                 docker build \
-                       -t nest/docker-nest-2.12.0 ./src/2.12.0
+                       -t nest/docker-nest:2.12.0 ./src/2.12.0
 
                 docker build \
-                       -t nest/docker-nest-2.14.0 ./src/2.14.0
+                       -t nest/docker-nest:2.14.0 ./src/2.14.0
 
                 docker build \
-                       -t nest/docker-nest-2.16.0 ./src/2.16.0
+                       -t nest/docker-nest:2.16.0 ./src/2.16.0
 
                 docker build \
-                       -t nest/docker-nest-master ./src/master
+                       -t nest/docker-nest:master ./src/master
                 echo
                 echo "Finished!"
                 ;;
@@ -108,7 +108,7 @@ case $command in
                     echo
                     docker run -it --rm --user nest --name my_app \
                         -v $LOCALDIR:/home/nest/data \
-                        -p 8080:8080 nest/docker-nest-"$2" notebook
+                        -p 8080:8080 nest/docker-nest:"$2" notebook
                     echo
                     ;;
                     *)
@@ -124,7 +124,7 @@ case $command in
                     echo
                     docker run -it --rm --user nest --name my_app \
                         -v $LOCALDIR:/home/nest/data \
-                        -p 8080:8080 nest/docker-nest-"$2" interactive
+                        -p 8080:8080 nest/docker-nest:"$2" interactive
                     echo
                     ;;
                     *)
@@ -140,7 +140,7 @@ case $command in
                     echo
                     docker run -it --rm --user nest --name my_app \
                         -v $LOCALDIR:/home/nest/data \
-                        -p 8080:8080 nest/docker-nest-"$2" /bin/bash
+                        -p 8080:8080 nest/docker-nest:"$2" /bin/bash
                     echo
                     ;;
                     *)
