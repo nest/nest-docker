@@ -70,6 +70,9 @@ RUN wget https://github.com/nest/nest-simulator/archive/v2.12.0.tar.gz && \
 	tar -xvzf nest-2.12.0.tar.gz && \
 	cd  nest-build && \
 	cmake -DCMAKE_INSTALL_PREFIX:PATH=/opt/nest/ \
+		-Dwith-optimize=ON \
+		-Dwith-warning=ON \
+		-Dwith-boost=ON \
 		-Dwith-python=3 \
 		-Dwith-ltdl:BOOL=ON /usr/lib \
         -Dwith-mpi:BOOL=$WITH_MPI \

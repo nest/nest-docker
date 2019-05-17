@@ -70,13 +70,16 @@ RUN wget https://github.com/nest/nest-simulator/archive/v2.14.0.tar.gz && \
 	tar -xvzf v2.14.0.tar.gz && \
 	cd  nest-build && \
 	cmake -DCMAKE_INSTALL_PREFIX:PATH=/opt/nest/ \
+		-Dwith-optimize=ON \
+		-Dwith-warning=ON \
+		-Dwith-boost=ON \
 		-Dwith-python=3 \
 		-Dwith-ltdl:BOOL=ON /usr/lib \
-        -Dwith-mpi:BOOL=$WITH_MPI \
-        -Dwith-gsl:BOOL=$WITH_GSL /usr/local/lib \
-        -DPYNEUROSIM_LIBRARY=/usr/local/lib \
-        -Dwith-libneurosim:BOOL=$WITH_LIBNEUROSIM /usr/local/lib \
-        -Dwith-music:BOOL=$WITH_MUSIC /usr/lib \
+		-Dwith-mpi:BOOL=$WITH_MPI \
+		-Dwith-gsl:BOOL=$WITH_GSL /usr/local/lib \
+		-DPYNEUROSIM_LIBRARY=/usr/local/lib \
+		-Dwith-libneurosim:BOOL=$WITH_LIBNEUROSIM /usr/local/lib \
+		-Dwith-music:BOOL=$WITH_MUSIC /usr/lib \
 		../nest-simulator-2.14.0 && \
 	make && \
 	make install
