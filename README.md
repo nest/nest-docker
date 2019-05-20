@@ -6,10 +6,10 @@ If you know how to use docker, you know how to use NEST.
 
 Currently the following docker images are provided
 
-    - nest/docker-nest:master (~???GB)
-    - nest/docker-nest:2.12.0 (~???GB)
-    - nest/docker-nest:2.14.0 (~???GB)
-    - nest/docker-nest:2.16.0 (~???GB)
+    - nest/docker-nest:master (~884MB)
+    - nest/docker-nest:2.12.0 (~875MB)
+    - nest/docker-nest:2.14.0 (~877MB)
+    - nest/docker-nest:2.16.0 (~879MB)
     
 Thea are build with these environment variable:
 
