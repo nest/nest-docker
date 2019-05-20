@@ -1,5 +1,10 @@
-FROM buildpack-deps:bionic as builder
+FROM buildpack-deps:bionic as builder216
 MAINTAINER "Steffen Graber" <s.graber@fz-juelich.de>
+
+ARG WITH_MPI=ON
+ARG WITH_GSL=ON
+ARG WITH_MUSIC=ON
+ARG WITH_LIBNEUROSIM=OFF
 
 ENV TERM=xterm \
     TZ=Europe/Berlin \
@@ -9,19 +14,26 @@ RUN apt-get update && apt-get install -y \
     cmake \
     cython3 \
     jq \
+    libboost-filesystem-dev \
+    libboost-regex-dev \
+    libboost-wave-dev \
+    libboost-python-dev \
+    libboost-program-options-dev \
+	libboost-test-dev \
     libgsl-dev \
     libltdl7 \
     libltdl-dev \
     libmusic1v5 \
     libmusic-dev \
+    libncurses5-dev \
     libopenmpi-dev \
     libpcre3 \
     libpcre3-dev \
+    llvm-3.9-dev \
     music-bin \
     openmpi-bin \
     pep8 \
     python3.6-dev \
-    python3-dev \
     python3-ipython \
     python3-jupyter-core \
     python3-matplotlib \
@@ -49,7 +61,7 @@ RUN apt-get update && apt-get install -y \
 #    rm -rf /tmp/*
 ###############################################################################
 ##
-## If you want libneurosim you need to install it in the min-image, too
+## If you want libneurosim you need to install it in the min-image below, too
 ##
 ###############################################################################
 
@@ -58,13 +70,16 @@ RUN wget https://github.com/nest/nest-simulator/archive/v2.16.0.tar.gz && \
   tar zxf v2.16.0.tar.gz && \
   cd  nest-build && \
   cmake -DCMAKE_INSTALL_PREFIX:PATH=/opt/nest/ \
+  		-Dwith-optimize=ON \
+		-Dwith-warning=ON \
+		-Dwith-boost=ON \
         -Dwith-python=3 \
         -Dwith-ltdl:BOOL=ON /usr/lib \
-        -Dwith-mpi:BOOL=ON \
-        -Dwith-gsl:BOOL=ON /usr/local/lib \
+        -Dwith-mpi:BOOL=$WITH_MPI \
+        -Dwith-gsl:BOOL=$WITH_GSL /usr/local/lib \
         -DPYNEUROSIM_LIBRARY=/usr/local/lib \
-        -Dwith-libneurosim:BOOL=OFF /usr/local/lib \
-        -Dwith-music:BOOL=ON /usr/lib \
+        -Dwith-libneurosim:BOOL=$WITH_LIBNEUROSIM /usr/local/lib \
+        -Dwith-music:BOOL=$WITH_MUSIC /usr/lib \
         ../nest-simulator-2.16.0 && \
   make && \
   make install
@@ -105,8 +120,7 @@ RUN adduser --disabled-login --gecos 'NEST' --home /home/nest nest && \
 
 # WORKDIR /home/nest
 
-COPY --from=builder /opt/nest /opt/nest
-
+COPY --from=builder216 /opt/nest /opt/nest
 
 COPY ./entrypoint.sh /home/nest/
 RUN chown nest:nest /home/nest/entrypoint.sh && \

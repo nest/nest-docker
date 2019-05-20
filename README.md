@@ -1,64 +1,75 @@
 # Docker image for the NEST simulator
 
+## What is it for?
+
+If you know how to use docker, you know how to use NEST.
+
 Currently the following docker images are provided
 
--   Minimal install
+    - nest/docker-nest:master (~884MB)
+    - nest/docker-nest:2.12.0 (~875MB)
+    - nest/docker-nest:2.14.0 (~877MB)
+    - nest/docker-nest:2.16.0 (~879MB)
+    
+Thea are build with these environment variable:
 
-    -   nest/docker-nest-latest (~950MB)
-        Installs the latest stable release (ppa:nest-simulator/nest).
+	- 'WITH_MPI=ON'
+	- 'WITH_GSL=ON'
+	- 'WITH_MUSIC=ON'
+	- 'WITH_LIBNEUROSIM=OFF'
 
-    -   nest/docker-nest-nightly (~950MB)
-        Installs the latest nightly build (ppa:nest-simulator/nest-nightly).
+You can change this on top of every 'dockerfile'.
 
--   Complete install from scratch
-    'WITH_MPI=On', 'WITH_GSL=On', 'WITH_MUSIC=On' and 'WITH_LIBNEUROSIM=On'
-
-    -   nest/docker-nest-2.12.0 (~1.1GB)
-    -   nest/docker-nest-2.14.0 (~1.1GB)
-
-    NOTE: For building both an extra docker image ('nest/docker-master' ~1.1MB) is created. It can be deleted later.
-
+   
 ## Usage
 
-    sh nest_docker.sh [--help] <command> [<args>] [<version>]
+    sh run.sh [--help] <command> [<args>] [<version>]
 
     --help      print this usage information.
-    <command>   can be either 'provision', 'run' or ''.
+    <command>   can be either 'provision', 'run' or 'clean'.
     [<args>]    can be either 'notebook', 'interactice' or 'virtual'.
-    [<version>] kind of docker image (e.g. 'latest', 'nightly', '2.12.0' or
-                2.14.0').
+    [<version>] kind of docker image (e.g. 'master', '2.12.0', '2.14.0',
+                '2.16.0' or 'all').
 
-    Example:    sh nest-docker.sh provision latest
-                sh nest-docker.sh run notebook latest
+    Example:    sh run.sh provision master
+                sh run.sh run notebook master
 
 ## 1 - 2 (- 3)
 
-In the following, VESRION is the kind of docker image you want to use
+In the following, VERSION is the kind of docker image you want to use
 
-    - 'latest' - minimal install of latest NEST release
-    - 'nightly' - minimal install of latest MEST master branch
+    - 'master' - complete install of latest NEST release
     - '2.12.0' - complete install of NEST 2.12.0
     - '2.14.0' - complete install of NEST 2.14.0
+    - '2.16.0' - complete install of NEST 2.16.0
     - 'all' - with 'all' you get all
 
 Two little steps to get started
 
 ### 1 - Provisioning
 
-    sh nest-docker.sh provision VERSION
+    sh run.sh provision VERSION
+    
+Be careful with the version 'all'. This really takes a long time. 
+    
+After every build of a NEST docker image, there are two more images - the one 
+with the name of the NEST version (e.g. 'nest/nest-docker-master') and 
+another without any name. The latest you can delete.
+More information about this so called 'multi-stage build' here: 
+<https://docs.docker.com/develop/develop-images/multistage-build/>
 
 ### 2 - Run
 
 -   with Jupyter Notebook
 
-        sh nest-docker.sh run notebook VERSION
+        sh run.sh run notebook VERSION
 
     Open the displayed URL in your browser and have fun with Jupyter
     Notebook and NEST.
 
 -   in interactive mode
 
-        sh nest-docker.sh run interactive VERSION
+        sh run.sh run interactive VERSION
 
     After the prompt 'Your python script:' enter the filename of the script
     you want to start. Only the filename without any path. The file has to
@@ -66,7 +77,7 @@ Two little steps to get started
 
 -   as virtual image
 
-        sh nest-docker.sh run virtual VERSION
+         sh run.sh run virtual VERSION
 
     You are logged in as user 'nest'. Enter 'python' and in the
     python-shell 'import nest'. A 'nest.help()' should display the main
@@ -74,19 +85,19 @@ Two little steps to get started
 
 ### (3) - Delete the NEST Images
 
-    sh nest-docker.sh clean
+    sh run.sh clean
 
 Be careful. This stops EVERY container and delete then EVERY NEST Images.
 
 ## Useful Docker commands
 
--   Delete ALL images (USE WITH CAUTION!)
+-   Delete ALL(!) images (USE WITH CAUTION!)
 
         docker system prune -fa --volumes
 
 -   Export a docker image
 
-        docker save nest/docker-nest-2.12.0 | gzip -c > nest-docker.tar.gz
+        docker save nest/docker-nest:2.12.0 | gzip -c > nest-docker.tar.gz
 
 -   Import a docker image
 
