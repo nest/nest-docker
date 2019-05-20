@@ -53,8 +53,8 @@ Two little steps to get started
 Be careful with the version 'all'. This really takes a long time. 
     
 After every build of a NEST docker image, there are two more images - the one 
-with the name of the NEST version (e.g. 'nest/nest-docker-master') and 
-another without any name. The latest you can delete.
+with the name of the NEST version (e.g. 'nest/nest-docker:master') and 
+another without any name. The last one you can delete.
 More information about this so called 'multi-stage build' here: 
 <https://docs.docker.com/develop/develop-images/multistage-build/>
 
