@@ -51,6 +51,15 @@ RUN apt-get update && apt-get install -y \
     apt-get autoremove -y && \
     rm -rf /var/lib/apt/lists/*
 
+# locales setting needed for NEST 2.14.0 - see issue #830
+RUN apt-get update \
+    && DEBIAN_FRONTEND=noninteractive apt-get install -y locales \
+    && sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen \
+    && dpkg-reconfigure --frontend=noninteractive locales \
+    && update-locale LANG=en_US.UTF-8
+ENV LANG en_US.UTF-8
+ENV LC_ALL en_US.UTF-8
+
 # RUN cd /tmp && \
 #    git clone https://github.com/INCF/libneurosim.git libneurosim && \
 #    cd /tmp/libneurosim && \
@@ -66,23 +75,23 @@ RUN apt-get update && apt-get install -y \
 ###############################################################################
 
 RUN wget https://github.com/nest/nest-simulator/archive/v2.14.0.tar.gz && \
-	mkdir nest-build && \
-	tar -xvzf v2.14.0.tar.gz && \
-	cd  nest-build
-RUN	cmake -DCMAKE_INSTALL_PREFIX:PATH=/opt/nest/ \
-		-Dwith-optimize=ON \
+  mkdir nest-build && \
+  tar zxf v2.14.0.tar.gz && \
+  cd  nest-build && \
+  cmake -DCMAKE_INSTALL_PREFIX:PATH=/opt/nest/ \
+  		-Dwith-optimize=ON \
 		-Dwith-warning=ON \
 		-Dwith-boost=ON \
-		-Dwith-python=3 \
-		-Dwith-ltdl:BOOL=ON /usr/lib \
-		-Dwith-mpi:BOOL=$WITH_MPI \
-		-Dwith-gsl:BOOL=$WITH_GSL /usr/local/lib \
-		-DPYNEUROSIM_LIBRARY=/usr/local/lib \
-		-Dwith-libneurosim:BOOL=$WITH_LIBNEUROSIM /usr/local/lib \
-		-Dwith-music:BOOL=$WITH_MUSIC /usr/lib \
-		../nest-simulator-2.14.0 && \
-	make && \
-	make install
+        -Dwith-python=3 \
+        -Dwith-ltdl:BOOL=ON /usr/lib \
+        -Dwith-mpi:BOOL=$WITH_MPI \
+        -Dwith-gsl:BOOL=$WITH_GSL /usr/local/lib \
+        -DPYNEUROSIM_LIBRARY=/usr/local/lib \
+        -Dwith-libneurosim:BOOL=$WITH_LIBNEUROSIM /usr/local/lib \
+        -Dwith-music:BOOL=$WITH_MUSIC /usr/lib \
+        ../nest-simulator-2.14.0 && \
+  make && \
+  make install
 
 
 ###############################################################################
@@ -121,7 +130,6 @@ RUN adduser --disabled-login --gecos 'NEST' --home /home/nest nest && \
 # WORKDIR /home/nest
 
 COPY --from=builder214 /opt/nest /opt/nest
-
 
 COPY ./entrypoint.sh /home/nest/
 RUN chown nest:nest /home/nest/entrypoint.sh && \
