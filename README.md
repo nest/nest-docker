@@ -11,7 +11,7 @@ Currently the following docker images are provided
     - nest/docker-nest:2.14.0 (~877MB)
     - nest/docker-nest:2.16.0 (~879MB)
     
-Thea are build with these environment variable:
+All are build with these environment variable:
 
 	- 'WITH_MPI=ON'
 	- 'WITH_GSL=ON'
