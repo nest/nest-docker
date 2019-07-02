@@ -49,25 +49,26 @@ case $command in
     provision)
         echo
         echo "Provisioning needs an argument: 'master' '2.12.0', '2.14.0',"
-        echo "'2.16.0' or 'all'."
+        echo "'2.16.0', '2.18.0' or 'all'."
         echo
         while test $# -gt 0; do
             case "$1" in
-            master | 2.12.0 | 2.14.0 | 2.16.0)
+            master | 2.12.0 | 2.14.0 | 2.16.0 | 2.18.0 )
                 echo "Build the NEST image for NEST $1"
                 echo
-                docker build -t nest/docker-nest:"$1" ./src/"$1"
+                docker build -t nest/nest-simulator:"$1" ./src/"$1"
                 echo
                 echo "Finished!"
                 ;;
             all)
                 echo "Build the NEST image for NEST 2.12.0, 2.14.0,"
-                echo "2.16.0 and master"
+                echo "2.16.0, 2.18.0 and master"
                 echo
-                docker build -t nest/docker-nest:2.12.0 ./src/2.12.0
-                docker build -t nest/docker-nest:2.14.0 ./src/2.14.0
-                docker build -t nest/docker-nest:2.16.0 ./src/2.16.0
-                docker build -t nest/docker-nest:master ./src/master
+                docker build -t nest/nest-simulator:2.12.0 ./src/2.12.0
+                docker build -t nest/nest-simulator:2.14.0 ./src/2.14.0
+                docker build -t nest/nest-simulator:2.16.0 ./src/2.16.0
+                docker build -t nest/nest-simulator:2.18.0 ./src/2.18.0
+                docker build -t nest/nest-simulator:master ./src/master
                 echo
                 echo "Finished!"
                 ;;
@@ -88,19 +89,19 @@ case $command in
         echo "  - 'virtual VERSION'"
         echo
         echo "VERSION is the version of NEST"
-        echo "(e.g. master, 2.12.0, 2.14.0, 2.16.0)"
+        echo "(e.g. master, 2.12.0, 2.14.0, 2.16.0, 2.18.0)"
         echo
     LOCALDIR="$(pwd)"
     while test $# -gt 1; do
         case "$1" in
             notebook)
                 case "$2" in
-                    master | 2.12.0 | 2.14.0 | 2.16.0)
+                    master | 2.12.0 | 2.14.0 | 2.16.0 | 2.18.0)
                     echo "Run NEST-$2 with Jupyter Notebook".
                     echo
                     docker run -it --rm --user nest --name my_app \
                         -v $LOCALDIR:/home/nest/data \
-                        -p 8080:8080 nest/docker-nest:"$2" notebook
+                        -p 8080:8080 nest/nest-simulator:"$2" notebook
                     echo
                     ;;
                     *)
@@ -111,12 +112,12 @@ case $command in
             ;;
             interactive)
                 case "$2" in
-                    master | 2.12.0 | 2.14.0 | 2.16.0)
+                    master | 2.12.0 | 2.14.0 | 2.16.0 | 2.18.0)
                     echo "Run NEST-$2 in interactive mode."
                     echo
                     docker run -it --rm --user nest --name my_app \
                         -v $LOCALDIR:/home/nest/data \
-                        -p 8080:8080 nest/docker-nest:"$2" interactive
+                        -p 8080:8080 nest/nest-simulator:"$2" interactive
                     echo
                     ;;
                     *)
@@ -127,12 +128,12 @@ case $command in
             ;;
             virtual)
                 case "$2" in
-                    master | 2.12.0 | 2.14.0 | 2.16.0)
+                    master | 2.12.0 | 2.14.0 | 2.16.0 | 2.18.0)
                     echo "Run NEST-$2 like a virtual machine."
                     echo
                     docker run -it --rm --user nest --name my_app \
                         -v $LOCALDIR:/home/nest/data \
-                        -p 8080:8080 nest/docker-nest:"$2" /bin/bash
+                        -p 8080:8080 nest/nest-simulator:"$2" /bin/bash
                     echo
                     ;;
                     *)

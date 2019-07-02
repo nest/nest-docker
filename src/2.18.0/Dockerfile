@@ -1,4 +1,4 @@
-FROM buildpack-deps:bionic AS builder214
+FROM buildpack-deps:bionic AS builder218
 MAINTAINER "Steffen Graber" <s.graber@fz-juelich.de>
 
 ARG WITH_MPI=ON
@@ -53,15 +53,6 @@ RUN apt-get update && apt-get install -y \
     apt-get autoremove -y && \
     rm -rf /var/lib/apt/lists/*
 
-# locales setting needed for NEST 2.14.0 - see issue #830
-RUN apt-get update \
-    && DEBIAN_FRONTEND=noninteractive apt-get install -y locales \
-    && sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen \
-    && dpkg-reconfigure --frontend=noninteractive locales \
-    && update-locale LANG=en_US.UTF-8
-ENV LANG en_US.UTF-8
-ENV LC_ALL en_US.UTF-8
-
 # RUN cd /tmp && \
 #    git clone https://github.com/INCF/libneurosim.git libneurosim && \
 #    cd /tmp/libneurosim && \
@@ -76,9 +67,9 @@ ENV LC_ALL en_US.UTF-8
 ##
 ###############################################################################
 
-RUN wget https://github.com/nest/nest-simulator/archive/v2.14.0.tar.gz && \
+RUN wget https://github.com/nest/nest-simulator/archive/v2.18.0.tar.gz && \
   mkdir nest-build && \
-  tar zxf v2.14.0.tar.gz && \
+  tar zxf v2.18.0.tar.gz && \
   cd  nest-build && \
   cmake -DCMAKE_INSTALL_PREFIX:PATH=/opt/nest/ \
   		-Dwith-optimize=ON \
@@ -92,7 +83,7 @@ RUN wget https://github.com/nest/nest-simulator/archive/v2.14.0.tar.gz && \
         -DPYNEUROSIM_LIBRARY=/usr/local/lib \
         -Dwith-libneurosim:BOOL=$WITH_LIBNEUROSIM /usr/local/lib \
         -Dwith-music:BOOL=$WITH_MUSIC /usr/lib \
-        ../nest-simulator-2.14.0 && \
+        ../nest-simulator-2.18.0 && \
   make && \
   make install
 
@@ -133,7 +124,7 @@ RUN adduser --disabled-login --gecos 'NEST' --home /home/nest nest && \
 
 # WORKDIR /home/nest
 
-COPY --from=builder214 /opt/nest /opt/nest
+COPY --from=builder218 /opt/nest /opt/nest
 
 COPY ./entrypoint.sh /home/nest/
 RUN chown nest:nest /home/nest/entrypoint.sh && \

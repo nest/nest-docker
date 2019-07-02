@@ -1,4 +1,4 @@
-FROM buildpack-deps:bionic AS builderslim216
+FROM buildpack-deps:bionic AS builderslim218
 MAINTAINER "Steffen Graber" <s.graber@fz-juelich.de>
 
 ENV TERM=xterm \
@@ -21,13 +21,13 @@ RUN apt-get update && apt-get install -y \
     python3-nose \
     wget
 
-RUN wget https://github.com/nest/nest-simulator/archive/v2.16.0.tar.gz && \
+RUN wget https://github.com/nest/nest-simulator/archive/v2.18.0.tar.gz && \
   mkdir nest-build && \
-  tar zxf v2.16.0.tar.gz && \
+  tar zxf v2.18.0.tar.gz && \
   cd  nest-build && \
   cmake -DCMAKE_INSTALL_PREFIX:PATH=/opt/nest/ \
         -Dwith-python=3 \
-        ../nest-simulator-2.16.0 && \
+        ../nest-simulator-2.18.0 && \
   make && \
   make install
 
@@ -61,7 +61,7 @@ RUN adduser --disabled-login --gecos 'NEST' --home /home/nest nest && \
 
 WORKDIR /home/nest
 
-COPY --from=builderslim216 /opt/nest /opt/nest
+COPY --from=builderslim218 /opt/nest /opt/nest
 
 COPY ./entrypoint.sh /home/nest/
 RUN chown nest:nest /home/nest/entrypoint.sh && \

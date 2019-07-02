@@ -1,7 +1,8 @@
-FROM buildpack-deps:bionic as builder212
+FROM buildpack-deps:bionic AS builder212
 MAINTAINER "Steffen Graber" <s.graber@fz-juelich.de>
 
 ARG WITH_MPI=ON
+ARG WITH_OMP=ON
 ARG WITH_GSL=ON
 ARG WITH_MUSIC=ON
 ARG WITH_LIBNEUROSIM=OFF
@@ -27,6 +28,7 @@ RUN apt-get update && apt-get install -y \
     libmusic-dev \
     libncurses5-dev \
     libopenmpi-dev \
+    libomp-dev \
     libpcre3 \
     libpcre3-dev \
     llvm-3.9-dev \
@@ -76,6 +78,7 @@ RUN wget https://github.com/nest/nest-simulator/archive/v2.12.0.tar.gz && \
 		-Dwith-python=3 \
 		-Dwith-ltdl:BOOL=ON /usr/lib \
         -Dwith-mpi:BOOL=$WITH_MPI \
+        -Dwith-openmp=$WITH_OMP \
         -Dwith-gsl:BOOL=$WITH_GSL /usr/local/lib \
         -DPYNEUROSIM_LIBRARY=/usr/local/lib \
         -Dwith-libneurosim:BOOL=$WITH_LIBNEUROSIM /usr/local/lib \
@@ -100,6 +103,7 @@ RUN apt-get update && apt-get install -y  \
         libltdl7 \
         libmusic1v5 \
         libopenmpi-dev \
+        libomp-dev \
         libpython3.6 \
         music-bin \
         openmpi-bin \
