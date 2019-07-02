@@ -10,10 +10,12 @@ Currently the following docker images are provided
     - nest/docker-nest:2.12.0 (~875MB)
     - nest/docker-nest:2.14.0 (~877MB)
     - nest/docker-nest:2.16.0 (~879MB)
+    - nest/docker-nest:2.18.0 (~881MB)
    
 All are build with these environment variable:
 
 	- 'WITH_MPI=ON'
+	- 'WITH_OMP=ON'
 	- 'WITH_GSL=ON'
 	- 'WITH_MUSIC=ON'
 	- 'WITH_LIBNEUROSIM=OFF'
@@ -29,7 +31,7 @@ You can change this on top of every 'dockerfile'.
     <command>   can be either 'provision', 'run' or 'clean'.
     [<args>]    can be either 'notebook', 'interactice' or 'virtual'.
     [<version>] kind of docker image (e.g. 'master', '2.12.0', '2.14.0',
-                '2.16.0' or 'all').
+                '2.16.0', '2.18.0' or 'all').
 
     Example:    sh run.sh provision master
                 sh run.sh run notebook master
@@ -42,6 +44,7 @@ In the following, VERSION is the kind of docker image you want to use
     - '2.12.0' - complete install of NEST 2.12.0
     - '2.14.0' - complete install of NEST 2.14.0
     - '2.16.0' - complete install of NEST 2.16.0
+    - '2.18.0' - complete install of NEST 2.18.0
     - 'all' - with 'all' you get all
 
 Two little steps to get started
