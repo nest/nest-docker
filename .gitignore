@@ -1,2 +1,4 @@
 .idea
 .gitignore
+
+\.ipynb_checkpoints/

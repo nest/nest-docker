@@ -53,7 +53,7 @@ case $command in
         echo
         while test $# -gt 0; do
             case "$1" in
-            master | 2.12.0 | 2.14.0 | 2.16.0 | 2.18.0)
+            master | 2.12.0 | 2.14.0 | 2.16.0 | 2.18.0 )
                 echo "Build the NEST image for NEST $1"
                 echo
                 docker build -t nest/nest-simulator:"$1" ./src/"$1"
@@ -67,7 +67,7 @@ case $command in
                 docker build -t nest/nest-simulator:2.12.0 ./src/2.12.0
                 docker build -t nest/nest-simulator:2.14.0 ./src/2.14.0
                 docker build -t nest/nest-simulator:2.16.0 ./src/2.16.0
-                docker build -t nest/nest-simulator:2.16.0 ./src/2.18.0
+                docker build -t nest/nest-simulator:2.18.0 ./src/2.18.0
                 docker build -t nest/nest-simulator:master ./src/master
                 echo
                 echo "Finished!"

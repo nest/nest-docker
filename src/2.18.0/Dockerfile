@@ -1,4 +1,4 @@
-FROM buildpack-deps:bionic as builder216
+FROM buildpack-deps:bionic AS builder218
 MAINTAINER "Steffen Graber" <s.graber@fz-juelich.de>
 
 ARG WITH_MPI=ON
@@ -67,9 +67,9 @@ RUN apt-get update && apt-get install -y \
 ##
 ###############################################################################
 
-RUN wget https://github.com/nest/nest-simulator/archive/v2.16.0.tar.gz && \
+RUN wget https://github.com/nest/nest-simulator/archive/v2.18.0.tar.gz && \
   mkdir nest-build && \
-  tar zxf v2.16.0.tar.gz && \
+  tar zxf v2.18.0.tar.gz && \
   cd  nest-build && \
   cmake -DCMAKE_INSTALL_PREFIX:PATH=/opt/nest/ \
   		-Dwith-optimize=ON \
@@ -83,7 +83,7 @@ RUN wget https://github.com/nest/nest-simulator/archive/v2.16.0.tar.gz && \
         -DPYNEUROSIM_LIBRARY=/usr/local/lib \
         -Dwith-libneurosim:BOOL=$WITH_LIBNEUROSIM /usr/local/lib \
         -Dwith-music:BOOL=$WITH_MUSIC /usr/lib \
-        ../nest-simulator-2.16.0 && \
+        ../nest-simulator-2.18.0 && \
   make && \
   make install
 
@@ -124,7 +124,7 @@ RUN adduser --disabled-login --gecos 'NEST' --home /home/nest nest && \
 
 # WORKDIR /home/nest
 
-COPY --from=builder216 /opt/nest /opt/nest
+COPY --from=builder218 /opt/nest /opt/nest
 
 COPY ./entrypoint.sh /home/nest/
 RUN chown nest:nest /home/nest/entrypoint.sh && \

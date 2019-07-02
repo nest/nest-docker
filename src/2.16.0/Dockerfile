@@ -1,4 +1,4 @@
-FROM buildpack-deps:bionic as builder216
+FROM buildpack-deps:bionic AS builder216
 MAINTAINER "Steffen Graber" <s.graber@fz-juelich.de>
 
 ARG WITH_MPI=ON

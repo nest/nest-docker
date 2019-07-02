@@ -1,4 +1,4 @@
-FROM buildpack-deps:bionic as builderslim218
+FROM buildpack-deps:bionic AS builderslim218
 MAINTAINER "Steffen Graber" <s.graber@fz-juelich.de>
 
 ENV TERM=xterm \
