@@ -51,6 +51,8 @@ Two little steps to get started
 
 ### 1 - Provisioning
 
+This step is only necessary if you want to build the images directly from the docker files.
+
     sh run.sh provision VERSION
     
 Be careful with the version 'all'. This really takes a long time. 
@@ -66,6 +68,14 @@ More information about this so called 'multi-stage build' here:
 -   with Jupyter Notebook
 
         sh run.sh run notebook VERSION
+        
+    or 
+        
+        docker run -it --rm --user nest --name my_app \
+                        -v $(pwd):/home/nest/data \
+                        -p 8080:8080 nestsim/nest:VESRION notebook
+    
+    (For VERSION see above)
 
     Open the displayed URL in your browser and have fun with Jupyter
     Notebook and NEST.
@@ -73,6 +83,14 @@ More information about this so called 'multi-stage build' here:
 -   in interactive mode
 
         sh run.sh run interactive VERSION
+        
+    or 
+        
+        docker run -it --rm --user nest --name my_app \
+                        -v $(pwd):/home/nest/data \
+                        -p 8080:8080 nestsim/nest:VESRION interactive
+    
+    (For VERSION see above)
 
     After the prompt 'Your python script:' enter the filename of the script
     you want to start. Only the filename without any path. The file has to
@@ -81,6 +99,14 @@ More information about this so called 'multi-stage build' here:
 -   as virtual image
 
          sh run.sh run virtual VERSION
+         
+     or 
+        
+        docker run -it --rm --user nest --name my_app \
+                        -v $(pwd):/home/nest/data \
+                        -p 8080:8080 nestsim/nest:VESRION /bin/bash
+    
+    (For VERSION see above)
 
     You are logged in as user 'nest'. Enter 'python' and in the
     python-shell 'import nest'. A 'nest.help()' should display the main
