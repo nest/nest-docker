@@ -1,0 +1,15 @@
+language: ruby
+
+services:
+  - docker
+
+before_install:
+  - docker run --rm -i hadolint/hadolint < ./src/2.12.0/Dockerfile
+  - docker run --rm -i hadolint/hadolint < ./src/2.14.0/Dockerfile
+  - docker run --rm -i hadolint/hadolint < ./src/2.16.0/Dockerfile
+  - docker run --rm -i hadolint/hadolint < ./src/2.18.0/Dockerfile
+  - docker run --rm -i hadolint/hadolint < ./src/master/Dockerfile
+
+script:
+  - docker images
+  - docker ps -a

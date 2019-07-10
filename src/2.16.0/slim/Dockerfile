@@ -5,7 +5,7 @@ ENV TERM=xterm \
     TZ=Europe/Berlin \
     DEBIAN_FRONTEND=noninteractive
 
-RUN apt-get update && apt-get install -y \
+RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential \
     cmake \
     cython3 \
@@ -41,7 +41,7 @@ ENV TERM=xterm \
     DEBIAN_FRONTEND=noninteractive \
     LANG=C.UTF-8
 
-RUN apt-get update && apt-get install -y \
+RUN apt-get update && apt-get install -y --no-install-recommends \
       jupyter-notebook \
       libgsl-dev  \
       libltdl7 \
