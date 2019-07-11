@@ -20,6 +20,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libboost-python-dev \
     libboost-program-options-dev \
 	libboost-test-dev \
+	libgomp1 \
     libgsl-dev \
     libltdl7 \
     libltdl-dev \
@@ -27,6 +28,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libmusic-dev \
     libncurses5-dev \
     libopenmpi-dev \
+    libomp-dev \
     libpcre3 \
     libpcre3-dev \
     llvm-3.9-dev \
@@ -96,10 +98,12 @@ ENV TERM=xterm \
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
         jupyter-notebook \
+        libgomp1 \
         libgsl-dev  \
         libltdl7 \
         libmusic1v5 \
         libopenmpi-dev \
+        libomp-dev \
         libpython3.6 \
         music-bin \
         openmpi-bin \
