@@ -28,8 +28,21 @@ You can change this on top of every 'dockerfile'.
 You can use the docker images direct out of docker hub like this:
 
     docker run -it --rm --user nest --name my_app \
-                        -v $(pwd):/home/nest/data \
-                        -p 8080:8080 nestsim/nest:<version> <args>
+               -v $(pwd):/home/nest/data \
+               -p 8080:8080 nestsim/nest:<version> <args>
+    
+    [<args>]    can be either 'notebook', 'interactice' or '/bin/bash'
+    [<version>] kind of docker image (e.g. 'latest', '2.12.0', '2.14.0', 
+                '2.16.0' or '2.18.0')
+    
+    eg.
+    docker run -it --rm --user nest --name my_app \
+               -v $(pwd):/home/nest/data \
+	       -p 8080:8080 nestsim/nest:2.18.0 notebook
+    
+    This will download the docker image with the preinstalled NEST 2.16.0 
+    form docker hub and start it. After booting an URL is presented. 
+    Click on it. Voilá jupyter notebook starts from the docker image.
                         
 Or, you can clone this repository and use the shell script:                        
 
@@ -61,7 +74,8 @@ Two little steps to get started
 
 ### 1 - Provisioning
 
-This step is only necessary if you want to build the images directly from the docker files.
+This step is only necessary if you want to build the images directly 
+from the docker files.
 
     sh run.sh provision VERSION
     
