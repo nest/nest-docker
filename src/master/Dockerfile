@@ -1,5 +1,5 @@
 FROM buildpack-deps:bionic as buildermaster
-MAINTAINER "Steffen Graber" <s.graber@fz-juelich.de>
+LABEL maintainer="s.graber@fz-juelich.de"
 
 ARG WITH_MPI=ON
 ARG WITH_GSL=ON
@@ -88,7 +88,7 @@ RUN wget https://github.com/nest/nest-simulator/archive/master.tar.gz && \
 ###############################################################################
 
 FROM ubuntu:bionic
-MAINTAINER "Steffen Graber" <s.graber@fz-juelich.de>
+LABEL maintainer="s.graber@fz-juelich.de"
 
 ENV TERM=xterm \
     TZ=Europe/Berlin \
