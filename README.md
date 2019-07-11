@@ -45,53 +45,6 @@ Or, you can clone this repository and use the shell script:
                 sh run.sh run notebook master
 
 In the following both possibilities are always shown.
-
-## 1 - 2 (- 3)
-
-In the next steps, VERSION is the kind of docker image you want to use
-
-    - 'master' - complete install of latest NEST release
-    - '2.12.0' - complete install of NEST 2.12.0
-    - '2.14.0' - complete install of NEST 2.14.0
-    - '2.16.0' - complete install of NEST 2.16.0
-    - '2.18.0' - complete install of NEST 2.18.0
-    - 'all' - with 'all' you get all
-
-Two little steps to get started
-
-### 1 - Provisioning
-
-This step is only necessary if you want to build the images directly from the docker files.
-
-    sh run.sh provision VERSION
-    
-Be careful with the version 'all'. This really takes a long time. 
-    
-After every build of a NEST docker image, there are two more images - the one 
-with the name of the NEST version (e.g. 'nest/nest-docker:master') and 
-another without any name. The last one you can delete.
-More information about this so called 'multi-stage build' here: 
-<https://docs.docker.com/develop/develop-images/multistage-build/>
-
-### 2 - Run
-
--   with Jupyter Notebook
-
-        sh run.sh run notebook VERSION
-        
-    or 
-        
-        docker run -it --rm --user nest --name my_app \
-                        -v $(pwd):/home/nest/data \
-                        -p 8080:8080 nestsim/nest:VESRION notebook
-    
-    (For VERSION see above)
-
-    Open the displayed URL in your browser and have fun with Jupyter
-    Notebook and NEST.
-
--   in interactive mode
-
         sh run.sh run interactive VERSION
         
     or 
@@ -108,7 +61,7 @@ More information about this so called 'multi-stage build' here:
 
 -   as virtual image
 
-        sh run.sh run virtual VERSION
+         sh run.sh run virtual VERSION
          
      or 
         
