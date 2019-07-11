@@ -1,5 +1,5 @@
 FROM buildpack-deps:bionic AS builder216
-MAINTAINER "Steffen Graber" <s.graber@fz-juelich.de>
+LABEL maintainer="s.graber@fz-juelich.de"
 
 ARG WITH_MPI=ON
 ARG WITH_OMP=ON
@@ -91,7 +91,7 @@ RUN wget https://github.com/nest/nest-simulator/archive/v2.16.0.tar.gz && \
 ###############################################################################
 
 FROM ubuntu:bionic
-MAINTAINER "Steffen Graber" <s.graber@fz-juelich.de>
+LABEL maintainer="s.graber@fz-juelich.de"
 
 ENV TERM=xterm \
     TZ=Europe/Berlin \

@@ -1,5 +1,5 @@
 FROM buildpack-deps:bionic AS builderslim216
-MAINTAINER "Steffen Graber" <s.graber@fz-juelich.de>
+LABEL maintainer="s.graber@fz-juelich.de"
 
 ENV TERM=xterm \
     TZ=Europe/Berlin \
@@ -34,7 +34,7 @@ RUN wget https://github.com/nest/nest-simulator/archive/v2.16.0.tar.gz && \
 ##############################################################################
 
 FROM ubuntu:18.04
-MAINTAINER "Steffen Graber" <s.graber@fz-juelich.de>
+LABEL maintainer="s.graber@fz-juelich.de"
 
 ENV TERM=xterm \
     TZ=Europe/Berlin \
