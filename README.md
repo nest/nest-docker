@@ -9,7 +9,7 @@ Currently the following docker images are provided
     - nestsim/nest:latest (~884MB)
     - nestsim/nest:2.12.0 (~875MB)
     - nestsim/nest:2.14.0 (~877MB)
-    - nestsim/nest:2.16.0 (~879MB)
+    - nestsim/nest:2.16.0 (~539MB)
     - nestsim/nest:2.18.0 (~881MB)
    
 All are build with these environment variable:

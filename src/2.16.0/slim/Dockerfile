@@ -19,6 +19,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     python3-matplotlib \
     python3-ipython \
     python3-nose \
+    python3-tk \
     wget
 
 RUN wget https://github.com/nest/nest-simulator/archive/v2.16.0.tar.gz && \
@@ -48,7 +49,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
       libpython3.6 \
       python3-matplotlib \
       python3-numpy \
-      python3-scipy && \
+      python3-scipy \
+      python3-tk && \
     apt-get autoremove -y && \
     rm -rf /var/lib/apt/lists/* && \
     ln -s /usr/bin/python3 /usr/bin/python
