@@ -29,7 +29,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libmusic-dev \
     libncurses5-dev \
     libopenmpi-dev \
-
     libpcre3 \
     libpcre3-dev \
     llvm-3.9-dev \

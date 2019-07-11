@@ -48,6 +48,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     python3-scipy \
     python3-setuptools \
     python3-statsmodels \
+    python3-tk \
     python-dev \
     vera++ \
     wget  && \
@@ -122,7 +123,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         python3-matplotlib \
         python3-mpi4py \
         python3-numpy \
-        python3-scipy && \
+        python3-scipy \
+        python3-tk && \
     apt-get autoremove -y && \
     rm -rf /var/lib/apt/lists/* && \
     ln -s /usr/bin/python3 /usr/bin/python
