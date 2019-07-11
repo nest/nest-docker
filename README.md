@@ -25,6 +25,14 @@ You can change this on top of every 'dockerfile'.
    
 ## Usage
 
+You can use the docker images direct out of docker hub like this:
+
+    docker run -it --rm --user nest --name my_app \
+                        -v $(pwd):/home/nest/data \
+                        -p 8080:8080 nestsim/nest:<version> <args>
+                        
+Or, you can clone this repository and use the shell script:                        
+
     sh run.sh [--help] <command> [<args>] [<version>]
 
     --help      print this usage information.
@@ -36,9 +44,11 @@ You can change this on top of every 'dockerfile'.
     Example:    sh run.sh provision master
                 sh run.sh run notebook master
 
+In the following both possibilities are always shown.
+
 ## 1 - 2 (- 3)
 
-In the following, VERSION is the kind of docker image you want to use
+In the next steps, VERSION is the kind of docker image you want to use
 
     - 'master' - complete install of latest NEST release
     - '2.12.0' - complete install of NEST 2.12.0
@@ -98,7 +108,7 @@ More information about this so called 'multi-stage build' here:
 
 -   as virtual image
 
-         sh run.sh run virtual VERSION
+        sh run.sh run virtual VERSION
          
      or 
         

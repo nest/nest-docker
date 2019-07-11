@@ -21,6 +21,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libboost-python-dev \
     libboost-program-options-dev \
 	libboost-test-dev \
+	libgomp1 \
     libgsl-dev \
     libltdl7 \
     libltdl-dev \
@@ -99,6 +100,7 @@ ENV TERM=xterm \
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
         jupyter-notebook \
+        libgomp1 \
         libgsl-dev  \
         libltdl7 \
         libmusic1v5 \
