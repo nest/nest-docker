@@ -27,20 +27,22 @@ You can change this on top of every 'dockerfile'.
 
 You can use the docker images direct out of docker hub like this:
 
-    docker run -it --rm --user nest --name my_app \
-               -v $(pwd):/home/nest/data \
+    docker run -it --rm -e LOCAL_USER_ID=`id -u $USER` --name my_app  \
+               -v $(pwd):/opt/data  \
                -p 8080:8080 nestsim/nest:<version> <args>
-    
+
+   
     [<args>]    can be either 'notebook', 'interactice' or '/bin/bash'
     [<version>] kind of docker image (e.g. 'latest', '2.12.0', '2.14.0', 
                 '2.16.0' or '2.18.0')
     
     eg.
-    docker run -it --rm --user nest --name my_app \
-               -v $(pwd):/home/nest/data \
-	       -p 8080:8080 nestsim/nest:2.18.0 notebook
+    docker run -it --rm -e LOCAL_USER_ID=`id -u $USER` --name my_app \
+               -v $(pwd):/opt/data  \
+               -p 8080:8080 nestsim/nest:latest notebook
+
     
-    This will download the docker image with the preinstalled NEST 2.16.0 
+    This will download the docker image with the preinstalled NEST master 
     form docker hub and start it. After booting an URL is presented. 
     Click on it. Voilá jupyter notebook starts from the docker image.
                         
@@ -95,9 +97,9 @@ More information about this so called 'multi-stage build' here:
         
     or 
         
-        docker run -it --rm --user nest --name my_app \
-                        -v $(pwd):/home/nest/data \
-                        -p 8080:8080 nestsim/nest:VESRION notebook
+        docker run -it --rm -e LOCAL_USER_ID=`id -u $USER` --name my_app \
+               -v $(pwd):/opt/data  \
+               -p 8080:8080 nestsim/nest:VERSION notebook
     
     (For VERSION see above)
 
@@ -110,9 +112,9 @@ More information about this so called 'multi-stage build' here:
         
     or 
         
-        docker run -it --rm --user nest --name my_app \
-                        -v $(pwd):/home/nest/data \
-                        -p 8080:8080 nestsim/nest:VESRION interactive
+        docker run -it --rm -e LOCAL_USER_ID=`id -u $USER` --name my_app \
+               -v $(pwd):/opt/data  \
+               -p 8080:8080 nestsim/nest:VERSION interactive
     
     (For VERSION see above)
 
@@ -126,9 +128,9 @@ More information about this so called 'multi-stage build' here:
          
      or 
         
-        docker run -it --rm --user nest --name my_app \
-                        -v $(pwd):/home/nest/data \
-                        -p 8080:8080 nestsim/nest:VESRION /bin/bash
+        docker run -it --rm -e LOCAL_USER_ID=`id -u $USER` --name my_app \
+               -v $(pwd):/opt/data  \
+               -p 8080:8080 nestsim/nest:VERSION /bin/bash
     
     (For VERSION see above)
 
