@@ -8,7 +8,7 @@ before_install:
   - docker run --rm -i hadolint/hadolint hadolint --ignore DL3008 --ignore DL3003 - < ./src/2.14.0/Dockerfile
   - docker run --rm -i hadolint/hadolint hadolint --ignore DL3008 --ignore DL3003 - < ./src/2.16.0/Dockerfile
   - docker run --rm -i hadolint/hadolint hadolint --ignore DL3008 --ignore DL3003 - < ./src/2.18.0/Dockerfile
-  - docker run --rm -i hadolint/hadolint hadolint --ignore DL3008 --ignore DL3003 - < ./src/master/Dockerfile
+  - docker run --rm -i hadolint/hadolint hadolint --ignore DL3008 --ignore DL3003 - < ./src/latest/Dockerfile
 
 script:
   - docker images
