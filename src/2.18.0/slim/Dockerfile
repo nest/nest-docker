@@ -55,7 +55,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     rm -rf /var/lib/apt/lists/* && \
     ln -s /usr/bin/python3 /usr/bin/python
 
-COPY --from=buildermaster /opt/nest /opt/nest
+COPY --from=builderslim218 /opt/nest /opt/nest
 
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
