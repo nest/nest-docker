@@ -98,6 +98,7 @@ ENV TERM=xterm \
     DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
+		gosu \
         jupyter-notebook \
         libgomp1 \
         libgsl-dev  \
@@ -118,21 +119,10 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     rm -rf /var/lib/apt/lists/* && \
     ln -s /usr/bin/python3 /usr/bin/python
 
-# add user 'nest'
-RUN adduser --disabled-login --gecos 'NEST' --home /home/nest nest && \
-    adduser nest sudo && \
-    mkdir data && \
-    chown nest:nest /home/nest
-
-# WORKDIR /home/nest
-
 COPY --from=buildermaster /opt/nest /opt/nest
 
+COPY entrypoint.sh /usr/local/bin/entrypoint.sh
+RUN chmod +x /usr/local/bin/entrypoint.sh
 
-COPY ./entrypoint.sh /home/nest/
-RUN chown nest:nest /home/nest/entrypoint.sh && \
-    chmod +x /home/nest/entrypoint.sh && \
-    echo '. /opt/nest/bin/nest_vars.sh' >> /home/nest/.bashrc
 EXPOSE 8080
-WORKDIR /home/nest
-ENTRYPOINT ["/home/nest/entrypoint.sh"]
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]

@@ -20,4 +20,4 @@ nest.Simulate(100.)
 
 nest.voltage_trace.from_device(voltmeter)
 nest.voltage_trace.show()
-pylab.savefig('/home/nest/data/test.svg')
+pylab.savefig('/opt/data/test.svg')
