@@ -99,9 +99,9 @@ case $command in
                     latest | 2.12.0 | 2.14.0 | 2.16.0 | 2.18.0)
                     echo "Run NEST-$2 with Jupyter Notebook".
                     echo
-                    docker run -it --rm --user nest --name my_app \
-                        -v $LOCALDIR:/home/nest/data \
-                        -p 8080:8080 nestsim/nest:"$2" notebook
+                    docker run -it --rm -e LOCAL_USER_ID=`id -u $USER` --name my_app  \
+							   -v $(pwd):/opt/data  \
+							   -p 8080:8080 nestsim/nest:"$2" notebook
                     echo
                     ;;
                     *)
@@ -115,9 +115,9 @@ case $command in
                     latest | 2.12.0 | 2.14.0 | 2.16.0 | 2.18.0)
                     echo "Run NEST-$2 in interactive mode."
                     echo
-                    docker run -it --rm --user nest --name my_app \
-                        -v $LOCALDIR:/home/nest/data \
-                        -p 8080:8080 nestsim/nest:"$2" interactive
+                    docker run -it --rm -e LOCAL_USER_ID=`id -u $USER` --name my_app  \
+							   -v $(pwd):/opt/data  \
+							   -p 8080:8080 nestsim/nest:"$2" interactive
                     echo
                     ;;
                     *)
@@ -131,9 +131,9 @@ case $command in
                     latest | 2.12.0 | 2.14.0 | 2.16.0 | 2.18.0)
                     echo "Run NEST-$2 like a virtual machine."
                     echo
-                    docker run -it --rm --user nest --name my_app \
-                        -v $LOCALDIR:/home/nest/data \
-                        -p 8080:8080 nestsim/nest:"$2" /bin/bash
+                    docker run -it --rm -e LOCAL_USER_ID=`id -u $USER` --name my_app  \
+							   -v $(pwd):/opt/data  \
+							   -p 8080:8080 nestsim/nest:"$2" /bin/bash
                     echo
                     ;;
                     *)
