@@ -13,6 +13,7 @@ echo '. /opt/nest/bin/nest_vars.sh' >> /home/nest/.bashrc
 source /opt/nest/bin/nest_vars.sh
 if [[ ! -d /opt/data ]]; then
 	mkdir /opt/data
+	chown -R nest:nest /opt/data
 fi
 
 if [[ "$1" = 'notebook' ]]; then
@@ -28,4 +29,5 @@ if [[ "$1" = 'interactive' ]]; then
 	exec gosu nest python3 /opt/data/$name
 fi
 
+cd /opt/data
 exec gosu nest "$@"

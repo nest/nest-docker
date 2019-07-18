@@ -13,6 +13,7 @@ echo '. /opt/nest/bin/nest_vars.sh' >> /home/nest/.bashrc
 source /opt/nest/bin/nest_vars.sh
 if [[ ! -d /opt/data ]]; then
 	mkdir /opt/data
+	chown -R nest:nest /opt/data
 fi
 
 if [[ "$1" = 'notebook' ]]; then

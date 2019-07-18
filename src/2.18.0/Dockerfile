@@ -12,6 +12,7 @@ ENV TERM=xterm \
     DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
+    gosu \
     cmake \
     cython3 \
     jq \
@@ -110,6 +111,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         libomp-dev \
         libpython3.6 \
         music-bin \
+        nano \
         openmpi-bin \
         openssh-client \
         python3-matplotlib \
@@ -124,6 +126,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 COPY --from=builder218 /opt/nest /opt/nest
 
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
+COPY matplotlibrc /tmp/matplotlibrc
 RUN chmod +x /usr/local/bin/entrypoint.sh
 
 EXPOSE 8080
