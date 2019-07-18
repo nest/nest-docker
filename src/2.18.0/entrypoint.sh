@@ -9,11 +9,19 @@ export HOME=/home/nest
 
 echo '. /opt/nest/bin/nest_vars.sh' >> /home/nest/.bashrc
 
+if [[ ! -d /home/nest/.config/matplotlib/matplotlibrc ]]; then
+    mkdir /home/nest/.config/
+    mkdir /home/nest/.config/matplotlib
+    cp /tmp/matplotlibrc /home/nest/.config/matplotlib/matplotlibrc
+fi
+
 # NEST environment
 source /opt/nest/bin/nest_vars.sh
 if [[ ! -d /opt/data ]]; then
 	mkdir /opt/data
+	chown -R nest:nest /opt/data
 fi
+
 
 if [[ "$1" = 'notebook' ]]; then
     cd /opt/data
@@ -28,4 +36,5 @@ if [[ "$1" = 'interactive' ]]; then
 	exec gosu nest python3 /opt/data/$name
 fi
 
+cd /opt/data
 exec gosu nest "$@"
