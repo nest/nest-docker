@@ -119,6 +119,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         libomp-dev \
         libpython3.6 \
         music-bin \
+        nano \
         openmpi-bin \
         openssh-client \
         python3-matplotlib \

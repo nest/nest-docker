@@ -48,6 +48,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
       libgsl-dev  \
       libltdl7 \
       libpython3.6 \
+      nano \
       python3-matplotlib \
       python3-numpy \
       python3-scipy \
