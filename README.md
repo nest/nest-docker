@@ -152,7 +152,7 @@ Be careful. This stops EVERY container and delete then EVERY NEST Images.
 
 -   Export a docker image
 
-        docker save nestsim/nest:2.12.0 | gzip -c > nest-docker.tar.gz
+        docker save nestsim/nest:2.18.0 | gzip -c > nest-docker.tar.gz
 
 -   Import a docker image
 
