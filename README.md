@@ -14,11 +14,11 @@ Currently the following docker images are provided
    
 All are build with these environment variable:
 
-	- 'WITH_MPI=ON'
-	- 'WITH_OMP=ON'
-	- 'WITH_GSL=ON'
-	- 'WITH_MUSIC=ON'
-	- 'WITH_LIBNEUROSIM=OFF'
+    - 'WITH_MPI=ON'
+    - 'WITH_OMP=ON'
+    - 'WITH_GSL=ON'
+    - 'WITH_MUSIC=ON'
+    - 'WITH_LIBNEUROSIM=OFF'
 
 You can change this on top of every 'dockerfile'.
 
