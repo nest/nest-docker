@@ -91,7 +91,7 @@ More information about this so called 'multi-stage build' here:
 
 ### 2 - Run
 
--   with Jupyter Notebook
+-   with Jupyter Notebook (recommended)
 
         sh run.sh run notebook VERSION
         
