@@ -126,7 +126,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 COPY --from=builder218 /opt/nest /opt/nest
 
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
-COPY matplotlibrc /tmp/matplotlibrc
 RUN chmod +x /usr/local/bin/entrypoint.sh
 
 EXPOSE 8080
