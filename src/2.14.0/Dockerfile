@@ -127,7 +127,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         python3-numpy \
         python3-scipy \
         python3-pandas \
-        python3.sympy \
+        python3-sympy \
         python3-tk && \
     apt-get autoremove -y && \
     rm -rf /var/lib/apt/lists/* && \
