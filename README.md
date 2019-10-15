@@ -42,11 +42,17 @@ You can use the docker images direct out of docker hub like this:
                -p 8080:8080 nestsim/nest:latest notebook
 
     
-    This will download the docker image with the preinstalled NEST master 
-    form docker hub and start it. After booting an URL is presented. 
-    Click on it. Voilá jupyter notebook starts from the docker image.
+This will download the docker image with the preinstalled NEST master 
+form docker hub and start it. After booting an URL is presented. 
+Click on it. Voilá jupyter notebook starts from the docker image.
+
+You can update the image with:
+
+    docker pull nestsim/nest:<version>
+    
+## Usage of the local build system
                         
-Or, you can clone this repository and use the shell script:                        
+You can clone this repository and use the shell script:                        
 
     sh run.sh [--help] <command> [<args>] [<version>]
 
@@ -58,8 +64,6 @@ Or, you can clone this repository and use the shell script:
 
     Example:    sh run.sh provision latest
                 sh run.sh run notebook latest
-
-In the following both possibilities are always shown.
 
 ## 1 - 2 (- 3)
 
@@ -143,6 +147,18 @@ More information about this so called 'multi-stage build' here:
     sh run.sh clean
 
 Be careful. This stops EVERY container and delete then EVERY NEST Images.
+
+## Using NEST with music
+
+In the folder with your music scripts run:
+
+    docker run -it --rm -e LOCAL_USER_ID=`id -u $USER`  \
+               -v $(pwd):/opt/data  \
+               nestsim/nest:2.18.0 /bin/bash
+               
+You are now on container's shell, but can use the programs on your local machine
+
+    mpirun -np 2 music /opt/data/minimalmusicsetup.music
 
 ## Useful Docker commands
 
