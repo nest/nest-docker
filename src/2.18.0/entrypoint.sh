@@ -9,9 +9,17 @@ export HOME=/home/nest
 
 echo '. /opt/nest/bin/nest_vars.sh' >> /home/nest/.bashrc
 
-
 # NEST environment
 source /opt/nest/bin/nest_vars.sh
+
+export MUSIC_ROOT_DIR=/opt/music-install
+export MUSIC_ROOT=${MUSIC_ROOT_DIR}
+MUSIC_PATH=${MUSIC_ROOT_DIR}
+export LD_LIBRARY_PATH=${MUSIC_PATH}/lib:$LD_LIBRARY_PATH
+export PATH=${MUSIC_PATH}/bin:$PATH
+export CPATH=${MUSIC_PATH}/include:$CPATH
+export PYTHONPATH=${MUSIC_PATH}/lib/python3.6/site-packages:$PYTHONPATH
+
 if [[ ! -d /opt/data ]]; then
 	mkdir /opt/data
 	chown -R nest:nest /opt/data

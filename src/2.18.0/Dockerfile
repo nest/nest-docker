@@ -4,7 +4,7 @@ LABEL maintainer="s.graber@fz-juelich.de"
 ARG WITH_MPI=ON
 ARG WITH_OMP=ON
 ARG WITH_GSL=ON
-ARG WITH_MUSIC=ON
+#ARG WITH_MUSIC=ON
 ARG WITH_LIBNEUROSIM=OFF
 
 ENV TERM=xterm \
@@ -12,6 +12,7 @@ ENV TERM=xterm \
     DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential libtool automake autotools-dev libreadline7 libreadline-dev freeglut3-dev \
     gosu \
     cmake \
     cython3 \
@@ -19,7 +20,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libboost-filesystem-dev \
     libboost-regex-dev \
     libboost-wave-dev \
-    libboost-python-dev \
+    # libboost-python-dev \
     libboost-program-options-dev \
 	libboost-test-dev \
 	libgomp1 \
@@ -27,14 +28,14 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libltdl7 \
     libltdl-dev \
     libmusic1v5 \
-    libmusic-dev \
-    libncurses5-dev \
+    # libmusic-dev \
+    # libncurses5-dev \
     libopenmpi-dev \
     libomp-dev \
     libpcre3 \
     libpcre3-dev \
     llvm-3.9-dev \
-    music-bin \
+    # music-bin \
     openmpi-bin \
     pep8 \
     python3.6-dev \
@@ -54,7 +55,22 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     vera++ \
     wget  && \
     apt-get autoremove -y && \
-    rm -rf /var/lib/apt/lists/*
+    rm -rf /var/lib/apt/lists/* && \
+    # update-alternatives --remove-all python && \
+    update-alternatives --install /usr/bin/python python /usr/bin/python3 10
+
+
+# Install music
+RUN wget https://github.com/INCF/MUSIC/archive/master.tar.gz && \
+	tar zxf master.tar.gz && \
+	mkdir music-build music-install && \
+	cd MUSIC-master && \
+	sh ./autogen.sh && \
+	cd ../music-build && \
+	../MUSIC-master/configure --prefix=/opt/music-install && \
+	make && \
+	make install
+
 
 # RUN cd /tmp && \
 #    git clone https://github.com/INCF/libneurosim.git libneurosim && \
@@ -75,20 +91,25 @@ RUN wget https://github.com/nest/nest-simulator/archive/v2.18.0.tar.gz && \
   tar zxf v2.18.0.tar.gz && \
   cd  nest-build && \
   cmake -DCMAKE_INSTALL_PREFIX:PATH=/opt/nest/ \
-  		-Dwith-optimize=ON \
-		-Dwith-warning=ON \
-		-Dwith-boost=ON \
+  		# -Dwith-optimize=ON \
+		# -Dwith-warning=ON \
+		# -Dwith-boost=ON \
+		-Dwith-ltdl=ON \
+	    -Dwith-gsl=$WITH_GSL \
+	    -Dwith-readline=ON \
         -Dwith-python=3 \
-        -Dwith-ltdl:BOOL=ON /usr/lib \
-        -Dwith-mpi:BOOL=$WITH_MPI \
+        -DPYTHON_LIBRARY=/usr/lib/x86_64-linux-gnu/libpython3.6m.so \
+	    -DPYTHON_INCLUDE_DIR=/usr/include/python3.6m \
+        -Dwith-mpi=$WITH_MPI \
         -Dwith-openmp=$WITH_OMP \
-        -Dwith-gsl:BOOL=$WITH_GSL /usr/local/lib \
-        -DPYNEUROSIM_LIBRARY=/usr/local/lib \
-        -Dwith-libneurosim:BOOL=$WITH_LIBNEUROSIM /usr/local/lib \
-        -Dwith-music:BOOL=$WITH_MUSIC /usr/lib \
+        # -DPYNEUROSIM_LIBRARY=/usr/local/lib \
+        # -Dwith-libneurosim:BOOL=$WITH_LIBNEUROSIM /usr/local/lib \
+        -Dwith-music=/opt/music-install \
         ../nest-simulator-2.18.0 && \
   make && \
   make install
+  # make installcheck
+
 
 
 ###############################################################################
@@ -106,11 +127,11 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         libgomp1 \
         libgsl-dev  \
         libltdl7 \
-        libmusic1v5 \
+        # libmusic1v5 \
         libopenmpi-dev \
         libomp-dev \
         libpython3.6 \
-        music-bin \
+        # music-bin \
         nano \
         openmpi-bin \
         openssh-client \
@@ -126,6 +147,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     ln -s /usr/bin/python3 /usr/bin/python
 
 COPY --from=builder218 /opt/nest /opt/nest
+COPY --from=builder218 /opt/music-install /opt/music-install
 
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
