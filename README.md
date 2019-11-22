@@ -170,7 +170,7 @@ You are now on container's shell, but can use the programs on your local machine
 
 -   Export a docker image
 
-        docker save nestsim/nest:2.18.0 | gzip -c > nest-docker.tar.gz
+        docker save nestsim/nest:2.18.0 | gzip -c > nest-docker.tar.gz  
 
 -   Import a docker image
 
