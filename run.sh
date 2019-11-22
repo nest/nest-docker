@@ -49,11 +49,11 @@ case $command in
     provision)
         echo
         echo "Provisioning needs an argument: 'latest' '2.12.0', '2.14.0',"
-        echo "'2.16.0', '2.18.0' or 'all'."
+        echo "'2.16.0', '2.18.0', '3' or 'all'."
         echo
         while test $# -gt 0; do
             case "$1" in
-            latest | 2.12.0 | 2.14.0 | 2.16.0 | 2.18.0 )
+            latest | 2.12.0 | 2.14.0 | 2.16.0 | 2.18.0 | 3 )
                 echo "Build the NEST image for NEST $1"
                 echo
                 docker build -t nestsim/nest:"$1" ./src/"$1"
@@ -68,6 +68,7 @@ case $command in
                 docker build -t nestsim/nest:2.14.0 ./src/2.14.0
                 docker build -t nestsim/nest:2.16.0 ./src/2.16.0
                 docker build -t nestsim/nest:2.18.0 ./src/2.18.0
+                docker build -t nestsim/nest:2.18.0 ./src/3
                 docker build -t nestsim/nest:latest ./src/latest
                 echo
                 echo "Finished!"
@@ -89,14 +90,14 @@ case $command in
         echo "  - 'virtual VERSION'"
         echo
         echo "VERSION is the version of NEST"
-        echo "(e.g. latest, 2.12.0, 2.14.0, 2.16.0, 2.18.0)"
+        echo "(e.g. latest, 2.12.0, 2.14.0, 2.16.0, 2.18.0, 3)"
         echo
     LOCALDIR="$(pwd)"
     while test $# -gt 1; do
         case "$1" in
             notebook)
                 case "$2" in
-                    latest | 2.12.0 | 2.14.0 | 2.16.0 | 2.18.0)
+                    latest | 2.12.0 | 2.14.0 | 2.16.0 | 2.18.0 | 3)
                     echo "Run NEST-$2 with Jupyter Notebook".
                     echo
                     docker run -it --rm -e LOCAL_USER_ID=`id -u $USER` --name my_app  \
@@ -112,7 +113,7 @@ case $command in
             ;;
             interactive)
                 case "$2" in
-                    latest | 2.12.0 | 2.14.0 | 2.16.0 | 2.18.0)
+                    latest | 2.12.0 | 2.14.0 | 2.16.0 | 2.18.0 | 3)
                     echo "Run NEST-$2 in interactive mode."
                     echo
                     docker run -it --rm -e LOCAL_USER_ID=`id -u $USER` --name my_app  \
@@ -128,7 +129,7 @@ case $command in
             ;;
             virtual)
                 case "$2" in
-                    latest | 2.12.0 | 2.14.0 | 2.16.0 | 2.18.0)
+                    latest | 2.12.0 | 2.14.0 | 2.16.0 | 2.18.0 | 3)
                     echo "Run NEST-$2 like a virtual machine."
                     echo
                     docker run -it --rm -e LOCAL_USER_ID=`id -u $USER` --name my_app  \
