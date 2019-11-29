@@ -11,6 +11,7 @@ Currently the following docker images are provided
     - nestsim/nest:2.14.0 (~537MB)
     - nestsim/nest:2.16.0 (~539MB)
     - nestsim/nest:2.18.0 (~543MB)
+    - nestsim/nest:3.0 (~543MB)
    
 All are build with these environment variable:
 
@@ -34,7 +35,7 @@ You can use the docker images direct out of docker hub like this:
    
     [<args>]    can be either 'notebook', 'interactice' or '/bin/bash'
     [<version>] kind of docker image (e.g. 'latest', '2.12.0', '2.14.0', 
-                '2.16.0' or '2.18.0')
+                '2.16.0', '2.18.0', '3.0')
     
     eg.
     docker run -it --rm -e LOCAL_USER_ID=`id -u $USER` --name my_app \
@@ -60,7 +61,7 @@ You can clone this repository and use the shell script:
     <command>   can be either 'provision', 'run' or 'clean'.
     [<args>]    can be either 'notebook', 'interactice' or 'virtual'.
     [<version>] kind of docker image (e.g. 'latest', '2.12.0', '2.14.0',
-                '2.16.0', '2.18.0' or 'all').
+                '2.16.0', '2.18.0', '3.0' or 'all').
 
     Example:    sh run.sh provision latest
                 sh run.sh run notebook latest
@@ -74,6 +75,7 @@ In the next steps, VERSION is the kind of docker image you want to use
     - '2.14.0' - complete install of NEST 2.14.0
     - '2.16.0' - complete install of NEST 2.16.0
     - '2.18.0' - complete install of NEST 2.18.0
+    - '3.0' - complete install of NEST 3.0
     - 'all' - with 'all' you get all
 
 Two little steps to get started
@@ -154,7 +156,7 @@ In the folder with your music scripts run:
 
     docker run -it --rm -e LOCAL_USER_ID=`id -u $USER`  \
                -v $(pwd):/opt/data  \
-               nestsim/nest:2.18.0 /bin/bash
+               nestsim/nest:3.0 /bin/bash
                
 You are now on container's shell, but can use the programs on your local machine
 
@@ -168,7 +170,7 @@ You are now on container's shell, but can use the programs on your local machine
 
 -   Export a docker image
 
-        docker save nestsim/nest:2.18.0 | gzip -c > nest-docker.tar.gz
+        docker save nestsim/nest:2.18.0 | gzip -c > nest-docker.tar.gz  
 
 -   Import a docker image
 
