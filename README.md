@@ -28,6 +28,8 @@ You can change this on top of every 'dockerfile'.
 
 You can use the docker images direct out of docker hub like this:
 
+### On Linux and MacOsx
+
     docker run -it --rm -e LOCAL_USER_ID=`id -u $USER` --name my_app  \
                -v $(pwd):/opt/data  \
                -p 8080:8080 nestsim/nest:<version> <args>
@@ -41,11 +43,19 @@ You can use the docker images direct out of docker hub like this:
     docker run -it --rm -e LOCAL_USER_ID=`id -u $USER` --name my_app \
                -v $(pwd):/opt/data  \
                -p 8080:8080 nestsim/nest:latest notebook
+               
+### On Windows
 
+    docker run -it --rm -v %cd%:/opt/data -p 8080:8080 nestsim/nest:<version> <args>
     
-This will download the docker image with the preinstalled NEST master 
-form docker hub and start it. After booting an URL is presented. 
-Click on it. Voilá jupyter notebook starts from the docker image.
+In Powershell, '%cd%' might not work for the current directory. Then 
+you should explicitly specify a folder with existing write permissions.
+
+   
+In any case, this will download the docker image with the pre-installed
+NEST master form docker hub and start it. After booting an URL is presented.
+Click on it or copy it to your browser. Voilá jupyter notebook starts from 
+the docker image.
 
 You can update the image with:
 
