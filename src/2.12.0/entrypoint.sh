@@ -3,10 +3,11 @@ set -e
 
 USER_ID=${LOCAL_USER_ID:-9001}
 
-echo "UID : $USER_ID"
-adduser --disabled-login --gecos 'NEST' --uid $USER_ID --home /home/nest nest
-export HOME=/home/nest
-
+if [[ ! $(id -u nest) = $USER_ID ]]; then
+	echo "UID : $USER_ID"
+	adduser --disabled-login --gecos 'NEST' --uid $USER_ID --home /home/nest nest
+	export HOME=/home/nest
+fi
 echo '. /opt/nest/bin/nest_vars.sh' >> /home/nest/.bashrc
 
 # NEST environment
