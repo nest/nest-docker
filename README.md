@@ -44,7 +44,7 @@ You can use the docker images direct out of docker hub like this:
                -v $(pwd):/opt/data  \
                -p 8080:8080 nestsim/nest:latest notebook
                
-If you want to work with a container for a longer time, you should remove the '-rm':
+If you want to work with a container for a longer time, you should remove the '--rm':
 
     docker run -it -e LOCAL_USER_ID=`id -u $USER` --name my_app  \
                -v $(pwd):/opt/data  \
