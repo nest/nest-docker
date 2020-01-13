@@ -62,13 +62,13 @@ case $command in
                 ;;
             all)
                 echo "Build the NEST image for NEST 2.12.0, 2.14.0,"
-                echo "2.16.0, 2.18.0 and latest"
+                echo "2.16.0, 2.18.0, 3.0 and latest"
                 echo
                 docker build -t nestsim/nest:2.12.0 ./src/2.12.0
                 docker build -t nestsim/nest:2.14.0 ./src/2.14.0
                 docker build -t nestsim/nest:2.16.0 ./src/2.16.0
                 docker build -t nestsim/nest:2.18.0 ./src/2.18.0
-                docker build -t nestsim/nest:2.18.0 ./src/3.0
+                docker build -t nestsim/nest:3.0 ./src/3.0
                 docker build -t nestsim/nest:latest ./src/latest
                 echo
                 echo "Finished!"
