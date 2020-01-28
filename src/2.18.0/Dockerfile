@@ -47,6 +47,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     python3-numpy \
     python3-pandas \
     python3-path \
+    python3-pip \
     python3-scipy \
     python3-setuptools \
     python3-statsmodels \
@@ -57,6 +58,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     apt-get autoremove -y && \
     rm -rf /var/lib/apt/lists/* && \
     # update-alternatives --remove-all python && \
+    pip3 install pyNN && \
     update-alternatives --install /usr/bin/python python /usr/bin/python3 10
 
 
@@ -138,12 +140,14 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         python3-matplotlib \
         python3-mpi4py \
         python3-numpy \
+        python3-pip \
         python3-scipy \
         python3-pandas \
         python3-sympy \
         python3-tk && \
     apt-get autoremove -y && \
     rm -rf /var/lib/apt/lists/* && \
+    pip3 install pyNN && \
     ln -s /usr/bin/python3 /usr/bin/python
 
 COPY --from=builder218 /opt/nest /opt/nest
