@@ -57,7 +57,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     wget  && \
     apt-get autoremove -y && \
     rm -rf /var/lib/apt/lists/* && \
-    pip3 install pyNN && \
+    pip install pyNN && \
     # update-alternatives --remove-all python && \
     update-alternatives --install /usr/bin/python python /usr/bin/python3 10
 
@@ -147,7 +147,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         python3-tk && \
     apt-get autoremove -y && \
     rm -rf /var/lib/apt/lists/* && \
-    pip3 install pyNN && \
+    pip install pyNN && \
     ln -s /usr/bin/python3 /usr/bin/python
 
 
