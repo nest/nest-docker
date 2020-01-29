@@ -25,7 +25,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 	libboost-test-dev \
 	libgomp1 \
     libgsl-dev \
-    libltdl7 \
+    libltdl \
     libltdl-dev \
     libmusic1v5 \
     # libmusic-dev \
@@ -47,7 +47,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     python3-numpy \
     python3-pandas \
     python3-path \
-    python3-pip \
     python3-scipy \
     python3-setuptools \
     python3-statsmodels \
@@ -57,7 +56,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     wget  && \
     apt-get autoremove -y && \
     rm -rf /var/lib/apt/lists/* && \
-    pip install pyNN && \
     # update-alternatives --remove-all python && \
     update-alternatives --install /usr/bin/python python /usr/bin/python3 10
 
@@ -129,11 +127,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         libgomp1 \
         libgsl-dev  \
         libltdl7 \
-        # libmusic1v5 \
         libopenmpi-dev \
         libomp-dev \
         libpython3.6 \
-        # music-bin \
         nano \
         openmpi-bin \
         openssh-client \
@@ -142,14 +138,15 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         python3-numpy \
         python3-pip \
         python3-scipy \
+        python3-setuptools \
         python3-pandas \
         python3-sympy \
-        python3-tk && \
+        python3-tk \
+        wget  && \
     apt-get autoremove -y && \
     rm -rf /var/lib/apt/lists/* && \
-    pip install pyNN && \
-    ln -s /usr/bin/python3 /usr/bin/python
-
+    update-alternatives --install /usr/bin/python python /usr/bin/python3 10 && \
+    pip3 install quantities lazyarray neo pyNN
 
 COPY --from=buildermaster /opt/nest /opt/nest
 COPY --from=buildermaster /opt/music-install /opt/music-install

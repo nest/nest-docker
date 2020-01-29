@@ -15,7 +15,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential libtool automake autotools-dev libreadline7 libreadline-dev freeglut3-dev \
     git \
     gosu \
-    cmake \
+    #cmake \
     cython3 \
     jq \
     libboost-filesystem-dev \
@@ -59,9 +59,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     apt-get autoremove -y && \
     rm -rf /var/lib/apt/lists/* && \
     # update-alternatives --remove-all python && \
-    pip install pyNN && \
-    update-alternatives --install /usr/bin/python python /usr/bin/python3 10
-
+    update-alternatives --install /usr/bin/python python /usr/bin/python3 10 && \
+    pip3 install cmake
 
 # Install music
 RUN wget https://github.com/INCF/MUSIC/archive/master.tar.gz && \
@@ -145,13 +144,14 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         python3-numpy \
         python3-pip \
         python3-scipy \
+        python3-setuptools \
         python3-pandas \
         python3-sympy \
         python3-tk && \
     apt-get autoremove -y && \
     rm -rf /var/lib/apt/lists/* && \
-    pip install pyNN && \
-    ln -s /usr/bin/python3 /usr/bin/python
+    update-alternatives --install /usr/bin/python python /usr/bin/python3 10 && \
+    pip3 install quantities lazyarray neo pyNN
 
 
 COPY --from=buildermaster /opt/nest /opt/nest
