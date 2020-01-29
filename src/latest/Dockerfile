@@ -25,7 +25,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 	libboost-test-dev \
 	libgomp1 \
     libgsl-dev \
-    libltdl \
+    libltdl7 \
     libltdl-dev \
     libmusic1v5 \
     # libmusic-dev \
