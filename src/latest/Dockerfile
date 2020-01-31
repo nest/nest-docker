@@ -5,7 +5,7 @@ ARG WITH_MPI=ON
 ARG WITH_OMP=ON
 ARG WITH_GSL=ON
 #ARG WITH_MUSIC=ON
-ARG WITH_LIBNEUROSIM=OFF
+ARG WITH_LIBNEUROSIM=ON
 
 ENV TERM=xterm \
     TZ=Europe/Berlin \
@@ -69,7 +69,7 @@ RUN wget https://github.com/INCF/MUSIC/archive/master.tar.gz && \
 	cd / && \
     rm master.tar.gz
 
-# Install music
+# Install libneurosim
 RUN git clone https://github.com/INCF/libneurosim.git libneurosim && \
     cd libneurosim && \
     chmod +x autogen.sh && \
@@ -97,8 +97,7 @@ RUN wget https://github.com/nest/nest-simulator/archive/master.tar.gz && \
 	    -DPYTHON_INCLUDE_DIR=/usr/include/python3.6m \
         -Dwith-mpi=$WITH_MPI \
         -Dwith-openmp=$WITH_OMP \
-        -DPYNEUROSIM_LIBRARY=/opt/libneurosim-install \
-        -Dwith-libneurosim:BOOL=$WITH_LIBNEUROSIM /opt/libneurosim-install \
+        -Dwith-libneurosim=/opt/libneurosim-install \
         -Dwith-music=/opt/music-install \
         ../nest-simulator-master && \
   make && \
@@ -139,7 +138,14 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     apt-get autoremove -y && \
     rm -rf /var/lib/apt/lists/* && \
     update-alternatives --install /usr/bin/python python /usr/bin/python3 10 && \
-    pip3 install quantities lazyarray neo pyNN
+    update-alternatives --install /usr/bin/pip pip /usr/bin/pip3 10 && \
+    pip install quantities lazyarray neo && \
+    # wget https://github.com/NeuralEnsemble/PyNN/archive/nest-dev.tar.gz && \
+    # tar -xzf nest-dev.tar.gz && \
+    # cd PyNN-nest-dev && \
+    # python3 setup.py install && \
+    # cd .. && rm -rf PyNN-nest-dev && rm nest-dev.tar.gz
+    pip install --no-binary :all: PyNN
 
 COPY --from=buildermaster /opt/nest /opt/nest
 COPY --from=buildermaster /opt/music-install /opt/music-install
