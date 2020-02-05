@@ -1,4 +1,4 @@
-FROM buildpack-deps:bionic as buildermaster
+FROM buildpack-deps:eoan as builder30
 LABEL maintainer="s.graber@fz-juelich.de"
 
 ARG WITH_MPI=ON
@@ -12,10 +12,10 @@ ENV TERM=xterm \
     DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    build-essential libtool automake autotools-dev libreadline7 libreadline-dev freeglut3-dev \
+    build-essential libtool automake autotools-dev libreadline8 libreadline-dev freeglut3-dev \
     git \
     gosu \
-    #cmake \
+    cmake \
     cython3 \
     jq \
     libboost-filesystem-dev \
@@ -35,11 +35,13 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libomp-dev \
     libpcre3 \
     libpcre3-dev \
-    llvm-3.9-dev \
+    libpython3.7 \
+    llvm-dev \
     # music-bin \
     openmpi-bin \
     pep8 \
-    python3.6-dev \
+    python3 \
+    python3-dev \
     python3-ipython \
     python3-jupyter-core \
     python3-matplotlib \
@@ -60,7 +62,10 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     rm -rf /var/lib/apt/lists/* && \
     # update-alternatives --remove-all python && \
     update-alternatives --install /usr/bin/python python /usr/bin/python3 10 && \
-    pip3 install cmake
+    update-alternatives --install /usr/bin/pip pip /usr/bin/pip3 10
+
+# RUN pip install scikit-build && \
+#     pip install cmake
 
 # Install music
 RUN wget https://github.com/INCF/MUSIC/archive/master.tar.gz && \
@@ -75,20 +80,17 @@ RUN wget https://github.com/INCF/MUSIC/archive/master.tar.gz && \
 	cd / && \
     rm master.tar.gz
 
-# RUN cd /tmp && \
-#    git clone https://github.com/INCF/libneurosim.git libneurosim && \
-#    cd /tmp/libneurosim && \
+# Install libneurosim
+# RUN git clone https://github.com/INCF/libneurosim.git libneurosim && \
+#    cd libneurosim && \
 #    chmod +x autogen.sh && \
 #    ./autogen.sh && \
 #    chmod +x configure && \
-#    ./configure --with-python=3 && make &&  make install &&\
-#    rm -rf /tmp/*
-###############################################################################
-##
-## If you want libneurosim you need to install it in the min-image below, too
-##
-###############################################################################
+#    ./configure --prefix=/opt/libneurosim-install --with-python=3 && \
+#    make && \
+#    make install
 
+# Install NEST
 RUN git clone https://github.com/nest/nest-simulator.git && \
   cd nest-simulator && \
   git checkout nest-3 && \
@@ -104,12 +106,11 @@ RUN git clone https://github.com/nest/nest-simulator.git && \
 	    -Dwith-gsl=$WITH_GSL \
 	    -Dwith-readline=ON \
         -Dwith-python=3 \
-        -DPYTHON_LIBRARY=/usr/lib/x86_64-linux-gnu/libpython3.6m.so \
-	    -DPYTHON_INCLUDE_DIR=/usr/include/python3.6m \
+        -DPYTHON_LIBRARY=/usr/lib/x86_64-linux-gnu/libpython3.7m.so \
+	    -DPYTHON_INCLUDE_DIR=/usr/include/python3.7m \
         -Dwith-mpi=$WITH_MPI \
         -Dwith-openmp=$WITH_OMP \
-        # -DPYNEUROSIM_LIBRARY=/usr/local/lib \
-        # -Dwith-libneurosim:BOOL=$WITH_LIBNEUROSIM /usr/local/lib \
+        -Dwith-libneurosim=$WITH_LIBNEUROSIM \
         -Dwith-music=/opt/music-install \
         ../nest-simulator && \
   make && \
@@ -118,7 +119,7 @@ RUN git clone https://github.com/nest/nest-simulator.git && \
 
 ###############################################################################
 
-FROM ubuntu:bionic
+FROM ubuntu:eoan
 LABEL maintainer="s.graber@fz-juelich.de"
 
 ENV TERM=xterm \
@@ -134,7 +135,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         # libmusic1v5 \
         libopenmpi-dev \
         libomp-dev \
-        libpython3.6 \
+        libpython3.7 \
         # music-bin \
         nano \
         openmpi-bin \
@@ -151,11 +152,18 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     apt-get autoremove -y && \
     rm -rf /var/lib/apt/lists/* && \
     update-alternatives --install /usr/bin/python python /usr/bin/python3 10 && \
-    pip3 install quantities lazyarray neo pyNN
+    update-alternatives --install /usr/bin/pip pip /usr/bin/pip3 10 && \
+    pip install quantities lazyarray neo && \
+    # wget https://github.com/NeuralEnsemble/PyNN/archive/nest-dev.tar.gz && \
+    # tar -xzf nest-dev.tar.gz && \
+    # cd PyNN-nest-dev && \
+    # python3 setup.py install && \
+    # cd .. && rm -rf PyNN-nest-dev && rm nest-dev.tar.gz
+    pip install --no-binary :all: PyNN
 
 
-COPY --from=buildermaster /opt/nest /opt/nest
-COPY --from=buildermaster /opt/music-install /opt/music-install
+COPY --from=builder30 /opt/nest /opt/nest
+COPY --from=builder30 /opt/music-install /opt/music-install
 
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
