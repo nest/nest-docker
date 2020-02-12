@@ -14,9 +14,9 @@ echo '. /opt/nest/bin/nest_vars.sh' >> /home/nest/.bashrc
 # NEST environment
 source /opt/nest/bin/nest_vars.sh
 
-
 # Running NEST to test and to copy the .nestrc into /home/nest
 nest --help
+chown nest:nest /home/nest/.nestrc
 
 export MUSIC_ROOT_DIR=/opt/music-install
 export MUSIC_ROOT=${MUSIC_ROOT_DIR}
