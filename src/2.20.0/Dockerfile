@@ -115,6 +115,7 @@ ENV TERM=xterm \
 RUN apt-get update && apt-get install -y --no-install-recommends \
         gosu \
         jupyter-notebook \
+        less \
         libgomp1 \
         libgsl-dev  \
         libltdl7 \
