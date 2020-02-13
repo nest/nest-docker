@@ -1,6 +1,7 @@
 #!/bin/bash
 set -e
 
+IP_ADDRESS=$(hostname --ip-address)
 USER_ID=${LOCAL_USER_ID:-9001}
 
 if [[ ! $(id -u nest) = $USER_ID ]]; then
@@ -33,7 +34,7 @@ fi
 
 if [[ "$1" = 'notebook' ]]; then
     cd /opt/data
-    exec gosu nest jupyter-notebook --ip="0.0.0.0" --port=8080 --no-browser
+    exec gosu nest jupyter-notebook --ip="${IP_ADDRESS}" --port=8080 --no-browser
 fi
 
 if [[ "$1" = 'interactive' ]]; then
