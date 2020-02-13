@@ -14,6 +14,7 @@ ENV TERM=xterm \
 RUN apt-get update && apt-get install -y --no-install-recommends \
     cmake \
     cython3 \
+    gosu \
     jq \
     libboost-filesystem-dev \
     libboost-regex-dev \
@@ -53,7 +54,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     vera++ \
     wget  && \
     apt-get autoremove -y && \
-    rm -rf /var/lib/apt/lists/*
+    rm -rf /var/lib/apt/lists/* && \
+    update-alternatives --install /usr/bin/python python /usr/bin/python3 10
 
 # locales setting needed for NEST 2.14.0 - see issue #830
 RUN apt-get update \
@@ -111,6 +113,7 @@ ENV TERM=xterm \
 RUN apt-get update && apt-get install -y --no-install-recommends \
         gosu \
         jupyter-notebook \
+        less \
         libgomp1 \
         libgsl-dev  \
         libltdl7 \
@@ -125,13 +128,18 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         python3-matplotlib \
         python3-mpi4py \
         python3-numpy \
+        python3-pip \
         python3-scipy \
+        python3-setuptools \
         python3-pandas \
         python3-sympy \
         python3-tk && \
     apt-get autoremove -y && \
     rm -rf /var/lib/apt/lists/* && \
-    ln -s /usr/bin/python3 /usr/bin/python
+    update-alternatives --install /usr/bin/python python /usr/bin/python3 10 && \
+    update-alternatives --install /usr/bin/pip pip /usr/bin/pip3 10 && \
+    pip install quantities lazyarray neo && \
+    pip install --no-binary :all: PyNN
 
 COPY --from=builder214 /opt/nest /opt/nest
 
