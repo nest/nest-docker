@@ -16,12 +16,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     cmake \
     cython3 \
     jq \
-    libboost-filesystem-dev \
-    libboost-regex-dev \
-    libboost-wave-dev \
-    libboost-python-dev \
-    libboost-program-options-dev \
-	libboost-test-dev \
+    libboost-all-dev \
 	libgomp1 \
     libgsl-dev \
     libltdl7 \
