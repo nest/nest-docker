@@ -16,12 +16,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     cython3 \
     gosu \
     jq \
-    libboost-filesystem-dev \
-    libboost-regex-dev \
-    libboost-wave-dev \
-    libboost-python-dev \
-    libboost-program-options-dev \
-	libboost-test-dev \
+    libboost-all-dev \
 	libgomp1 \
     libgsl-dev \
     libltdl7 \
@@ -85,7 +80,7 @@ RUN wget https://github.com/nest/nest-simulator/archive/v2.14.0.tar.gz && \
   tar zxf v2.14.0.tar.gz && \
   cd  nest-build && \
   cmake -DCMAKE_INSTALL_PREFIX:PATH=/opt/nest/ \
-  		-Dwith-optimize=ON \
+  		# -Dwith-optimize=ON \
 		-Dwith-warning=ON \
 		-Dwith-boost=ON \
         -Dwith-python=3 \
