@@ -1,4 +1,4 @@
-FROM buildpack-deps:eoan as builder30
+FROM buildpack-deps:focal as builder30
 LABEL maintainer="s.graber@fz-juelich.de"
 
 ARG WITH_MPI=ON
@@ -18,7 +18,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     cmake \
     cython3 \
     jq \
-    libboost-all-dev \
+    libboost1.67-dev \
 	libgomp1 \
     libgsl-dev \
     libltdl7 \
@@ -94,15 +94,12 @@ RUN git clone https://github.com/nest/nest-simulator.git && \
   ls -l && \
   cd  nest-build && \
   cmake -DCMAKE_INSTALL_PREFIX:PATH=/opt/nest/ \
-        # -Dwith-optimize=ON \
-		# -Dwith-warning=ON \
-	    -Dwith-boost=ON \
 		-Dwith-ltdl=ON \
 	    -Dwith-gsl=$WITH_GSL \
 	    -Dwith-readline=ON \
         -Dwith-python=ON \
-        -DPYTHON_LIBRARY=/usr/lib/x86_64-linux-gnu/libpython3.7m.so \
-	    -DPYTHON_INCLUDE_DIR=/usr/include/python3.7m \
+        -DPYTHON_LIBRARY=/usr/lib/x86_64-linux-gnu/libpython3.8.so \
+	    -DPYTHON_INCLUDE_DIR=/usr/include/python3.8 \
         -Dwith-mpi=$WITH_MPI \
         -Dwith-openmp=$WITH_OMP \
         -Dwith-libneurosim=$WITH_LIBNEUROSIM \
