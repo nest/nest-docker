@@ -133,6 +133,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         nano \
         openmpi-bin \
         openssh-client \
+        python3-flask \
+        python3-flask-cors \
+        python3-restrictedpython \
         python3-matplotlib \
         python3-mpi4py \
         python3-numpy \
@@ -146,7 +149,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     rm -rf /var/lib/apt/lists/* && \
     update-alternatives --install /usr/bin/python python /usr/bin/python3 10 && \
     update-alternatives --install /usr/bin/pip pip /usr/bin/pip3 10 && \
-    pip install quantities lazyarray neo && \
+    pip install quantities lazyarray neo uwsgi && \
     # wget https://github.com/NeuralEnsemble/PyNN/archive/nest-dev.tar.gz && \
     # tar -xzf nest-dev.tar.gz && \
     # cd PyNN-nest-dev && \
