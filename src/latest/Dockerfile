@@ -106,7 +106,7 @@ RUN git clone https://github.com/nest/nest-simulator.git && \
 
 ###############################################################################
 
-FROM ubuntu:eoan
+FROM ubuntu:focal
 LABEL maintainer="s.graber@fz-juelich.de"
 
 ENV TERM=xterm \
