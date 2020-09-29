@@ -119,6 +119,7 @@ ENV TERM=xterm \
     DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
+        build-essential \
         gosu \
         jupyter-notebook \
         less \
@@ -133,6 +134,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         nano \
         openmpi-bin \
         openssh-client \
+        python3-dev \
         python3-flask \
         python3-flask-cors \
         python3-restrictedpython \
