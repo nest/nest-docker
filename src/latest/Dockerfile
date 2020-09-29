@@ -96,8 +96,8 @@ RUN git clone https://github.com/nest/nest-simulator.git && \
 	    -Dwith-gsl=$WITH_GSL \
 	    -Dwith-readline=ON \
         -Dwith-python=ON \
-        -DPYTHON_LIBRARY=/usr/lib/x86_64-linux-gnu/libpython3.7m.so \
-	    -DPYTHON_INCLUDE_DIR=/usr/include/python3.7m \
+        -DPYTHON_LIBRARY=/usr/lib/x86_64-linux-gnu/libpython3.8.so \
+	    -DPYTHON_INCLUDE_DIR=/usr/include/python3.8 \
         -Dwith-mpi=$WITH_MPI \
         -Dwith-openmp=$WITH_OMP \
         -Dwith-libneurosim=$WITH_LIBNEUROSIM \
