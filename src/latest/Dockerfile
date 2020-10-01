@@ -27,7 +27,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libomp-dev \
     libpcre3 \
     libpcre3-dev \
-    libpython3.7 \
+    libpython3.8 \
     llvm-dev \
     openmpi-bin \
     pep8 \
@@ -115,6 +115,9 @@ ENV TERM=xterm \
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
         build-essential \
+        curl \
+        libpcre3 \
+        libpcre3-dev \
         gosu \
         jupyter-notebook \
         less \
@@ -123,10 +126,11 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         libltdl7 \
         libopenmpi-dev \
         libomp-dev \
-        libpython3.7 \
+        libpython3.8 \
         nano \
         openmpi-bin \
         openssh-client \
+        openssh-server \
         python3-dev \
         python3-flask \
         python3-flask-cors \
@@ -145,7 +149,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     rm -rf /var/lib/apt/lists/* && \
     update-alternatives --install /usr/bin/python python /usr/bin/python3 10 && \
     update-alternatives --install /usr/bin/pip pip /usr/bin/pip3 10 && \
-    pip install quantities lazyarray neo uwsgi && \
+    pip install quantities lazyarray neo  && \
+    pip install uwsgi &&\
     # wget https://github.com/NeuralEnsemble/PyNN/archive/nest-dev.tar.gz && \
     # tar -xzf nest-dev.tar.gz && \
     # cd PyNN-nest-dev && \
@@ -159,5 +164,5 @@ COPY --from=buildermaster /opt/music-install /opt/music-install
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
 
-EXPOSE 8080
+EXPOSE 5000 8080
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]

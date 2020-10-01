@@ -6,13 +6,13 @@ If you know how to use docker, you know how to use NEST.
 
 Currently the following docker images are provided
 
-    - nestsim/nest:latest (~633MB)
+    - nestsim/nest:latest (~1,07GB)
     - nestsim/nest:2.12.0 (~535MB)
     - nestsim/nest:2.14.0 (~537MB)
     - nestsim/nest:2.16.0 (~539MB)
     - nestsim/nest:2.18.0 (~543MB)
     - nestsim/nest:2.20.0 (~634MB)
-    - nestsim/nest:3.0 (~543MB)
+    - nestsim/nest:3.0 (~1,07GB) (until now equal with 'latest')
    
 All are build with these environment variable:
 
@@ -36,7 +36,7 @@ You can use the docker images direct out of docker hub like this:
                -p 8080:8080 nestsim/nest:<version> <args>
 
    
-    [<args>]    can be either 'notebook', 'interactice' or '/bin/bash'
+    [<args>]    can be either 'notebook', 'nest-server', interactice' or '/bin/bash'
     [<version>] kind of docker image (e.g. 'latest', '2.12.0', '2.14.0', 
                 '2.16.0', '2.18.0', '3.0')
     
@@ -44,6 +44,9 @@ You can use the docker images direct out of docker hub like this:
     docker run -it --rm -e LOCAL_USER_ID=`id -u $USER` --name my_app \
                -v $(pwd):/opt/data  \
                -p 8080:8080 nestsim/nest:latest notebook
+    
+    or for starting nest-server in background (only 'latest')
+    docker run -d --rm -e LOCAL_USER_ID=`id -u $USER` -p 5000:5000 nestsim/nest:latest nest-server
                
 If you want to work with a container for a longer time, you should remove the '--rm':
 
@@ -61,7 +64,6 @@ After you stop the container, it still exists ('docker ps -a'). To restart simpl
     
 In Powershell, '%cd%' might not work for the current directory. Then 
 you should explicitly specify a folder with existing write permissions.
-
    
 In any case, this will download the docker image with the pre-installed
 NEST master form docker hub and start it. After booting an URL is presented.
@@ -96,7 +98,7 @@ In the next steps, VERSION is the kind of docker image you want to use
     - '2.14.0' - complete install of NEST 2.14.0
     - '2.16.0' - complete install of NEST 2.16.0
     - '2.18.0' - complete install of NEST 2.18.0
-    - '3.0' - complete install of NEST 3.0
+    - '3.0' - complete install of NEST 3.0 (until now equal with 'latest')
     - 'all' - with 'all' you get all
 
 Two little steps to get started

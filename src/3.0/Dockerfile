@@ -13,7 +13,6 @@ ENV TERM=xterm \
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential libtool automake autotools-dev libreadline8 libreadline-dev freeglut3-dev \
-    git \
     gosu \
     cmake \
     cython3 \
@@ -24,18 +23,14 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libltdl7 \
     libltdl-dev \
     libmusic1v5 \
-    # libmusic-dev \
-    # libncurses5-dev \
     libopenmpi-dev \
     libomp-dev \
     libpcre3 \
     libpcre3-dev \
-    libpython3.7 \
+    libpython3.8 \
     llvm-dev \
-    # music-bin \
     openmpi-bin \
     pep8 \
-    python3 \
     python3-dev \
     python3-ipython \
     python3-jupyter-core \
@@ -59,8 +54,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     update-alternatives --install /usr/bin/python python /usr/bin/python3 10 && \
     update-alternatives --install /usr/bin/pip pip /usr/bin/pip3 10
 
-# RUN pip install scikit-build && \
-#     pip install cmake
 
 # Install music
 RUN wget https://github.com/INCF/MUSIC/archive/master.tar.gz && \
@@ -94,6 +87,8 @@ RUN git clone https://github.com/nest/nest-simulator.git && \
   ls -l && \
   cd  nest-build && \
   cmake -DCMAKE_INSTALL_PREFIX:PATH=/opt/nest/ \
+        # -Dwith-optimize=ON \
+		# -Dwith-warning=ON \
 		-Dwith-ltdl=ON \
 	    -Dwith-gsl=$WITH_GSL \
 	    -Dwith-readline=ON \
@@ -108,7 +103,6 @@ RUN git clone https://github.com/nest/nest-simulator.git && \
   make && \
   make install
 
-
 ###############################################################################
 
 FROM ubuntu:focal
@@ -120,20 +114,22 @@ ENV TERM=xterm \
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
         build-essential \
+        curl \
+        libpcre3 \
+        libpcre3-dev \
         gosu \
         jupyter-notebook \
         less \
         libgomp1 \
         libgsl-dev  \
         libltdl7 \
-        # libmusic1v5 \
         libopenmpi-dev \
         libomp-dev \
-        libpython3.7 \
-        # music-bin \
+        libpython3.8 \
         nano \
         openmpi-bin \
         openssh-client \
+        openssh-server \
         python3-dev \
         python3-flask \
         python3-flask-cors \
@@ -146,12 +142,14 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         python3-setuptools \
         python3-pandas \
         python3-sympy \
-        python3-tk && \
+        python3-tk \
+        wget  && \
     apt-get autoremove -y && \
     rm -rf /var/lib/apt/lists/* && \
     update-alternatives --install /usr/bin/python python /usr/bin/python3 10 && \
     update-alternatives --install /usr/bin/pip pip /usr/bin/pip3 10 && \
-    pip install quantities lazyarray neo uwsgi && \
+    pip install quantities lazyarray neo  && \
+    pip install uwsgi &&\
     # wget https://github.com/NeuralEnsemble/PyNN/archive/nest-dev.tar.gz && \
     # tar -xzf nest-dev.tar.gz && \
     # cd PyNN-nest-dev && \
@@ -159,12 +157,11 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     # cd .. && rm -rf PyNN-nest-dev && rm nest-dev.tar.gz
     pip install --no-binary :all: PyNN
 
-
 COPY --from=builder30 /opt/nest /opt/nest
 COPY --from=builder30 /opt/music-install /opt/music-install
 
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
 
-EXPOSE 8080
+EXPOSE 5000 8080
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
