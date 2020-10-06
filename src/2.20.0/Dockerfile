@@ -68,6 +68,7 @@ RUN wget https://github.com/INCF/MUSIC/archive/master.tar.gz && \
 # Install libneurosim
 RUN git clone https://github.com/INCF/libneurosim.git libneurosim && \
     cd libneurosim && \
+    git checkout 03646747c8fe64fa3439ac2d282623b659f60c22 && \
     chmod +x autogen.sh && \
     ./autogen.sh && \
     chmod +x configure && \
