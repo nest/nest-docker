@@ -14,7 +14,7 @@ ENV TERM=xterm \
 RUN apt-get update && apt-get install -y --no-install-recommends \
     gosu \
     cmake \
-    cython3 \
+    cython \
     jq \
     libboost-all-dev \
 	libomp-dev \
@@ -32,25 +32,24 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     music-bin \
     openmpi-bin \
     pep8 \
-    python3.6-dev \
-    python3-ipython \
-    python3-jupyter-core \
-    python3-matplotlib \
-    python3-mpi4py \
-    python3-nose \
-    python3-numpy \
-    python3-pandas \
-    python3-path \
-    python3-scipy \
-    python3-setuptools \
-    python3-statsmodels \
-    python3-tk \
+    python-dev \
+    python-ipython \
+    python-jupyter-core \
+    python-matplotlib \
+    python-mpi4py \
+    python-nose \
+    python-numpy \
+    python-pandas \
+    python-path \
+    python-scipy \
+    python-setuptools \
+    python-statsmodels \
+    python-tk \
     python-dev \
     vera++ \
     wget  && \
     apt-get autoremove -y && \
-    rm -rf /var/lib/apt/lists/* && \
-    update-alternatives --install /usr/bin/python python /usr/bin/python3 10
+    rm -rf /var/lib/apt/lists/*
 
 # RUN cd /tmp && \
 #    git clone https://github.com/INCF/libneurosim.git libneurosim && \
@@ -71,16 +70,11 @@ RUN wget https://github.com/nest/nest-simulator/archive/v2.12.0.tar.gz && \
 	tar -xvzf v2.12.0.tar.gz && \
 	cd  nest-build && \
 	cmake -DCMAKE_INSTALL_PREFIX:PATH=/opt/nest/ \
-		# -Dwith-optimize=ON \
-		-Dwith-warning=ON \
-		-Dwith-boost=ON \
-		-Dwith-python=3 \
+		-Dwith-python=2 \
 		-Dwith-ltdl:BOOL=ON /usr/lib \
         -Dwith-mpi:BOOL=$WITH_MPI \
         -Dwith-openmp=$WITH_OMP \
         -Dwith-gsl:BOOL=$WITH_GSL /usr/local/lib \
-        -DPYNEUROSIM_LIBRARY=/usr/local/lib \
-        -Dwith-libneurosim:BOOL=$WITH_LIBNEUROSIM /usr/local/lib \
         -Dwith-music:BOOL=$WITH_MUSIC /usr/lib \
 		../nest-simulator-2.12.0 && \
 	make && \
@@ -106,24 +100,23 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         libmusic1v5 \
         libopenmpi-dev \
         libomp-dev \
-        libpython3.6 \
+        libpython2.7 \
         music-bin \
         nano \
         openmpi-bin \
         openssh-client \
-        python3-matplotlib \
-        python3-mpi4py \
-        python3-numpy \
-        python3-pip \
-        python3-scipy \
-        python3-setuptools \
-        python3-pandas \
-        python3-sympy \
-        python3-tk && \
+        python-matplotlib \
+        python-mpi4py \
+        python-numpy \
+        python-pip \
+        python-scipy \
+        python-setuptools \
+        python-pandas \
+        python-sympy \
+        python-tk && \
     apt-get autoremove -y && \
     rm -rf /var/lib/apt/lists/* && \
-    update-alternatives --install /usr/bin/python python /usr/bin/python3 10 && \
-    update-alternatives --install /usr/bin/pip pip /usr/bin/pip3 10 && \
+    #update-alternatives --install /usr/bin/pip pip /usr/bin/pip3 10 && \
     pip install quantities lazyarray neo && \
     pip install --no-binary :all: PyNN
 

@@ -33,7 +33,7 @@ if [[ "$1" = 'interactive' ]]; then
 	echo Starting: $name
 	cd /opt/data
 	# Start
-	exec gosu nest python3 /opt/data/$name
+	exec gosu nest python /opt/data/$name
 fi
 
 exec gosu nest "$@"
