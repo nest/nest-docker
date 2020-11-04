@@ -7,13 +7,14 @@ If you know how to use docker, you know how to use NEST.
 Currently the following docker images are provided
 
     - nestsim/nest:latest (~1,07GB)
+    - nestsim/nest:latest_mpich (~???GB)
     - nestsim/nest:2.12.0 (~535MB)
     - nestsim/nest:2.14.0 (~537MB)
     - nestsim/nest:2.16.0 (~539MB)
     - nestsim/nest:2.18.0 (~543MB)
     - nestsim/nest:2.20.0 (~634MB)
     - nestsim/nest:3.0 (~1,07GB) (until now equal with 'latest')
-   
+
 All are build with these environment variable:
 
     - 'WITH_MPI=ON'
@@ -24,7 +25,7 @@ All are build with these environment variable:
 
 You can change this on top of every 'dockerfile'.
 
-   
+
 ## Usage
 
 You can use the docker images direct out of docker hub like this:
@@ -35,47 +36,47 @@ You can use the docker images direct out of docker hub like this:
                -v $(pwd):/opt/data  \
                -p 8080:8080 nestsim/nest:<version> <args>
 
-   
+
     [<args>]    can be either 'notebook', 'nest-server', interactice' or '/bin/bash'
-    [<version>] kind of docker image (e.g. 'latest', '2.12.0', '2.14.0', 
+    [<version>] kind of docker image (e.g. 'latest', '2.12.0', '2.14.0',
                 '2.16.0', '2.18.0', '3.0')
-    
+
     eg.
     docker run -it --rm -e LOCAL_USER_ID=`id -u $USER` --name my_app \
                -v $(pwd):/opt/data  \
                -p 8080:8080 nestsim/nest:latest notebook
-    
+
     or for starting nest-server in background (only 'latest')
     docker run -d --rm -e LOCAL_USER_ID=`id -u $USER` -p 5000:5000 nestsim/nest:latest nest-server
-               
+
 If you want to work with a container for a longer time, you should remove the '--rm':
 
     docker run -it -e LOCAL_USER_ID=`id -u $USER` --name my_app  \
                -v $(pwd):/opt/data  \
                -p 8080:8080 nestsim/nest:<version> <args>
-               
+
 After you stop the container, it still exists ('docker ps -a'). To restart simply use:
 
     docker start -i my_app
-               
+
 ### On Windows
 
     docker run -it --rm -v %cd%:/opt/data -p 8080:8080 nestsim/nest:<version> <args>
-    
-In Powershell, '%cd%' might not work for the current directory. Then 
+
+In Powershell, '%cd%' might not work for the current directory. Then
 you should explicitly specify a folder with existing write permissions.
-   
+
 In any case, this will download the docker image with the pre-installed
 NEST master form docker hub and start it. After booting an URL is presented.
-Click on it or copy it to your browser. Voilá jupyter notebook starts from 
+Click on it or copy it to your browser. Voilá jupyter notebook starts from
 the docker image.
 
 You can update the image with:
 
     docker pull nestsim/nest:<version>
-    
+
 ## Usage of the local build system
-                        
+
 You can clone this repository and use the shell script:                        
 
     sh run.sh [--help] <command> [<args>] [<version>]
@@ -105,17 +106,17 @@ Two little steps to get started
 
 ### 1 - Provisioning
 
-This step is only necessary if you want to build the images directly 
+This step is only necessary if you want to build the images directly
 from the docker files.
 
     sh run.sh provision VERSION
-    
-Be careful with the version 'all'. This really takes a long time. 
-    
-After every build of a NEST docker image, there are two more images - the one 
-with the name of the NEST version (e.g. 'nestsim/nest:master') and 
+
+Be careful with the version 'all'. This really takes a long time.
+
+After every build of a NEST docker image, there are two more images - the one
+with the name of the NEST version (e.g. 'nestsim/nest:master') and
 another without any name. The last one you can delete.
-More information about this so called 'multi-stage build' here: 
+More information about this so called 'multi-stage build' here:
 <https://docs.docker.com/develop/develop-images/multistage-build/>
 
 ### 2 - Run
@@ -123,13 +124,13 @@ More information about this so called 'multi-stage build' here:
 -   with Jupyter Notebook (recommended)
 
         sh run.sh run notebook VERSION
-        
-    or 
-        
+
+    or
+
         docker run -it --rm -e LOCAL_USER_ID=`id -u $USER` --name my_app \
                -v $(pwd):/opt/data  \
                -p 8080:8080 nestsim/nest:VERSION notebook
-    
+
     (For VERSION see above)
 
     Open the displayed URL in your browser and have fun with Jupyter
@@ -138,13 +139,13 @@ More information about this so called 'multi-stage build' here:
 -   in interactive mode
 
         sh run.sh run interactive VERSION
-        
-    or 
-        
+
+    or
+
         docker run -it --rm -e LOCAL_USER_ID=`id -u $USER` --name my_app \
                -v $(pwd):/opt/data  \
                -p 8080:8080 nestsim/nest:VERSION interactive
-    
+
     (For VERSION see above)
 
     After the prompt 'Your python script:' enter the filename of the script
@@ -154,13 +155,13 @@ More information about this so called 'multi-stage build' here:
 -   as virtual image
 
         sh run.sh run virtual VERSION
-         
-     or 
-        
+
+     or
+
         docker run -it --rm -e LOCAL_USER_ID=`id -u $USER` --name my_app \
                -v $(pwd):/opt/data  \
                -p 8080:8080 nestsim/nest:VERSION /bin/bash
-    
+
     (For VERSION see above)
 
     You are logged in as user 'nest'. Enter 'python' and in the
@@ -180,7 +181,7 @@ In the folder with your music scripts run:
     docker run -it --rm -e LOCAL_USER_ID=`id -u $USER`  \
                -v $(pwd):/opt/data  \
                nestsim/nest:3.0 /bin/bash
-               
+
 You are now on container's shell, but can use the programs on your local machine
 
     mpirun -np 2 music /opt/data/minimalmusicsetup.music
