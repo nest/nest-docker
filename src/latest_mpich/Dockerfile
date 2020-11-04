@@ -54,7 +54,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     update-alternatives --install /usr/bin/pip pip /usr/bin/pip3 10
 
 # Install mpi4py
-RUN pip instal mpi4py
+RUN pip install mpi4py
 
 # Install music
 RUN wget https://github.com/INCF/MUSIC/archive/master.tar.gz && \
