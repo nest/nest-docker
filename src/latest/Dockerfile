@@ -77,11 +77,12 @@ RUN wget https://github.com/INCF/MUSIC/archive/master.tar.gz && \
 #    ./configure --prefix=/opt/libneurosim-install --with-python=3 && \
 #    make && \
 #    make install
-
+https://github.com/jougs/nest-simulator.git
 # Install NEST
-RUN git clone https://github.com/nest/nest-simulator.git && \
+#RUN git clone https://github.com/nest/nest-simulator.git && \
+RUN git clone https://github.com/jougs/nest-simulator.git && \
   cd nest-simulator && \
-  git checkout master && \
+  git checkout --track origin/nest-server-mpi && \
   cd .. && \
   mkdir nest-build && \
   ls -l && \
