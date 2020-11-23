@@ -161,8 +161,22 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 COPY --from=buildermaster /opt/nest /opt/nest
 COPY --from=buildermaster /opt/music-install /opt/music-install
 
-COPY entrypoint.sh /usr/local/bin/entrypoint.sh
-RUN chmod +x /usr/local/bin/entrypoint.sh
+RUN adduser --disabled-login --gecos 'NEST' --home /home/nest nest && \
+    chown nest:nest /home/nest
 
-EXPOSE 5000 8080
-ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
+# copy entrypoint to nest home folder
+COPY entrypoint.sh /home/nest
+RUN chown nest:nest /home/nest/entrypoint.sh && \
+    chmod +x /home/nest/entrypoint.sh && \
+    echo '. /opt/nest/bin/nest_vars.sh' >> /home/nest/.bashrc
+
+WORKDIR /home/nest
+USER nest
+#ENTRYPOINT ["/home/nest/entrypoint.sh"]
+
+
+#COPY entrypoint.sh /usr/local/bin/entrypoint.sh
+#RUN chmod +x /usr/local/bin/entrypoint.sh
+
+#EXPOSE 5000 8080
+#ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
