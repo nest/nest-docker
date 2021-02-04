@@ -1,4 +1,4 @@
-FROM buildpack-deps:bionic as builder220
+FROM buildpack-deps:bionic as builder2201
 LABEL maintainer="s.graber@fz-juelich.de"
 
 ARG WITH_MPI=ON
@@ -77,9 +77,9 @@ RUN git clone https://github.com/INCF/libneurosim.git libneurosim && \
     make install
 
 # Install NEST
-RUN wget https://github.com/nest/nest-simulator/archive/v2.20.0.tar.gz && \
+RUN wget https://github.com/nest/nest-simulator/archive/v2.20.1.tar.gz && \
   mkdir nest-build && \
-  tar zxf v2.20.0.tar.gz && \
+  tar zxf v2.20.1.tar.gz && \
   cd  nest-build && \
   cmake -DCMAKE_INSTALL_PREFIX:PATH=/opt/nest/ \
         # -Dwith-optimize=ON \
@@ -95,7 +95,7 @@ RUN wget https://github.com/nest/nest-simulator/archive/v2.20.0.tar.gz && \
         -Dwith-openmp=$WITH_OMP \
         -Dwith-libneurosim=/opt/libneurosim-install \
         -Dwith-music=/opt/music-install \
-        ../nest-simulator-2.20.0 && \
+        ../nest-simulator-2.20.1 && \
   make && \
   make install
 
@@ -151,9 +151,9 @@ RUN pip install quantities lazyarray neo && \
     # cd .. && rm -rf PyNN-nest-dev && rm nest-dev.tar.gz
     pip install --no-binary :all: PyNN
 
-COPY --from=builder220 /opt/nest /opt/nest
-COPY --from=builder220 /opt/music-install /opt/music-install
-COPY --from=builder220 /opt/libneurosim-install /opt/libneurosim-install
+COPY --from=builder2201 /opt/nest /opt/nest
+COPY --from=builder2201 /opt/music-install /opt/music-install
+COPY --from=builder2201 /opt/libneurosim-install /opt/libneurosim-install
 
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
