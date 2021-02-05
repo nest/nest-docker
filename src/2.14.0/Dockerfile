@@ -116,6 +116,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         libopenmpi-dev \
         libomp-dev \
         libpython3.6 \
+        locales \
         music-bin \
         nano \
         openmpi-bin \

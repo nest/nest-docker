@@ -101,6 +101,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         libopenmpi-dev \
         libomp-dev \
         libpython2.7 \
+        locales \
         music-bin \
         nano \
         openmpi-bin \
