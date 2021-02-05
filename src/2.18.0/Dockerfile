@@ -135,7 +135,13 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     rm -rf /var/lib/apt/lists/* && \
     update-alternatives --install /usr/bin/python python /usr/bin/python3 10 && \
     update-alternatives --install /usr/bin/pip pip /usr/bin/pip3 10 && \
-    pip install quantities lazyarray neo && \
+    sed -i '/en_US.UTF-8/s/^# //g' /etc/locale.gen && \
+    locale-gen
+ENV LANG en_US.UTF-8
+ENV LANGUAGE en_US:en
+ENV LC_ALL en_US.UTF-8
+
+RUN pip install quantities lazyarray neo && \
     # wget https://github.com/NeuralEnsemble/PyNN/archive/nest-dev.tar.gz && \
     # tar -xzf nest-dev.tar.gz && \
     # cd PyNN-nest-dev && \
