@@ -17,7 +17,7 @@ export CPATH=${MUSIC_PATH}/include:$CPATH
 export PYTHONPATH=${MUSIC_PATH}/lib/python3.8/site-packages:$PYTHONPATH
 
 if [[ ! -d /opt/data ]]; then
-	mkdir /opt/data
+    mkdir /opt/data
 fi
 
 if [[ "$1" = 'notebook' ]]; then
@@ -28,15 +28,15 @@ fi
 if [[ "$1" = 'nest-server' ]]; then
     cd /opt/data
     NEST_SERVER_RESTRICTION_OFF=TRUE
-    exec nest-server start -o -h 0.0.0.0 -p 5000 -u $UID
+    exec nest-server start -o -h 0.0.0.0 -p 5000 -u 65534
 fi
 
 if [[ "$1" = 'interactive' ]]; then
     read -p "Your python script: " name
-	echo Starting: $name
-	cd /opt/data
-	# Start
-	exec python3 /opt/data/$name
+    echo Starting: $name
+    cd /opt/data
+    # Start
+    exec python3 /opt/data/$name
 fi
 
 cd /opt/data

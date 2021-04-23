@@ -78,26 +78,26 @@ RUN git clone https://github.com/INCF/libneurosim.git libneurosim && \
 
 # Install NEST
 RUN wget https://github.com/nest/nest-simulator/archive/v2.20.1.tar.gz && \
-  mkdir nest-build && \
-  tar zxf v2.20.1.tar.gz && \
-  cd  nest-build && \
-  cmake -DCMAKE_INSTALL_PREFIX:PATH=/opt/nest/ \
+    mkdir nest-build && \
+    tar zxf v2.20.1.tar.gz && \
+    cd  nest-build && \
+    cmake -DCMAKE_INSTALL_PREFIX:PATH=/opt/nest/ \
         # -Dwith-optimize=ON \
-		# -Dwith-warning=ON \
-		-Dwith-boost=ON \
-		-Dwith-ltdl=ON \
-	    -Dwith-gsl=$WITH_GSL \
-	    -Dwith-readline=ON \
+        # -Dwith-warning=ON \
+        -Dwith-boost=ON \
+        -Dwith-ltdl=ON \
+        -Dwith-gsl=$WITH_GSL \
+        -Dwith-readline=ON \
         -Dwith-python=3 \
         -DPYTHON_LIBRARY=/usr/lib/x86_64-linux-gnu/libpython3.6m.so \
-	    -DPYTHON_INCLUDE_DIR=/usr/include/python3.6m \
+        -DPYTHON_INCLUDE_DIR=/usr/include/python3.6m \
         -Dwith-mpi=$WITH_MPI \
         -Dwith-openmp=$WITH_OMP \
         -Dwith-libneurosim=/opt/libneurosim-install \
         -Dwith-music=/opt/music-install \
         ../nest-simulator-2.20.1 && \
-  make && \
-  make install
+    make && \
+    make install
 
 
 ###############################################################################
