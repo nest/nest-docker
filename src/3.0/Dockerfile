@@ -44,6 +44,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     python3-pip \
     python3-scipy \
     python3-setuptools \
+    python3-sphinx \
     python3-statsmodels \
     python3-tk \
     python-dev \
@@ -54,7 +55,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     # update-alternatives --remove-all python && \
     update-alternatives --install /usr/bin/python python /usr/bin/python3 10 && \
     update-alternatives --install /usr/bin/pip pip /usr/bin/pip3 10 && \
-    python3 -m pip install --upgrade pip setuptools wheel
+    python3 -m pip install --upgrade pip setuptools wheel mock
 
 
 # Install music
@@ -81,15 +82,11 @@ RUN wget https://github.com/INCF/MUSIC/archive/master.tar.gz && \
 #    make install
 
 # Install NEST
-RUN git clone https://github.com/nest/nest-simulator.git && \
-  cd nest-simulator && \
-  git checkout master && \
-  python3 -m pip install -r ./extras/nest-simulator-doc-requirements.txt && \
-  cd .. && \
-  mkdir nest-build && \
-  ls -l && \
-  cd  nest-build && \
-  cmake -DCMAKE_INSTALL_PREFIX:PATH=/opt/nest/ \
+RUN wget https://github.com/nest/nest-simulator/archive/refs/tags/v3.0.tar.gz && \
+    mkdir nest-build && \
+    tar zxf v3.0.tar.gz && \
+    cd  nest-build && \
+    cmake -DCMAKE_INSTALL_PREFIX:PATH=/opt/nest/ \
         # -Dwith-optimize=ON \
         # -Dwith-warning=ON \
         -Dwith-ltdl=ON \
@@ -102,10 +99,9 @@ RUN git clone https://github.com/nest/nest-simulator.git && \
         -Dwith-openmp=$WITH_OMP \
         -Dwith-libneurosim=$WITH_LIBNEUROSIM \
         -Dwith-music=/opt/music-install \
-        ../nest-simulator && \
-  make && \
-  make html && \
-  make install
+        ../nest-simulator-3.0 && \
+    make && \
+    make install
 
 ###############################################################################
 
