@@ -100,8 +100,10 @@ RUN wget https://github.com/nest/nest-simulator/archive/refs/tags/v3.0.tar.gz &&
         -Dwith-libneurosim=$WITH_LIBNEUROSIM \
         -Dwith-music=/opt/music-install \
         ../nest-simulator-3.0 && \
-    make && \
-    make install
+    make
+RUN python3 -m pip install -r ../nest-simulator-3.0/extras/nest-simulator-doc-requirements.txt && \
+        cd  nest-build && make html && make install
+
 
 ###############################################################################
 
