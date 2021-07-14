@@ -80,11 +80,12 @@ RUN pip3 install docopt
 #    make install
 
 # Install NEST
-#RUN git clone https://github.com/nest/nest-simulator.git && \
-RUN git clone https://github.com/jougs/nest-simulator.git && \
-  cd nest-simulator && \
-  git checkout --track origin/nest-server-mpi && \
-  cd .. && \
+#RUN git clone https://github.com/jougs/nest-simulator.git && \
+RUN git clone https://github.com/nest/nest-simulator.git && \
+#  cd nest-simulator && \
+#  git checkout tags/v3.0 && \
+#  git checkout --track origin/nest-server-mpi && \
+#  cd .. && \
   mkdir nest-build && \
   ls -l && \
   cd  nest-build && \
