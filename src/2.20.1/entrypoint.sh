@@ -14,10 +14,10 @@ MUSIC_PATH=${MUSIC_ROOT_DIR}
 export LD_LIBRARY_PATH=${MUSIC_PATH}/lib:$LD_LIBRARY_PATH
 export PATH=${MUSIC_PATH}/bin:$PATH
 export CPATH=${MUSIC_PATH}/include:$CPATH
-export PYTHONPATH=${MUSIC_PATH}/lib/python3.8/site-packages:$PYTHONPATH
+export PYTHONPATH=${MUSIC_PATH}/lib/python3.6/site-packages:$PYTHONPATH
 
 if [[ ! -d /opt/data ]]; then
-    mkdir /opt/data
+	mkdir /opt/data
 fi
 
 if [[ "$1" = 'notebook' ]]; then
@@ -25,18 +25,12 @@ if [[ "$1" = 'notebook' ]]; then
     exec jupyter-notebook --ip="${IP_ADDRESS}" --port=8080 --no-browser --allow-root
 fi
 
-if [[ "$1" = 'nest-server' ]]; then
-    cd /opt/data
-    NEST_SERVER_RESTRICTION_OFF=TRUE
-    exec nest-server start -o -h 0.0.0.0 -p 5000 -u 65534
-fi
-
 if [[ "$1" = 'interactive' ]]; then
     read -p "Your python script: " name
-    echo Starting: $name
-    cd /opt/data
-    # Start
-    exec python3 /opt/data/$name
+	echo Starting: $name
+	cd /opt/data
+	# Start
+	exec python3 /opt/data/$name
 fi
 
 cd /opt/data

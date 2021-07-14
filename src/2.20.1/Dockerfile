@@ -1,17 +1,18 @@
-FROM buildpack-deps:bionic AS builder216
+FROM buildpack-deps:bionic as builder2201
 LABEL maintainer="s.graber@fz-juelich.de"
 
 ARG WITH_MPI=ON
 ARG WITH_OMP=ON
 ARG WITH_GSL=ON
-ARG WITH_MUSIC=ON
-ARG WITH_LIBNEUROSIM=OFF
+
+ARG WITH_LIBNEUROSIM=ON
 
 ENV TERM=xterm \
     TZ=Europe/Berlin \
     DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential libtool automake autotools-dev libreadline7 libreadline-dev freeglut3-dev \
     gosu \
     cmake \
     cython3 \
@@ -22,13 +23,11 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libltdl7 \
     libltdl-dev \
     libmusic1v5 \
-    libmusic-dev \
-    libncurses5-dev \
     libopenmpi-dev \
+    libomp-dev \
     libpcre3 \
     libpcre3-dev \
     llvm-3.9-dev \
-    music-bin \
     openmpi-bin \
     pep8 \
     python3.6-dev \
@@ -49,41 +48,56 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     wget  && \
     apt-get autoremove -y && \
     rm -rf /var/lib/apt/lists/* && \
+    # update-alternatives --remove-all python && \
     update-alternatives --install /usr/bin/python python /usr/bin/python3 10
 
-# RUN cd /tmp && \
-#    git clone https://github.com/INCF/libneurosim.git libneurosim && \
-#    cd /tmp/libneurosim && \
-#    chmod +x autogen.sh && \
-#    ./autogen.sh && \
-#    chmod +x configure && \
-#    ./configure --with-python=3 && make &&  make install &&\
-#    rm -rf /tmp/*
-###############################################################################
-##
-## If you want libneurosim you need to install it in the min-image below, too
-##
-###############################################################################
 
-RUN wget https://github.com/nest/nest-simulator/archive/v2.16.0.tar.gz && \
-  mkdir nest-build && \
-  tar zxf v2.16.0.tar.gz && \
-  cd  nest-build && \
-  cmake -DCMAKE_INSTALL_PREFIX:PATH=/opt/nest/ \
-  		-Dwith-optimize=ON \
-		-Dwith-warning=ON \
-		-Dwith-boost=ON \
+# Install music
+RUN wget https://github.com/INCF/MUSIC/archive/master.tar.gz && \
+	tar -zxf master.tar.gz && \
+	mkdir music-build music-install && \
+	cd MUSIC-master && \
+	sh ./autogen.sh && \
+	cd ../music-build && \
+	../MUSIC-master/configure --prefix=/opt/music-install && \
+	make && \
+	make install && \
+	cd / && \
+    rm master.tar.gz
+
+# Install libneurosim
+RUN git clone https://github.com/INCF/libneurosim.git libneurosim && \
+    cd libneurosim && \
+    git checkout 03646747c8fe64fa3439ac2d282623b659f60c22 && \
+    chmod +x autogen.sh && \
+    ./autogen.sh && \
+    chmod +x configure && \
+    ./configure --prefix=/opt/libneurosim-install --with-python=3 && \
+    make && \
+    make install
+
+# Install NEST
+RUN wget https://github.com/nest/nest-simulator/archive/v2.20.1.tar.gz && \
+    mkdir nest-build && \
+    tar zxf v2.20.1.tar.gz && \
+    cd  nest-build && \
+    cmake -DCMAKE_INSTALL_PREFIX:PATH=/opt/nest/ \
+        # -Dwith-optimize=ON \
+        # -Dwith-warning=ON \
+        -Dwith-boost=ON \
+        -Dwith-ltdl=ON \
+        -Dwith-gsl=$WITH_GSL \
+        -Dwith-readline=ON \
         -Dwith-python=3 \
-        -Dwith-ltdl:BOOL=ON /usr/lib \
-        -Dwith-mpi:BOOL=$WITH_MPI \
+        -DPYTHON_LIBRARY=/usr/lib/x86_64-linux-gnu/libpython3.6m.so \
+        -DPYTHON_INCLUDE_DIR=/usr/include/python3.6m \
+        -Dwith-mpi=$WITH_MPI \
         -Dwith-openmp=$WITH_OMP \
-        -Dwith-gsl:BOOL=$WITH_GSL /usr/local/lib \
-        -DPYNEUROSIM_LIBRARY=/usr/local/lib \
-        -Dwith-libneurosim:BOOL=$WITH_LIBNEUROSIM /usr/local/lib \
-        -Dwith-music:BOOL=$WITH_MUSIC /usr/lib \
-        ../nest-simulator-2.16.0 && \
-  make && \
-  make install
+        -Dwith-libneurosim=/opt/libneurosim-install \
+        -Dwith-music=/opt/music-install \
+        ../nest-simulator-2.20.1 && \
+    make && \
+    make install
 
 
 ###############################################################################
@@ -102,12 +116,10 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         libgomp1 \
         libgsl-dev  \
         libltdl7 \
-        libmusic1v5 \
         libopenmpi-dev \
         libomp-dev \
         libpython3.6 \
         locales \
-        music-bin \
         nano \
         openmpi-bin \
         openssh-client \
@@ -119,11 +131,12 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         python3-setuptools \
         python3-pandas \
         python3-sympy \
-        python3-tk && \
+        python3-tk \
+        wget  && \
     apt-get autoremove -y && \
     rm -rf /var/lib/apt/lists/* && \
     update-alternatives --install /usr/bin/python python /usr/bin/python3 10 && \
-    update-alternatives --install /usr/bin/pip pip /usr/bin/pip3 10 && \
+    update-alternatives --install /usr/bin/pip pip /usr/bin/pip3 10  && \
     sed -i '/en_US.UTF-8/s/^# //g' /etc/locale.gen && \
     locale-gen
 ENV LANG en_US.UTF-8
@@ -131,9 +144,16 @@ ENV LANGUAGE en_US:en
 ENV LC_ALL en_US.UTF-8
 
 RUN pip install quantities lazyarray neo && \
+    # wget https://github.com/NeuralEnsemble/PyNN/archive/nest-dev.tar.gz && \
+    # tar -xzf nest-dev.tar.gz && \
+    # cd PyNN-nest-dev && \
+    # python3 setup.py install && \
+    # cd .. && rm -rf PyNN-nest-dev && rm nest-dev.tar.gz
     pip install --no-binary :all: PyNN
 
-COPY --from=builder216 /opt/nest /opt/nest
+COPY --from=builder2201 /opt/nest /opt/nest
+COPY --from=builder2201 /opt/music-install /opt/music-install
+COPY --from=builder2201 /opt/libneurosim-install /opt/libneurosim-install
 
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh

@@ -18,7 +18,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     cython3 \
     jq \
     libboost1.67-dev \
-	libgomp1 \
+    libgomp1 \
     libgsl-dev \
     libltdl7 \
     libltdl-dev \
@@ -30,6 +30,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libpython3.8 \
     llvm-dev \
     openmpi-bin \
+    pandoc \
     pep8 \
     python3-dev \
     python3-ipython \
@@ -43,6 +44,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     python3-pip \
     python3-scipy \
     python3-setuptools \
+    python3-sphinx \
     python3-statsmodels \
     python3-tk \
     python-dev \
@@ -52,20 +54,21 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     rm -rf /var/lib/apt/lists/* && \
     # update-alternatives --remove-all python && \
     update-alternatives --install /usr/bin/python python /usr/bin/python3 10 && \
-    update-alternatives --install /usr/bin/pip pip /usr/bin/pip3 10
+    update-alternatives --install /usr/bin/pip pip /usr/bin/pip3 10 && \
+    python3 -m pip install --upgrade pip setuptools wheel mock
 
 
 # Install music
 RUN wget https://github.com/INCF/MUSIC/archive/master.tar.gz && \
-	tar -zxf master.tar.gz && \
-	mkdir music-build music-install && \
-	cd MUSIC-master && \
-	sh ./autogen.sh && \
-	cd ../music-build && \
-	../MUSIC-master/configure --prefix=/opt/music-install && \
-	make && \
-	make install && \
-	cd / && \
+    tar -zxf master.tar.gz && \
+    mkdir music-build music-install && \
+    cd MUSIC-master && \
+    sh ./autogen.sh && \
+    cd ../music-build && \
+    ../MUSIC-master/configure --prefix=/opt/music-install && \
+    make && \
+    make install && \
+    cd / && \
     rm master.tar.gz
 
 # Install libneurosim
@@ -79,29 +82,28 @@ RUN wget https://github.com/INCF/MUSIC/archive/master.tar.gz && \
 #    make install
 
 # Install NEST
-RUN git clone https://github.com/nest/nest-simulator.git && \
-  cd nest-simulator && \
-  git checkout master && \
-  cd .. && \
-  mkdir nest-build && \
-  ls -l && \
-  cd  nest-build && \
-  cmake -DCMAKE_INSTALL_PREFIX:PATH=/opt/nest/ \
+RUN wget https://github.com/nest/nest-simulator/archive/refs/tags/v3.0.tar.gz && \
+    mkdir nest-build && \
+    tar zxf v3.0.tar.gz && \
+    cd  nest-build && \
+    cmake -DCMAKE_INSTALL_PREFIX:PATH=/opt/nest/ \
         # -Dwith-optimize=ON \
-		# -Dwith-warning=ON \
-		-Dwith-ltdl=ON \
-	    -Dwith-gsl=$WITH_GSL \
-	    -Dwith-readline=ON \
+        # -Dwith-warning=ON \
+        -Dwith-ltdl=ON \
+        -Dwith-gsl=$WITH_GSL \
+        -Dwith-readline=ON \
         -Dwith-python=ON \
         -DPYTHON_LIBRARY=/usr/lib/x86_64-linux-gnu/libpython3.8.so \
-	    -DPYTHON_INCLUDE_DIR=/usr/include/python3.8 \
+        -DPYTHON_INCLUDE_DIR=/usr/include/python3.8 \
         -Dwith-mpi=$WITH_MPI \
         -Dwith-openmp=$WITH_OMP \
         -Dwith-libneurosim=$WITH_LIBNEUROSIM \
         -Dwith-music=/opt/music-install \
-        ../nest-simulator && \
-  make && \
-  make install
+        ../nest-simulator-3.0 && \
+    make
+RUN python3 -m pip install -r ../nest-simulator-3.0/extras/nest-simulator-doc-requirements.txt && \
+        cd  nest-build && make html && make install
+
 
 ###############################################################################
 
