@@ -80,28 +80,22 @@ RUN pip3 install docopt
 #    make install
 
 # Install NEST
-#RUN git clone https://github.com/jougs/nest-simulator.git && \
 RUN git clone https://github.com/nest/nest-simulator.git && \
-#  cd nest-simulator && \
-#  git checkout tags/v3.0 && \
-#  git checkout --track origin/nest-server-mpi && \
-#  cd .. && \
   mkdir nest-build && \
-  ls -l && \
   cd  nest-build && \
   cmake -DCMAKE_INSTALL_PREFIX:PATH=/opt/nest/ \
-        # -Dwith-optimize=ON \
-		# -Dwith-warning=ON \
-		-Dwith-ltdl=ON \
-	    -Dwith-gsl=$WITH_GSL \
-	    -Dwith-readline=ON \
-        -Dwith-python=ON \
-        -DPYTHON_LIBRARY=/usr/lib/x86_64-linux-gnu/libpython3.8.so \
-	    -DPYTHON_INCLUDE_DIR=/usr/include/python3.8 \
-        -Dwith-mpi=/usr \
-        -Dwith-openmp=$WITH_OMP \
-        -Dwith-libneurosim=$WITH_LIBNEUROSIM \
-        ../nest-simulator && \
+      # -Dwith-optimize=ON \
+      # -Dwith-warning=ON \
+      -Dwith-ltdl=ON \
+      -Dwith-gsl=$WITH_GSL \
+      -Dwith-readline=ON \
+      -Dwith-python=ON \
+      -DPYTHON_LIBRARY=/usr/lib/x86_64-linux-gnu/libpython3.8.so \
+      -DPYTHON_INCLUDE_DIR=/usr/include/python3.8 \
+      -Dwith-mpi=/usr \
+      -Dwith-openmp=$WITH_OMP \
+      -Dwith-libneurosim=$WITH_LIBNEUROSIM \
+      ../nest-simulator && \
   make && \
   make install
 #-Dwith-music=/opt/music-install \
