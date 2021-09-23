@@ -88,7 +88,7 @@ RUN wget https://github.com/nest/nest-simulator/archive/refs/heads/master.tar.gz
         -Dwith-music=/opt/music-install \
         ../nest-simulator-master && \
     make
-RUN python3 -m pip install -r ../nest-simulator-3.1/extras/nest-simulator-doc-requirements.txt && \
+RUN python3 -m pip install -r ../nest-simulator-master/extras/nest-simulator-doc-requirements.txt && \
         cd  nest-build && make html && make install
 
 
