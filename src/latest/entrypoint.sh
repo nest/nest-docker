@@ -15,6 +15,8 @@ export LD_LIBRARY_PATH=${MUSIC_PATH}/lib:$LD_LIBRARY_PATH
 export PATH=${MUSIC_PATH}/bin:$PATH
 export CPATH=${MUSIC_PATH}/include:$CPATH
 export PYTHONPATH=${MUSIC_PATH}/lib/python3.8/site-packages:$PYTHONPATH
+export NEST_SERVER_RESTRICTION_OFF=true
+export NEST_SERVER_MODULES=nest,numpy
 
 if [[ ! -d /opt/data ]]; then
     mkdir /opt/data
@@ -27,9 +29,12 @@ fi
 
 if [[ "$1" = 'nest-server' ]]; then
     cd /opt/data
-    export NEST_SERVER_MODULES=nest,numpy
-    export NEST_SERVER_RESTRICTION_OFF=TRUE
     exec nest-server start -o -h 0.0.0.0 -p 5000 -u 65534
+fi
+
+if [[ "$1" = 'nest-desktop' ]]; then
+    cd /opt/data
+    exec /root/.local/bin/nest-desktop start
 fi
 
 if [[ "$1" = 'interactive' ]]; then
