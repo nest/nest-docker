@@ -1,12 +1,6 @@
 FROM buildpack-deps:focal as builder31
 LABEL maintainer="s.graber@fz-juelich.de"
 
-ARG WITH_MPI=ON
-ARG WITH_OMP=ON
-ARG WITH_GSL=ON
-#ARG WITH_MUSIC=ON
-ARG WITH_LIBNEUROSIM=OFF
-
 ENV TERM=xterm \
     TZ=Europe/Berlin \
     DEBIAN_FRONTEND=noninteractive
@@ -17,7 +11,11 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     cmake \
     cython3 \
     jq \
-    libboost1.67-dev \
+    libboost-filesystem-dev \
+    libboost-regex-dev \
+    libboost-wave-dev \
+    libboost-program-options-dev \
+    libboost-test-dev \
     libgomp1 \
     libgsl-dev \
     libltdl7 \
@@ -71,15 +69,6 @@ RUN wget https://github.com/INCF/MUSIC/archive/master.tar.gz && \
     cd / && \
     rm master.tar.gz
 
-# Install libneurosim
-# RUN git clone https://github.com/INCF/libneurosim.git libneurosim && \
-#    cd libneurosim && \
-#    chmod +x autogen.sh && \
-#    ./autogen.sh && \
-#    chmod +x configure && \
-#    ./configure --prefix=/opt/libneurosim-install --with-python=3 && \
-#    make && \
-#    make install
 
 # Install NEST
 RUN wget https://github.com/nest/nest-simulator/archive/refs/tags/v3.1.tar.gz && \
@@ -87,17 +76,15 @@ RUN wget https://github.com/nest/nest-simulator/archive/refs/tags/v3.1.tar.gz &&
     tar zxf v3.1.tar.gz && \
     cd  nest-build && \
     cmake -DCMAKE_INSTALL_PREFIX:PATH=/opt/nest/ \
-        # -Dwith-optimize=ON \
-        # -Dwith-warning=ON \
+        -Dwith-warning=ON \
+        -Dwith-boost=ON \
         -Dwith-ltdl=ON \
-        -Dwith-gsl=$WITH_GSL \
+        -Dwith-gsl=ON \
         -Dwith-readline=ON \
         -Dwith-python=ON \
-        -DPYTHON_LIBRARY=/usr/lib/x86_64-linux-gnu/libpython3.8.so \
-        -DPYTHON_INCLUDE_DIR=/usr/include/python3.8 \
-        -Dwith-mpi=$WITH_MPI \
-        -Dwith-openmp=$WITH_OMP \
-        -Dwith-libneurosim=$WITH_LIBNEUROSIM \
+        -Dwith-mpi=ON \
+        -Dwith-openmp=ON \
+        -Dwith-libneurosim=OFF \
         -Dwith-music=/opt/music-install \
         ../nest-simulator-3.1 && \
     make
@@ -157,7 +144,13 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     # cd PyNN-nest-dev && \
     # python3 setup.py install && \
     # cd .. && rm -rf PyNN-nest-dev && rm nest-dev.tar.gz
-    pip install --no-binary :all: PyNN
+    pip install --no-binary :all: PyNN && \
+    python3 -m pip install Flask  --user && \
+    python3 -m pip install Flask-cors  --user && \
+    python3 -m pip install RestrictedPython  --user && \
+    python3 -m pip install nest-desktop --user &&\
+    python3 -m pip install uwsgi --user &&\
+    python3 -m pip install jupyterlab --user
 
 COPY --from=builder31 /opt/nest /opt/nest
 COPY --from=builder31 /opt/music-install /opt/music-install
@@ -165,5 +158,5 @@ COPY --from=builder31 /opt/music-install /opt/music-install
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
 
-EXPOSE 5000 8080
+EXPOSE 5000 8000 8080
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
