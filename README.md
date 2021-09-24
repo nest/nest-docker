@@ -58,7 +58,6 @@ If you want to work with a container for a longer time, you should remove the '-
 After you stop the container, it still exists ('docker ps -a'). To restart simply use:
 
     docker start -i my_app
-               
 ### On Windows
 
     docker run -it --rm -v %cd%:/opt/data -p 8080:8080 nestsim/nest:<version> <args>
@@ -89,6 +88,40 @@ You can clone this repository and use the shell script:
 
     Example:    sh run.sh provision latest
                 sh run.sh run notebook latest
+
+## Using NEST server and NEST desktop (since v3.1)
+
+### NEST server only
+
+    docker run -it --rm -e LOCAL_USER_ID=`id -u $USER` -p 5000:5000 nestsim/nest:3.1 nest-server
+    curl localhost:5000/api
+ 
+### NEST desktop including NEST server    
+
+    docker run -it --rm -e LOCAL_USER_ID=`id -u $USER` -p 5000:5000 nestsim/nest:3.1 nest-server
+    docker run -it --rm -e LOCAL_USER_ID=`id -u $USER` -p 8000:8000 nestsim/nest:3.1 nest-desktop
+
+Open <http://localhost:8000>.
+
+### The easy way with `docker-compose` (only v3.1) 
+
+    docker pull nestsim/nest:3.1
+
+Heads up: If the docker image is not pre-installed, "docker-compose ..." will start building the docker image from the 
+local Docker files.
+
+- `docker-compose up  nest-server` 
+    starts the NEST API server container and opens the corresponding port 5000. Test it with `curl localhost:5000/api`.
+
+- `docker-compose up nest-desktop`
+    starts the NEST server and the NEST desktop web interface. Port 8000 is also made available. 
+    Open in the web browser: `http://localhost:8000`
+
+- `docker-compose up nest-notebook` 
+    starts a notebook server with pre-installed NEST 3.1. The corresponding URL is displayed in the console.
+
+- `docker-compose up`
+    starts everything.
 
 ## 1 - 2 (- 3)
 
