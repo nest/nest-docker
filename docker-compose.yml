@@ -1,0 +1,37 @@
+services:
+  nest-server:
+    build: ./src/3.1
+    image: nestsim/nest:3.1
+    environment:
+      - LOCAL_USER_ID=`id -u $USER`
+    ports:
+      - "5000:5000"
+    command:
+      - nest-server
+
+  nest-desktop:
+    build: ./src/3.1
+    image: nestsim/nest:3.1
+    environment:
+      - LOCAL_USER_ID=`id -u $USER`
+    ports:
+      - "8000:8000"
+    command:
+      - nest-desktop
+    depends_on:
+      - nest-server
+
+  nest-notebook:
+    build: ./src/3.1
+    image: nestsim/nest:3.1
+    volumes:
+      - .:/opt/data
+    environment:
+      - LOCAL_USER_ID=`id -u $USER`
+    ports:
+      - "8080:8080"
+    command:
+      - notebook
+
+# docker run -it --rm -e LOCAL_USER_ID=`id -u $USER` --name my_app -v $(pwd):/opt/data -p 8080:8080 nestsim/nest:"$2" notebook
+# docker run -it --rm -e LOCAL_USER_ID=`id -u $USER` -p 8000:8000 nestsim/nest:3.1 nest-desktop start
