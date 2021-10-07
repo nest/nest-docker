@@ -4,7 +4,6 @@ LABEL maintainer="s.graber@fz-juelich.de"
 ARG WITH_MPI=ON
 ARG WITH_OMP=ON
 ARG WITH_GSL=ON
-#ARG WITH_MUSIC=ON
 ARG WITH_LIBNEUROSIM=OFF
 
 ENV TERM=xterm \
@@ -47,7 +46,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     python-dev \
     vera++ \
     wget  && \
-#    apt-get autoremove -y && \
     rm -rf /var/lib/apt/lists/* && \
     # update-alternatives --remove-all python && \
     update-alternatives --install /usr/bin/python python /usr/bin/python3 10 && \
@@ -56,36 +54,11 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 RUN pip3 install mpi4py
 RUN pip3 install docopt
 
-## Install music
-#RUN wget https://github.com/INCF/MUSIC/archive/master.tar.gz && \
-#	tar -zxf master.tar.gz && \
-#	mkdir music-build music-install && \
-#	cd MUSIC-master && \
-#	sh ./autogen.sh && \
-#	cd ../music-build && \
-#	../MUSIC-master/configure --prefix=/opt/music-install && \
-#	make && \
-#	make install && \
-#	cd / && \
-#    rm master.tar.gz
-
-# Install libneurosim
-# RUN git clone https://github.com/INCF/libneurosim.git libneurosim && \
-#    cd libneurosim && \
-#    chmod +x autogen.sh && \
-#    ./autogen.sh && \
-#    chmod +x configure && \
-#    ./configure --prefix=/opt/libneurosim-install --with-python=3 && \
-#    make && \
-#    make install
-
 # Install NEST
 RUN git clone https://github.com/nest/nest-simulator.git && \
   mkdir nest-build && \
   cd  nest-build && \
   cmake -DCMAKE_INSTALL_PREFIX:PATH=/opt/nest/ \
-      # -Dwith-optimize=ON \
-      # -Dwith-warning=ON \
       -Dwith-ltdl=ON \
       -Dwith-gsl=$WITH_GSL \
       -Dwith-readline=ON \
@@ -98,7 +71,6 @@ RUN git clone https://github.com/nest/nest-simulator.git && \
       ../nest-simulator && \
   make && \
   make install
-#-Dwith-music=/opt/music-install \
 
 
 ###############################################################################
@@ -141,7 +113,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         python3-sympy \
         python3-tk \
         wget  && \
-#    apt-get autoremove -y && \
     rm -rf /var/lib/apt/lists/* && \
     update-alternatives --install /usr/bin/python python /usr/bin/python3 10 && \
     update-alternatives --install /usr/bin/pip pip /usr/bin/pip3 10 && \
@@ -158,7 +129,6 @@ RUN pip3 install mpi4py
 RUN pip3 install docopt
 
 COPY --from=buildermaster /opt/nest /opt/nest
-#COPY --from=buildermaster /opt/music-install /opt/music-install
 
 RUN adduser --disabled-login --gecos 'NEST' --home /home/nest nest && \
     chown nest:nest /home/nest
@@ -171,11 +141,5 @@ RUN chown nest:nest /home/nest/entrypoint.sh && \
 
 WORKDIR /home/nest
 USER nest
-#ENTRYPOINT ["/home/nest/entrypoint.sh"]
-
-
-#COPY entrypoint.sh /usr/local/bin/entrypoint.sh
-#RUN chmod +x /usr/local/bin/entrypoint.sh
 
 EXPOSE 5000 8080
-#ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
