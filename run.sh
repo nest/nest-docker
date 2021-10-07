@@ -74,7 +74,7 @@ case $command in
                 docker build -t nestsim/nest:3.0 ./src/3.0
                 docker build -t nestsim/nest:3.1 ./src/3.1
                 docker build -t nestsim/nest:latest ./src/latest
-                docker build -t nestsim/nest:latest ./src/latest_daint
+                docker build -t nestsim/nest:latest_daint ./src/latest_daint
                 echo
                 echo "Finished!"
                 ;;
