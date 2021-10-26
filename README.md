@@ -109,20 +109,25 @@ Open <http://localhost:8000>.
 
 Heads up: If the docker image is not pre-installed, "docker-compose ..." will start building the docker image from the local Docker files.
 
-- `docker-compose up  nest-server`
+-   `docker-compose up  nest-server`
+    
     Starts the NEST API server container and opens the corresponding port 5000. Test it with `curl localhost:5000/api`.
 
-- `docker-compose up nest-desktop`
+-   `docker-compose up nest-desktop`
+    
     Starts the NEST server and the NEST desktop web interface. Port 8000 is also made available.
     Open in the web browser: `http://localhost:8000`
 
-- `docker-compose up nest-notebook`
+-  `docker-compose up nest-notebook`
+
     Starts a notebook server with pre-installed NEST 3.1. The corresponding URL is displayed in the console.
 
-- `docker-compose run nest-virtual bash`
+-   `docker-compose run nest-virtual bash`
+    
     Starts a container and runs bash as its command.
 
-- `docker-compose up`
+-   `docker-compose up`
+
     Starts everything.
 
 ## 1 - 2 (- 3)
