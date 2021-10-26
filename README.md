@@ -241,6 +241,6 @@ You are now on container's shell, but can use the programs on your local machine
 
         gunzip -c nest-docker.tar.gz | docker load
        
--    Execute an interactive bash shell on a container.
+-   Execute an interactive bash shell on a container.
 
         docker exec -it nest-notebook_container_name bash
