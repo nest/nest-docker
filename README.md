@@ -122,9 +122,9 @@ Heads up: If the docker image is not pre-installed, "docker-compose ..." will st
 
     Starts a notebook server with pre-installed NEST 3.1. The corresponding URL is displayed in the console.
 
--   `docker-compose run nest-virtual bash`
+-   `docker-compose run server bash`
     
-    Starts a container and runs bash as its command.
+    Starts the api server conntainer and runs bash as its command.
 
 -   `docker-compose up`
 
