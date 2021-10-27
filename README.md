@@ -6,35 +6,24 @@ If you know how to use docker, you know how to use NEST.
 
 Currently the following docker images are provided
 
-    - nestsim/nest:latest (~1,09GB)
-    - nestsim/nest:2.12.0 (~535MB)
-    - nestsim/nest:2.14.0 (~537MB)
-    - nestsim/nest:2.16.0 (~539MB)
-    - nestsim/nest:2.18.0 (~543MB)
-    - nestsim/nest:2.20.0 (~634MB)
-    - nestsim/nest:3.0 (~1,07GB)
-    - nestsim/nest:3.1 (~)
-
-All are build with these environment variable:
-
-    - 'WITH_MPI=ON'
-    - 'WITH_OMP=ON'
-    - 'WITH_GSL=ON'
-    - 'WITH_MUSIC=ON'
-    - 'WITH_LIBNEUROSIM=OFF'
-
-You can change this on top of every 'dockerfile'.
-
+    - docker-registry.ebrains.eu/nest/nest-simulator:latest (~1,09GB)
+    - docker-registry.ebrains.eu/nest/nest-simulator:2.12.0 (~535MB)
+    - docker-registry.ebrains.eu/nest/nest-simulator:2.14.0 (~537MB)
+    - docker-registry.ebrains.eu/nest/nest-simulator:2.16.0 (~539MB)
+    - docker-registry.ebrains.eu/nest/nest-simulator:2.18.0 (~543MB)
+    - docker-registry.ebrains.eu/nest/nest-simulator:2.20.0 (~634MB)
+    - docker-registry.ebrains.eu/nest/nest-simulator:3.0 (~1,07GB)
+    - docker-registry.ebrains.eu/nest/nest-simulator:3.1 (~)
 
 ## Usage
 
-You can use the docker images direct out of docker hub like this:
+You can use the docker images direct out of docker-registry.ebrains.eu like this:
 
 ### On Linux and MacOsx
 
     docker run -it --rm -e LOCAL_USER_ID=`id -u $USER` --name my_app  \
                -v $(pwd):/opt/data  \
-               -p 8080:8080 nestsim/nest:<version> <args>
+               -p 8080:8080 docker-registry.ebrains.eu/nest/nest-simulator:<version> <args>
 
 
     [<args>]    can be either 'notebook', 'nest-server', interactice' or '/bin/bash'
@@ -44,35 +33,36 @@ You can use the docker images direct out of docker hub like this:
     eg.
     docker run -it --rm -e LOCAL_USER_ID=`id -u $USER` --name my_app \
                -v $(pwd):/opt/data  \
-               -p 8080:8080 nestsim/nest:latest notebook
+               -p 8080:8080 docker-registry.ebrains.eu/nest/nest-simulator:latest notebook
 
     or for starting nest-server in background (only 'latest')
-    docker run -d --rm -e LOCAL_USER_ID=`id -u $USER` -p 5000:5000 nestsim/nest:latest nest-server
+    docker run -d --rm -e LOCAL_USER_ID=`id -u $USER` -p 5000:5000 docker-registry.ebrains.eu/nest/nest-simulator:latest nest-server
 
 If you want to work with a container for a longer time, you should remove the '--rm':
 
     docker run -it -e LOCAL_USER_ID=`id -u $USER` --name my_app  \
                -v $(pwd):/opt/data  \
-               -p 8080:8080 nestsim/nest:<version> <args>
+               -p 8080:8080 docker-registry.ebrains.eu/nest/nest-simulator:<version> <args>
 
 After you stop the container, it still exists ('docker ps -a'). To restart simply use:
 
     docker start -i my_app
+
 ### On Windows
 
-    docker run -it --rm -v %cd%:/opt/data -p 8080:8080 nestsim/nest:<version> <args>
+    docker run -it --rm -v %cd%:/opt/data -p 8080:8080 docker-registry.ebrains.eu/nest/nest-simulator:<version> <args>
 
 In Powershell, '%cd%' might not work for the current directory. Then
 you should explicitly specify a folder with existing write permissions.
 
 In any case, this will download the docker image with the pre-installed
-NEST master form docker hub and start it. After booting an URL is presented.
+NEST master from docker-registry.ebrains.eu and start it. After booting an URL is presented.
 Click on it or copy it to your browser. Voilá jupyter notebook starts from
 the docker image.
 
 You can update the image with:
 
-    docker pull nestsim/nest:<version>
+    docker pull docker-registry.ebrains.eu/nest/nest-simulator:<version>
 
 ## Usage of the local build system
 
@@ -82,7 +72,7 @@ You can clone this repository and use the shell script:
 
     --help      print this usage information.
     <command>   can be either 'provision', 'run' or 'clean'.
-    [<args>]    can be either 'notebook', 'interactice' or 'virtual'.
+    [<args>]    can be either 'notebook' or 'interactice'.
     [<version>] kind of docker image (e.g. 'latest', '2.12.0', '2.14.0',
                 '2.16.0', '2.18.0', '3.0', '3.1' or 'all').
 
@@ -93,42 +83,40 @@ You can clone this repository and use the shell script:
 
 ### NEST server only
 
-    docker run -it --rm -e LOCAL_USER_ID=`id -u $USER` -p 5000:5000 nestsim/nest:3.1 nest-server
+    docker run -it --rm -e LOCAL_USER_ID=`id -u $USER` -p 5000:5000 docker-registry.ebrains.eu/nest/nest-simulator:3.1 nest-server
     curl localhost:5000/api
 
 ### NEST desktop including NEST server    
 
-    docker run -it --rm -e LOCAL_USER_ID=`id -u $USER` -p 5000:5000 nestsim/nest:3.1 nest-server
-    docker run -it --rm -e LOCAL_USER_ID=`id -u $USER` -p 8000:8000 nestsim/nest:3.1 nest-desktop
+    docker run -it --rm -e LOCAL_USER_ID=`id -u $USER` -p 5000:5000 docker-registry.ebrains.eu/nest/nest-simulator:3.1 nest-server
+    docker run -it --rm -e LOCAL_USER_ID=`id -u $USER` -p 8000:8000 docker-registry.ebrains.eu/nest/nest-simulator:3.1 nest-desktop
 
 Open <http://localhost:8000>.
 
-### The easy way with `docker-compose` (only v3.1)
+### The easy way with `docker-compose` (since v3.1)
 
-    docker pull nestsim/nest:3.1
+    docker pull docker-registry.ebrains.eu/nest/nest-simulator:TAG
 
+TAG is '3.1' or 'latest'.
 Heads up: If the docker image is not pre-installed, "docker-compose ..." will start building the docker image from the local Docker files.
 
--   `docker-compose up  nest-server`
+-   `docker-compose -f docker-compose-TAG.yml up nest-server`
     
     Starts the NEST API server container and opens the corresponding port 5000. Test it with `curl localhost:5000/api`.
 
--   `docker-compose up nest-desktop`
+-   `docker-compose -f docker-compose-TAG.yml up nest-desktop`
     
     Starts the NEST server and the NEST desktop web interface. Port 8000 is also made available.
     Open in the web browser: `http://localhost:8000`
 
--  `docker-compose up nest-notebook`
+-  `docker-compose -f docker-compose-TAG.yml up nest-notebook`
 
     Starts a notebook server with pre-installed NEST 3.1. The corresponding URL is displayed in the console.
 
--   `docker-compose run server bash`
+-   `docker-compose -f docker-compose-TAG.yml run server bash`
     
     Starts the api server conntainer and runs bash as its command.
 
--   `docker-compose up`
-
-    Starts everything.
 
 ## 1 - 2 (- 3)
 
@@ -155,7 +143,7 @@ from the docker files.
 Be careful with the version 'all'. This really takes a long time.
 
 After every build of a NEST docker image, there are two more images - the one
-with the name of the NEST version (e.g. 'nestsim/nest:master') and
+with the name of the NEST version (e.g. 'docker-registry.ebrains.eu/nest/nest-simulator:master') and
 another without any name. The last one you can delete.
 More information about this so called 'multi-stage build' here:
 <https://docs.docker.com/develop/develop-images/multistage-build/>
@@ -170,7 +158,7 @@ More information about this so called 'multi-stage build' here:
 
         docker run -it --rm -e LOCAL_USER_ID=`id -u $USER` --name my_app \
                -v $(pwd):/opt/data  \
-               -p 8080:8080 nestsim/nest:VERSION notebook
+               -p 8080:8080 docker-registry.ebrains.eu/nest/nest-simulator:VERSION notebook
 
     (For VERSION see above)
 
@@ -185,7 +173,7 @@ More information about this so called 'multi-stage build' here:
 
         docker run -it --rm -e LOCAL_USER_ID=`id -u $USER` --name my_app \
                -v $(pwd):/opt/data  \
-               -p 8080:8080 nestsim/nest:VERSION interactive
+               -p 8080:8080 docker-registry.ebrains.eu/nest/nest-simulator:VERSION interactive
 
     (For VERSION see above)
 
@@ -193,21 +181,6 @@ More information about this so called 'multi-stage build' here:
     you want to start. Only the filename without any path. The file has to
     be in the path where you start the script.
 
--   as virtual image
-
-        sh run.sh run virtual VERSION
-
-     or
-
-        docker run -it --rm -e LOCAL_USER_ID=`id -u $USER` --name my_app \
-               -v $(pwd):/opt/data  \
-               -p 8080:8080 nestsim/nest:VERSION /bin/bash
-
-    (For VERSION see above)
-
-    You are logged in as user 'nest'. Enter 'python' and in the
-    python-shell 'import nest'. A 'nest.help()' should display the main
-    help page.
 
 ### (3) - Delete the NEST Images
 
@@ -221,7 +194,7 @@ In the folder with your music scripts run:
 
     docker run -it --rm -e LOCAL_USER_ID=`id -u $USER`  \
                -v $(pwd):/opt/data  \
-               nestsim/nest:3.1 /bin/bash
+               docker-registry.ebrains.eu/nest/nest-simulator:3.1 /bin/bash
 
 You are now on container's shell.
     
@@ -236,12 +209,12 @@ You are now on container's shell.
 
 -   Export a docker image
 
-        docker save nestsim/nest:2.18.0 | gzip -c > nest-docker.tar.gz  
+        docker save docker-registry.ebrains.eu/nest/nest-simulator:3.1 | gzip -c > nest-docker.tar.gz  
 
 -   Import a docker image
 
         gunzip -c nest-docker.tar.gz | docker load
        
--   Execute an interactive bash shell on a container.
+-   Execute an interactive bash shell on a running container.
 
         docker exec -it nest-notebook_container_name bash
