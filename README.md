@@ -223,9 +223,10 @@ In the folder with your music scripts run:
                -v $(pwd):/opt/data  \
                nestsim/nest:3.1 /bin/bash
 
-You are now on container's shell, but can use the programs on your local machine
-
-    mpirun -np 2 music /opt/data/minimalmusicsetup.music
+You are now on container's shell.
+    
+    cd /opt/nest/share/doc/nest/examples/music/
+    mpirun --allow-run-as-root -np 2 music ./minimalmusicsetup.music
 
 ## Useful Docker commands
 
