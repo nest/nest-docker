@@ -29,6 +29,3 @@ services:
       - "8080:8080"
     command:
       - notebook
-
-# docker run -it --rm -e LOCAL_USER_ID=`id -u $USER` --name my_app -v $(pwd):/opt/data -p 8080:8080 docker-registry.ebrains.eu/nest/nest-simulator:"$2" notebook
-# docker run -it --rm -e LOCAL_USER_ID=`id -u $USER` -p 8000:8000 docker-registry.ebrains.eu/nest/nest-simulator:3.1 nest-desktop start
