@@ -243,4 +243,9 @@ You are now on container's shell, but can use the programs on your local machine
        
 -   Execute an interactive bash shell on a container.
 
-        docker exec -it nest-notebook_container_name bash
+        docker exec -it <nest_container_name> bash
+
+-   If there is a standard user, use this to login as root:
+
+        docker exec -it --workdir /root --user root <nest_container_name> bash
+
