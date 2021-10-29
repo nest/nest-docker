@@ -57,7 +57,7 @@ case $command in
             latest | latest_daint | 2.12.0 | 2.14.0 | 2.16.0 | 2.18.0 | 2.20.0 | 2.20.1 | 3.0 | 3.1)
                 echo "Build the NEST image for NEST $1"
                 echo
-                docker build -t nestsim/nest:"$1" ./src/"$1"
+                docker build -t docker-registry.ebrains.eu/nest/nest-simulator:"$1" ./src/"$1"
                 echo
                 echo "Finished!"
                 ;;
@@ -65,16 +65,16 @@ case $command in
                 echo "Build the NEST image for NEST 2.12.0, 2.14.0,"
                 echo "2.16.0, 2.18.0, 2.20.0, 2.20.0, 3.0,, 3.1 latest and latest_daint"
                 echo
-                docker build -t nestsim/nest:2.12.0 ./src/2.12.0
-                docker build -t nestsim/nest:2.14.0 ./src/2.14.0
-                docker build -t nestsim/nest:2.16.0 ./src/2.16.0
-                docker build -t nestsim/nest:2.18.0 ./src/2.18.0
-                docker build -t nestsim/nest:2.20.0 ./src/2.20.0
-                docker build -t nestsim/nest:2.20.1 ./src/2.20.1
-                docker build -t nestsim/nest:3.0 ./src/3.0
-                docker build -t nestsim/nest:3.1 ./src/3.1
-                docker build -t nestsim/nest:latest ./src/latest
-                docker build -t nestsim/nest:latest_daint ./src/latest_daint
+                docker build -t nest/nest-simulator:2.12.0 ./src/2.12.0
+                docker build -t nest/nest-simulator:2.14.0 ./src/2.14.0
+                docker build -t nest/nest-simulator:2.16.0 ./src/2.16.0
+                docker build -t nest/nest-simulator:2.18.0 ./src/2.18.0
+                docker build -t nest/nest-simulator:2.20.0 ./src/2.20.0
+                docker build -t nest/nest-simulator:2.20.1 ./src/2.20.1
+                docker build -t nest/nest-simulator:3.0 ./src/3.0
+                docker build -t nest/nest-simulator:3.1 ./src/3.1
+                docker build -t nest/nest-simulator:latest ./src/latest
+                docker build -t nest/nest-simulator:latest_daint ./src/latest_daint
                 echo
                 echo "Finished!"
                 ;;
@@ -92,7 +92,6 @@ case $command in
         echo
         echo "  - 'notebook VERSION'"
         echo "  - 'interactive VESRION'"
-        echo "  - 'virtual VERSION'"
         echo
         echo "VERSION is the version of NEST"
         echo "(e.g. latest, 2.12.0, 2.14.0, 2.16.0, 2.18.0, 2.20.0, 2.20.1, 3.0, 3.1)"
@@ -107,7 +106,7 @@ case $command in
                     echo
                     docker run -it --rm -e LOCAL_USER_ID=`id -u $USER` --name my_app  \
 							   -v $(pwd):/opt/data  \
-							   -p 8080:8080 nestsim/nest:"$2" notebook
+							   -p 8080:8080 docker-registry.ebrains.eu/nest/nest-simulator:"$2" notebook
                     echo
                     ;;
                     *)
@@ -122,8 +121,7 @@ case $command in
                     echo "Run NEST-$2 in interactive mode."
                     echo
                     docker run -it --rm -e LOCAL_USER_ID=`id -u $USER` --name my_app  \
-							   -v $(pwd):/opt/data  \
-							   -p 8080:8080 nestsim/nest:"$2" interactive
+							   -p 8080:8080 docker-registry.ebrains.eu/nest/nest-simulator:"$2" interactive
                     echo
                     ;;
                     *)
@@ -132,17 +130,7 @@ case $command in
                     ;;
                 esac
             ;;
-            virtual)
-                case "$2" in
-                    latest | 2.12.0 | 2.14.0 | 2.16.0 | 2.18.0 | 2.20.0 |2.20.1 | 3.0 | 3.1 )
-                    echo "Run NEST-$2 like a virtual machine."
-                    echo
-                    docker run -it --rm -e LOCAL_USER_ID=`id -u $USER` --name my_app  \
-							   -v $(pwd):/opt/data  \
-							   -p 8080:8080 nestsim/nest:"$2" /bin/bash
-                    echo
-                    ;;
-                    *)
+            *)
                     echo "Error: Unrecognized option '$2'"
                     command=help
                     ;;
