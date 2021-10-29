@@ -95,14 +95,14 @@ case $command in
         echo "  - 'virtual VERSION'"
         echo
         echo "VERSION is the version of NEST"
-        echo "(e.g. latest, latest_daint, 2.12.0, 2.14.0, 2.16.0, 2.18.0, 2.20.0, 2.20.1, 3.0, 3.1)"
+        echo "(e.g. latest, 2.12.0, 2.14.0, 2.16.0, 2.18.0, 2.20.0, 2.20.1, 3.0, 3.1)"
         echo
     LOCALDIR="$(pwd)"
     while test $# -gt 1; do
         case "$1" in
             notebook)
                 case "$2" in
-                    latest | latest_daint | 2.12.0 | 2.14.0 | 2.16.0 | 2.18.0 | 2.20.0 | 2.20.1 | 3.0 | 3.1 )
+                    latest | 2.12.0 | 2.14.0 | 2.16.0 | 2.18.0 | 2.20.0 | 2.20.1 | 3.0 | 3.1 )
                     echo "Run NEST-$2 with Jupyter Notebook".
                     echo
                     docker run -it --rm -e LOCAL_USER_ID=`id -u $USER` --name my_app  \
@@ -118,7 +118,7 @@ case $command in
             ;;
             interactive)
                 case "$2" in
-                    latest | latest_daint | 2.12.0 | 2.14.0 | 2.16.0 | 2.18.0 | 2.20.0 | 2.20.1 | 3.0 | 3.1 )
+                    latest | 2.12.0 | 2.14.0 | 2.16.0 | 2.18.0 | 2.20.0 | 2.20.1 | 3.0 | 3.1 )
                     echo "Run NEST-$2 in interactive mode."
                     echo
                     docker run -it --rm -e LOCAL_USER_ID=`id -u $USER` --name my_app  \
@@ -134,7 +134,7 @@ case $command in
             ;;
             virtual)
                 case "$2" in
-                    latest | latest_daint | 2.12.0 | 2.14.0 | 2.16.0 | 2.18.0 | 2.20.0 |2.20.1 | 3.0 | 3.1 )
+                    latest | 2.12.0 | 2.14.0 | 2.16.0 | 2.18.0 | 2.20.0 |2.20.1 | 3.0 | 3.1 )
                     echo "Run NEST-$2 like a virtual machine."
                     echo
                     docker run -it --rm -e LOCAL_USER_ID=`id -u $USER` --name my_app  \
