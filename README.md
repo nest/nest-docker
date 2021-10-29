@@ -114,7 +114,7 @@ local Docker files.
 
     Starts a notebook server with pre-installed NEST 3.1. The corresponding URL is displayed in the console.
 
-- `docker-compose run server bash`
+- `docker-compose run nest-server bash`
     
     Starts the api server conntainer and runs bash as its command.
 
