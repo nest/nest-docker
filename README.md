@@ -255,4 +255,3 @@ You are now on container's shell, but can use the programs on your local machine
     docker build -t nest-simulator:<VERSION> /path/to/recipe --squash
     docker tag nest/nest-simulator:<VERSION>  docker-registry.ebrains.eu/nest/nest-simulator:<VERSION> 
     docker push docker-registry.ebrains.eu/nest/nest-simulator:<VERSION> 
-
