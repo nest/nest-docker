@@ -134,13 +134,6 @@ case $command in
                     echo "Error: Unrecognized option '$2'"
                     command=help
                     ;;
-                esac
-            ;;
-            *)
-                echo "Error: Unrecognized option '$1'"
-                command=help
-            ;;
-
         esac
         shift
     done
