@@ -53,7 +53,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     # update-alternatives --remove-all python && \
     update-alternatives --install /usr/bin/python python /usr/bin/python3 10 && \
     update-alternatives --install /usr/bin/pip pip /usr/bin/pip3 10 && \
-    python3 -m pip install --upgrade pip setuptools wheel mock
+    python3 -m pip install --upgrade pip setuptools wheel mock nestml
 
 
 # Install music
