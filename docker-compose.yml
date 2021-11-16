@@ -29,3 +29,14 @@ services:
       - "8080:8080"
     command:
       - notebook
+
+  nest-jupyterlab:
+    image: docker-registry.ebrains.eu/nest/nest-simulator:3.1
+    volumes:
+      - .:/opt/data
+    environment:
+      - LOCAL_USER_ID=`id -u $USER`
+    ports:
+      - "8080:8080"
+    command:
+      - jupyterlab
