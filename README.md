@@ -126,7 +126,7 @@ local Docker files.
 If you want to use the compose configurtion for the latest NEST version ('docker-compose.latest.yml'), use the file 
 option, e.g.:
 
-    docker-compose -f docker-compose.latest.yml up nest-notebook
+    docker-compose -f docker-compose-latest.yml up nest-notebook
 
 ## 1 - 2 (- 3)
 
