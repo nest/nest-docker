@@ -26,7 +26,7 @@ You can use the docker images direct out of docker-registry.ebrains.eu like this
                -p 8080:8080 docker-registry.ebrains.eu/nest/nest-simulator:<version> <args>
 
 
-    [<args>]    can be either 'notebook', 'nest-server', interactice' or '/bin/bash'
+    [<args>]    can be either 'notebook', 'jupyterlab', 'nest-server', interactice' or '/bin/bash'
     [<version>] kind of docker image (e.g. 'latest', '2.12.0', '2.14.0',
                 '2.16.0', '2.18.0', '3.0', '3.1')
 
@@ -35,7 +35,7 @@ You can use the docker images direct out of docker-registry.ebrains.eu like this
                -v $(pwd):/opt/data  \
                -p 8080:8080 docker-registry.ebrains.eu/nest/nest-simulator:latest notebook
 
-    or for starting nest-server in background (only 'latest')
+    or for starting nest-server in background
     docker run -d --rm -e LOCAL_USER_ID=`id -u $USER` -p 5000:5000 docker-registry.ebrains.eu/nest/nest-simulator:latest nest-server
 
 If you want to work with a container for a longer time, you should remove the '--rm':
@@ -72,12 +72,13 @@ You can clone this repository and use the shell script:
 
     --help      print this usage information.
     <command>   can be either 'provision', 'run' or 'clean'.
-    [<args>]    can be either 'notebook' or 'interactice'.
+    [<args>]    can be either 'notebook', 'jupyterlab', or 'interactice'.
     [<version>] kind of docker image (e.g. 'latest', '2.12.0', '2.14.0',
                 '2.16.0', '2.18.0', '3.0', '3.1' or 'all').
 
     Example:    sh run.sh provision latest
                 sh run.sh run notebook latest
+                sh run.sh run jupyterlab latest
 
 ## Using NEST server and NEST desktop (since v3.1)
 
@@ -114,6 +115,10 @@ local Docker files.
 
     Starts a notebook server with pre-installed NEST 3.1. The corresponding URL is displayed in the console.
 
+- `docker-compose up nest-jupyterlab`
+
+    Starts a jupyter lab server with pre-installed NEST 3.1. The corresponding URL is displayed in the console.
+
 - `docker-compose run nest-server bash`
     
     Starts the api server conntainer and runs bash as its command.
@@ -121,7 +126,7 @@ local Docker files.
 If you want to use the compose configurtion for the latest NEST version ('docker-compose.latest.yml'), use the file 
 option, e.g.:
 
-    docker-compose -f docker-compose.latest.yml up nest-notebook
+    docker-compose -f docker-compose-latest.yml up nest-notebook
 
 ## 1 - 2 (- 3)
 
@@ -234,4 +239,3 @@ You are now on container's shell.
     docker build -t nest-simulator:<VERSION> /path/to/recipe --squash
     docker tag nest/nest-simulator:<VERSION>  docker-registry.ebrains.eu/nest/nest-simulator:<VERSION> 
     docker push docker-registry.ebrains.eu/nest/nest-simulator:<VERSION> 
-

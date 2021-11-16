@@ -27,6 +27,11 @@ if [[ "$1" = 'notebook' ]]; then
     exec jupyter-notebook --ip="${IP_ADDRESS}" --port=8080 --no-browser --allow-root
 fi
 
+if [[ "$1" = 'jupyterlab' ]]; then
+    cd /opt/data
+    exec /root/.local/bin/jupyter-lab --ip="${IP_ADDRESS}" --port=8080 --no-browser --allow-root
+fi
+
 if [[ "$1" = 'nest-server' ]]; then
     cd /opt/data
     exec nest-server start -o -h 0.0.0.0 -p 5000 -u 65534
