@@ -12,5 +12,9 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Build the Docker image
-      run: cd src/latest/ && \ 
-           docker build .  --tag nest/nest-simulator:latest
+      run: cd src/latest/
+      run: docker build .  --tag nest/nest-simulator:latest
+      run: docker images
+      run: docker inspect --format='{{.Config.Image}}' $INSTANCE_ID
+      run: docker inspect --format='{{range $p, $conf := .NetworkSettings.Ports}} {{$p}} -> {{(index $conf 0).HostPort}} {{end}}' $INSTANCE_ID
+      run: docker run -it nest/nest-simulator python3 -c "import nest"
