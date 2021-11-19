@@ -12,4 +12,5 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Build the Docker image
-      run: docker build . --file /home/runner/work/nest-docker/src/latest/Dockerfile --tag nest/nest-simulator:latest
+      run: ls -l
+      #run: docker build . --file /home/runner/work/nest-docker/src/latest/Dockerfile --tag nest/nest-simulator:latest
