@@ -17,7 +17,7 @@ jobs:
           cd src/latest/ && docker build . --tag nest/nest-simulator:latest 
       - name: Check NEST
         run: |
-          docker run -it nest/nest-simulator:latest python3 -c "import nest" | grep "Version:"
+          docker run nest/nest-simulator:latest python3 -c "import nest" | grep "Version:"
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@master
         with:
