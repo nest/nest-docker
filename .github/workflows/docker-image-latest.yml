@@ -13,8 +13,4 @@ jobs:
     - uses: actions/checkout@v2
     - name: Build the Docker image
       run: cd src/latest/ && \ 
-           docker build .  --tag nest/nest-simulator:latest && \
-           docker images && \
-           docker inspect --format='{{.Config.Image}}' $INSTANCE_ID && \
-           docker inspect --format='{{range $p, $conf := .NetworkSettings.Ports}} {{$p}} -> {{(index $conf 0).HostPort}} {{end}}' $INSTANCE_ID && \
-           docker run -it nest/nest-simulator python3 -c "import nest"
+           docker build .  --tag nest/nest-simulator:latest
