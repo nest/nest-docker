@@ -17,7 +17,7 @@ export CPATH=${MUSIC_PATH}/include:$CPATH
 export PYTHONPATH=${MUSIC_PATH}/lib/python3.8/site-packages:$PYTHONPATH
 
 
-MODE="${mode:-$1}"
+MODE="${NEST_CONTAINER_MODE:-$1}"
 if [[ "${MODE}" = 'interactive' ]]; then
     read -p "Your python script: " name
     echo Starting: $name
