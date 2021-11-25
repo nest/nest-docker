@@ -15,40 +15,39 @@ export LD_LIBRARY_PATH=${MUSIC_PATH}/lib:$LD_LIBRARY_PATH
 export PATH=${MUSIC_PATH}/bin:$PATH
 export CPATH=${MUSIC_PATH}/include:$CPATH
 export PYTHONPATH=${MUSIC_PATH}/lib/python3.8/site-packages:$PYTHONPATH
-export NEST_SERVER_RESTRICTION_OFF=true
-export NEST_SERVER_MODULES=nest,numpy
 
-if [[ ! -d /opt/data ]]; then
-    mkdir /opt/data
-fi
+# Create folder if not existed and change the director to /opt/data.
+mkdir_cd () {
+    if [[ ! -d $1 ]]; then
+        mkdir $1
+    fi
+    cd $1
+}
 
-if [[ "$1" = 'notebook' ]]; then
-    cd /opt/data
-    exec jupyter-notebook --ip="${IP_ADDRESS}" --port=8080 --no-browser --allow-root
-fi
-
-if [[ "$1" = 'jupyterlab' ]]; then
-    cd /opt/data
-    exec /root/.local/bin/jupyter-lab --ip="${IP_ADDRESS}" --port=8080 --no-browser --allow-root
-fi
-
-if [[ "$1" = 'nest-server' ]]; then
-    cd /opt/data
-    exec nest-server start -o -h 0.0.0.0 -p 5000 -u 65534
-fi
-
-if [[ "$1" = 'nest-desktop' ]]; then
-    cd /opt/data
-    exec /root/.local/bin/nest-desktop start
-fi
-
-if [[ "$1" = 'interactive' ]]; then
+MODE="${mode:-$1}"
+if [[ "${MODE}" = 'interactive' ]]; then
     read -p "Your python script: " name
     echo Starting: $name
-    cd /opt/data
     # Start
+    mkdir_cd /opt/data
     exec python3 /opt/data/$name
-fi
 
-cd /opt/data
-exec "$@"
+elif [[ "${MODE}" = 'jupyterlab' ]]; then
+    mkdir_ch /opt/data
+    exec /root/.local/bin/jupyter-lab --ip="${IP_ADDRESS}" --port=8080 --no-browser --allow-root
+
+elif [[ "${MODE}" = 'nest-desktop' ]]; then
+    exec /root/.local/bin/nest-desktop start -h 0.0.0.0 -p 8000
+
+elif [[ "${MODE}" = 'nest-server' ]]; then
+    export NEST_SERVER_RESTRICTION_OFF=true
+    export NEST_SERVER_MODULES=nest,numpy
+    exec nest-server start -o -h 0.0.0.0 -p 5000 -u 65534
+
+elif [[ "${MODE}" = 'notebook' ]]; then
+    mkdir_cd /opt/data
+    exec jupyter-notebook --ip="${IP_ADDRESS}" --port=8080 --no-browser --allow-root
+
+else
+    exec "$@"
+fi
