@@ -33,8 +33,8 @@ elif [[ "${MODE}" = 'nest-desktop' ]]; then
     exec /root/.local/bin/nest-desktop start -h 0.0.0.0 -p 8000
 
 elif [[ "${MODE}" = 'nest-server' ]]; then
-    export NEST_SERVER_RESTRICTION_OFF=true
-    export NEST_SERVER_MODULES=nest,numpy
+    export NEST_SERVER_RESTRICTION_OFF=${NEST_SERVER_RESTRICTION_OFF:-true}
+    export NEST_SERVER_MODULES=${NEST_SERVER_MODULES:-nest,numpy}
     exec uwsgi --module nest.server:app --buffer-size 65535 --http-socket 0.0.0.0:5000
 
 elif [[ "${MODE}" = 'notebook' ]]; then
