@@ -16,24 +16,19 @@ export PATH=${MUSIC_PATH}/bin:$PATH
 export CPATH=${MUSIC_PATH}/include:$CPATH
 export PYTHONPATH=${MUSIC_PATH}/lib/python3.8/site-packages:$PYTHONPATH
 
-# Create folder if not existed and then change the directory.
-mkdir_cd () {
-    if [[ ! -d $1 ]]; then
-        mkdir $1
-    fi
-    cd $1
-}
 
 MODE="${mode:-$1}"
 if [[ "${MODE}" = 'interactive' ]]; then
     read -p "Your python script: " name
     echo Starting: $name
     # Start
-    mkdir_cd /opt/data
+    mkdir -p /opt/data
+    cd /opt/data
     exec python3 /opt/data/$name
 
 elif [[ "${MODE}" = 'jupyterlab' ]]; then
-    mkdir_ch /opt/data
+    mkdir -p /opt/data
+    cd /opt/data
     exec /root/.local/bin/jupyter-lab --ip="${IP_ADDRESS}" --port=8080 --no-browser --allow-root
 
 elif [[ "${MODE}" = 'nest-desktop' ]]; then
@@ -45,7 +40,8 @@ elif [[ "${MODE}" = 'nest-server' ]]; then
     exec uwsgi --module nest.server:app --buffer-size 65535 --http-socket 0.0.0.0:5000
 
 elif [[ "${MODE}" = 'notebook' ]]; then
-    mkdir_cd /opt/data
+    mkdir -p /opt/data
+    cd /opt/data
     exec jupyter-notebook --ip="${IP_ADDRESS}" --port=8080 --no-browser --allow-root
 
 else
