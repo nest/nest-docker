@@ -22,12 +22,11 @@ if [[ "${MODE}" = 'interactive' ]]; then
     read -p "Your python script: " name
     echo Starting: $name
     # Start
-    mkdir_cd /opt/data
+    mkdir -p /opt/data; cd /opt/data
     exec python3 /opt/data/$name
 
 elif [[ "${MODE}" = 'jupyterlab' ]]; then
-    mkdir -p /opt/data
-    cd /opt/data
+    mkdir -p /opt/data; cd /opt/data
     exec /root/.local/bin/jupyter-lab --ip="${IP_ADDRESS}" --port=8080 --no-browser --allow-root
 
 elif [[ "${MODE}" = 'nest-desktop' ]]; then
@@ -39,8 +38,7 @@ elif [[ "${MODE}" = 'nest-server' ]]; then
     exec uwsgi --module nest.server:app --buffer-size 65535 --http-socket 0.0.0.0:5000
 
 elif [[ "${MODE}" = 'notebook' ]]; then
-    mkdir -p /opt/data
-    cd /opt/data
+    mkdir -p /opt/data; cd /opt/data
     exec jupyter-notebook --ip="${IP_ADDRESS}" --port=8080 --no-browser --allow-root
 
 else
