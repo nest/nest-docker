@@ -42,7 +42,7 @@ elif [[ "${MODE}" = 'nest-desktop' ]]; then
 elif [[ "${MODE}" = 'nest-server' ]]; then
     export NEST_SERVER_RESTRICTION_OFF=true
     export NEST_SERVER_MODULES=nest,numpy
-    exec nest-server start -o -h 0.0.0.0 -p 5000 -u 65534
+    exec uwsgi --module nest.server:app --buffer-size 65535 --http-socket 0.0.0.0:5000
 
 elif [[ "${MODE}" = 'notebook' ]]; then
     mkdir_cd /opt/data
