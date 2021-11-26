@@ -1,0 +1,29 @@
+name: Docker Image CI
+
+on:
+  workflow_dispatch:
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Build the Docker image
+        run: | 
+          cd src/latest/ && docker build . --tag nest/nest-simulator:latest 
+      - name: Check NEST
+        run: |
+          docker run nest/nest-simulator:latest python3 -c "import nest" | grep "Version:"
+      - name: Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: 'nest/nest-simulator'
+          format: 'table'
+          exit-code: '1'
+          ignore-unfixed: true
+          vuln-type: 'os,library'
+          severity: 'CRITICAL,HIGH'

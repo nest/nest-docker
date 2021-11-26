@@ -6,51 +6,60 @@ If you know how to use docker, you know how to use NEST.
 
 Currently the following docker images are provided
 
-    - docker-registry.ebrains.eu/nest/nest-simulator:latest (~1,09GB)
+    - docker-registry.ebrains.eu/nest/nest-simulator:latest (~1,34GB)
     - docker-registry.ebrains.eu/nest/nest-simulator:2.12.0 (~535MB)
     - docker-registry.ebrains.eu/nest/nest-simulator:2.14.0 (~537MB)
     - docker-registry.ebrains.eu/nest/nest-simulator:2.16.0 (~539MB)
     - docker-registry.ebrains.eu/nest/nest-simulator:2.18.0 (~543MB)
     - docker-registry.ebrains.eu/nest/nest-simulator:2.20.0 (~634MB)
     - docker-registry.ebrains.eu/nest/nest-simulator:3.0 (~1,07GB)
-    - docker-registry.ebrains.eu/nest/nest-simulator:3.1 (~)
+    - docker-registry.ebrains.eu/nest/nest-simulator:3.1 (~1,34GB)
 
 ## Usage
 
 You can use the docker images direct out of docker-registry.ebrains.eu like this:
 
-### On Linux and MacOsx
+### The easy way with `docker-compose` (since v3.1)
 
-    docker run -it --rm -e LOCAL_USER_ID=`id -u $USER` --name my_app  \
-               -v $(pwd):/opt/data  \
-               -p 8080:8080 docker-registry.ebrains.eu/nest/nest-simulator:<version> <args>
+    docker pull docker-registry.ebrains.eu/nest/nest-simulator:TAG
+
+TAG is '3.1' or 'latest'.
+Heads up: If the docker image is not pre-installed, "docker-compose ..." will start building the docker image from the 
+local Docker files.
+
+- `docker-compose up nest-server`
+    
+    (docker run -it --rm -e NEST_CONTAINER_MODE=nest-server -p 5000:5000 docker-registry.ebrains.eu/nest/nest-simulator:3.1)    
+    Starts the NEST API server container and opens the corresponding port 5000. Test it with `curl localhost:5000/api`.
+
+- `docker-compose up nest-desktop`
+
+    (docker run -it --rm -e NEST_CONTAINER_MODE=nest-server -p 5000:5000 docker-registry.ebrains.eu/nest/nest-simulator:3.1
+    docker run -it --rm -e LOCAL_USER_ID=`id -u $USER` -p 8000:8000  -e NEST_CONTAINER_MODE=nest-desktop docker-registry.ebrains.eu/nest/nest-simulator:3.1)
+    Starts the NEST server and the NEST desktop web interface. Port 8000 is also made available.
+    Open in the web browser: `http://localhost:8000`
+
+- `docker-compose up nest-notebook`
+
+    (docker run -it --rm -e LOCAL_USER_ID=`id -u $USER` -v $(pwd):/opt/data -e NEST_CONTAINER_MODE=notebook -p 8080:8080 docker-registry.ebrains.eu/nest/nest-simulator:3.1)
+    Starts a notebook server with pre-installed NEST 3.1. The corresponding URL is displayed in the console.
+
+- `docker-compose up nest-jupyterlab`
+
+    (docker run -it --rm -e LOCAL_USER_ID=`id -u $USER` -v $(pwd):/opt/data -e NEST_CONTAINER_MODE=jupyterlab -p 8080:8080 docker-registry.ebrains.eu/nest/nest-simulator:3.1)
+    Starts a jupyter lab server with pre-installed NEST 3.1. The corresponding URL is displayed in the console.
 
 
-    [<args>]    can be either 'notebook', 'jupyterlab', 'nest-server', interactice' or '/bin/bash'
-    [<version>] kind of docker image (e.g. 'latest', '2.12.0', '2.14.0',
-                '2.16.0', '2.18.0', '3.0', '3.1')
+If you want to use the compose configurtion for the latest NEST version ('docker-compose.latest.yml'), use the file 
+option, e.g.:
 
-    eg.
-    docker run -it --rm -e LOCAL_USER_ID=`id -u $USER` --name my_app \
-               -v $(pwd):/opt/data  \
-               -p 8080:8080 docker-registry.ebrains.eu/nest/nest-simulator:latest notebook
-
-    or for starting nest-server in background
-    docker run -d --rm -e LOCAL_USER_ID=`id -u $USER` -p 5000:5000 docker-registry.ebrains.eu/nest/nest-simulator:latest nest-server
-
-If you want to work with a container for a longer time, you should remove the '--rm':
-
-    docker run -it -e LOCAL_USER_ID=`id -u $USER` --name my_app  \
-               -v $(pwd):/opt/data  \
-               -p 8080:8080 docker-registry.ebrains.eu/nest/nest-simulator:<version> <args>
-
-After you stop the container, it still exists ('docker ps -a'). To restart simply use:
-
-    docker start -i my_app
+    docker-compose -f docker-compose-latest.yml up nest-notebook
 
 ### On Windows
 
-    docker run -it --rm -v %cd%:/opt/data -p 8080:8080 docker-registry.ebrains.eu/nest/nest-simulator:<version> <args>
+e.g.:
+
+    docker run -it --rm -v %cd%:/opt/data -p 8080:8080 -e NEST_CONTAINER_MODE=<args> docker-registry.ebrains.eu/nest/nest-simulator:<version>
 
 In Powershell, '%cd%' might not work for the current directory. Then
 you should explicitly specify a folder with existing write permissions.
@@ -80,53 +89,6 @@ You can clone this repository and use the shell script:
                 sh run.sh run notebook latest
                 sh run.sh run jupyterlab latest
 
-## Using NEST server and NEST desktop (since v3.1)
-
-### NEST server only
-
-    docker run -it --rm -e LOCAL_USER_ID=`id -u $USER` -p 5000:5000 docker-registry.ebrains.eu/nest/nest-simulator:3.1 nest-server
-    curl localhost:5000/api
-
-### NEST desktop including NEST server    
-
-    docker run -it --rm -e LOCAL_USER_ID=`id -u $USER` -p 5000:5000 docker-registry.ebrains.eu/nest/nest-simulator:3.1 nest-server
-    docker run -it --rm -e LOCAL_USER_ID=`id -u $USER` -p 8000:8000 docker-registry.ebrains.eu/nest/nest-simulator:3.1 nest-desktop
-
-Open <http://localhost:8000>.
-
-### The easy way with `docker-compose` (since v3.1)
-
-    docker pull docker-registry.ebrains.eu/nest/nest-simulator:TAG
-
-TAG is '3.1' or 'latest'.
-Heads up: If the docker image is not pre-installed, "docker-compose ..." will start building the docker image from the 
-local Docker files.
-
-- `docker-compose up nest-server`
-    
-    Starts the NEST API server container and opens the corresponding port 5000. Test it with `curl localhost:5000/api`.
-
-- `docker-compose up nest-desktop`
-    
-    Starts the NEST server and the NEST desktop web interface. Port 8000 is also made available.
-    Open in the web browser: `http://localhost:8000`
-
-- `docker-compose up nest-notebook`
-
-    Starts a notebook server with pre-installed NEST 3.1. The corresponding URL is displayed in the console.
-
-- `docker-compose up nest-jupyterlab`
-
-    Starts a jupyter lab server with pre-installed NEST 3.1. The corresponding URL is displayed in the console.
-
-- `docker-compose run nest-server bash`
-    
-    Starts the api server conntainer and runs bash as its command.
-
-If you want to use the compose configurtion for the latest NEST version ('docker-compose.latest.yml'), use the file 
-option, e.g.:
-
-    docker-compose -f docker-compose-latest.yml up nest-notebook
 
 ## 1 - 2 (- 3)
 
@@ -164,12 +126,6 @@ More information about this so called 'multi-stage build' here:
 
         sh run.sh run notebook VERSION
 
-    or
-
-        docker run -it --rm -e LOCAL_USER_ID=`id -u $USER` --name my_app \
-               -v $(pwd):/opt/data  \
-               -p 8080:8080 docker-registry.ebrains.eu/nest/nest-simulator:VERSION notebook
-
     (For VERSION see above)
 
     Open the displayed URL in your browser and have fun with Jupyter
@@ -178,12 +134,6 @@ More information about this so called 'multi-stage build' here:
 -   in interactive mode
 
         sh run.sh run interactive VERSION
-
-    or
-
-        docker run -it --rm -e LOCAL_USER_ID=`id -u $USER` --name my_app \
-               -v $(pwd):/opt/data  \
-               -p 8080:8080 docker-registry.ebrains.eu/nest/nest-simulator:VERSION interactive
 
     (For VERSION see above)
 

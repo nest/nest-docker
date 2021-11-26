@@ -2,20 +2,17 @@ services:
   nest-server:
     image: docker-registry.ebrains.eu/nest/nest-simulator:latest
     environment:
-      - LOCAL_USER_ID=`id -u $USER`
+      - NEST_CONTAINER_MODE=nest-server
     ports:
       - "5000:5000"
-    command:
-      - nest-server
 
   nest-desktop:
     image: docker-registry.ebrains.eu/nest/nest-simulator:latest
     environment:
       - LOCAL_USER_ID=`id -u $USER`
+      - NEST_CONTAINER_MODE=nest-desktop
     ports:
       - "8000:8000"
-    command:
-      - nest-desktop
     depends_on:
       - nest-server
 
@@ -25,10 +22,9 @@ services:
       - .:/opt/data
     environment:
       - LOCAL_USER_ID=`id -u $USER`
+      - NEST_CONTAINER_MODE=notebook
     ports:
       - "8080:8080"
-    command:
-      - notebook
 
   nest-jupyterlab:
     image: docker-registry.ebrains.eu/nest/nest-simulator:latest
@@ -36,7 +32,6 @@ services:
       - .:/opt/data
     environment:
       - LOCAL_USER_ID=`id -u $USER`
+      - NEST_CONTAINER_MODE=jupyterlab
     ports:
       - "8080:8080"
-    command:
-      - jupyterlab
