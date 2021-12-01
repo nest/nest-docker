@@ -151,8 +151,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     python3 -m pip install nest-desktop --user &&\
     python3 -m pip install uwsgi --user &&\
     python3 -m pip install jupyterlab --user &&\
-    python3 -m pip install nestml &&\
-    python3 -m pip install jupyterlab
+    python3 -m pip install nestml --user
 
 COPY --from=builder31 /opt/nest /opt/nest
 COPY --from=builder31 /opt/music-install /opt/music-install
