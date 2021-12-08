@@ -19,47 +19,90 @@ Currently the following docker images are provided
 
 You can use the docker images direct out of docker-registry.ebrains.eu like this:
 
-### The easy way with `docker-compose` (since v3.1)
-
     docker pull docker-registry.ebrains.eu/nest/nest-simulator:TAG
 
-TAG is '3.1' or 'latest'.
-Heads up: If the docker image is not pre-installed, "docker-compose ..." will start building the docker image from the 
-local Docker files.
+TAG is '2.20.2'. '3.1' or 'latest'.
 
-- `docker-compose up nest-server`
+#### NEST 2.20.2 
+
+Jupyter notebook with NEST 2.20.2:
+
+    docker run -it --rm -e LOCAL_USER_ID=`id -u $USER` -v $(pwd):/opt/data -e NEST_CONTAINER_MODE=notebook /
+               -p 8080:8080 docker-registry.ebrains.eu/nest/nest-simulator:2.20.2
+
+Jupyter lab with NEST 2.20.2
+
+    docker run -it --rm -e LOCAL_USER_ID=`id -u $USER` -v $(pwd):/opt/data -e NEST_CONTAINER_MODE=jupyterlab /
+               -p 8080:8080 docker-registry.ebrains.eu/nest/nest-simulator:2.20.2
+
+#### NEST 3.1  - NEW with docker-compose
+
+To use 'docker-compose' you need the definition file from the git repository. Download it:
+
+    wget https://raw.githubusercontent.com/steffengraber/nest-docker/master/docker-compose.yml
+
+- NEST server
+
+      docker-compose up nest-server
+
+  or
+
+      docker run -it --rm -e NEST_CONTAINER_MODE=nest-server -p 5000:5000 /
+           docker-registry.ebrains.eu/nest/nest-simulator:3.1   
     
-    (docker run -it --rm -e NEST_CONTAINER_MODE=nest-server -p 5000:5000 docker-registry.ebrains.eu/nest/nest-simulator:3.1)    
-    Starts the NEST API server container and opens the corresponding port 5000. Test it with `curl localhost:5000/api`.
+  Starts the NEST API server container and opens the corresponding port 5000. Test it with `curl localhost:5000/api`.
 
-- `docker-compose up nest-desktop`
+- NEST desktop
 
-    (docker run -it --rm -e NEST_CONTAINER_MODE=nest-server -p 5000:5000 docker-registry.ebrains.eu/nest/nest-simulator:3.1
-    docker run -it --rm -e LOCAL_USER_ID=`id -u $USER` -p 8000:8000  -e NEST_CONTAINER_MODE=nest-desktop docker-registry.ebrains.eu/nest/nest-simulator:3.1)
-    Starts the NEST server and the NEST desktop web interface. Port 8000 is also made available.
-    Open in the web browser: `http://localhost:8000`
+      docker-compose up nest-desktop
+  
+  or
 
-- `docker-compose up nest-notebook`
+      docker run -it --rm -e NEST_CONTAINER_MODE=nest-server -p 5000:5000 /
+          docker-registry.ebrains.eu/nest/nest-simulator:3.1
+      docker run -it --rm -e LOCAL_USER_ID=`id -u $USER` -p 8000:8000  /
+          -e NEST_CONTAINER_MODE=nest-desktop docker-registry.ebrains.eu/nest/nest-simulator:3.1
 
-    (docker run -it --rm -e LOCAL_USER_ID=`id -u $USER` -v $(pwd):/opt/data -e NEST_CONTAINER_MODE=notebook -p 8080:8080 docker-registry.ebrains.eu/nest/nest-simulator:3.1)
-    Starts a notebook server with pre-installed NEST 3.1. The corresponding URL is displayed in the console.
+  Starts the NEST server and the NEST desktop web interface. Port 8000 is also made available.
+  Open in the web browser: `http://localhost:8000`
 
-- `docker-compose up nest-jupyterlab`
+- Jupyter notebook with NEST
 
-    (docker run -it --rm -e LOCAL_USER_ID=`id -u $USER` -v $(pwd):/opt/data -e NEST_CONTAINER_MODE=jupyterlab -p 8080:8080 docker-registry.ebrains.eu/nest/nest-simulator:3.1)
-    Starts a jupyter lab server with pre-installed NEST 3.1. The corresponding URL is displayed in the console.
+      docker-compose up nest-notebook
 
+  or
 
-If you want to use the compose configurtion for the latest NEST version ('docker-compose.latest.yml'), use the file 
-option, e.g.:
+      docker run -it --rm -e LOCAL_USER_ID=`id -u $USER` -v $(pwd):/opt/data -e NEST_CONTAINER_MODE=notebook /
+          -p 8080:8080 docker-registry.ebrains.eu/nest/nest-simulator:3.1)
+    
+  Starts a notebook server with pre-installed NEST 3.1. The corresponding URL is displayed in the console.
 
+- Jupyter lab with NEST
+
+      docker-compose up nest-jupyterlab
+
+  or
+
+      docker run -it --rm -e LOCAL_USER_ID=`id -u $USER` -v $(pwd):/opt/data -e NEST_CONTAINER_MODE=jupyterlab /
+          -p 8080:8080 docker-registry.ebrains.eu/nest/nest-simulator:3.1)
+    
+  Starts a jupyter lab server with pre-installed NEST 3.1. The corresponding URL is displayed in the console.
+
+To stop and delete running containers use `docker-compose down`.
+
+#### NEST latest - NEW with docker-compose
+
+If you want to use the compose configurtion for the latest NEST version, use the file option, e.g.:
+
+    wget https://raw.githubusercontent.com/steffengraber/nest-docker/master/docker-compose.yml
     docker-compose -f docker-compose-latest.yml up nest-notebook
 
 ### On Windows
 
 e.g.:
 
-    docker run -it --rm -v %cd%:/opt/data -p 8080:8080 -e NEST_CONTAINER_MODE=<args> docker-registry.ebrains.eu/nest/nest-simulator:<version>
+    docker run -it --rm -v %cd%:/opt/data -p 8080:8080 -e NEST_CONTAINER_MODE=<args> / 
+        docker-registry.ebrains.eu/nest/nest-simulator:<version>
 
 In Powershell, '%cd%' might not work for the current directory. Then
 you should explicitly specify a folder with existing write permissions.
@@ -73,7 +116,7 @@ You can update the image with:
 
     docker pull docker-registry.ebrains.eu/nest/nest-simulator:<version>
 
-## Usage of the local build system
+## Usage of the local build system (run.sh)
 
 You can clone this repository and use the shell script:                        
 
@@ -92,16 +135,7 @@ You can clone this repository and use the shell script:
 
 ## 1 - 2 (- 3)
 
-In the next steps, VERSION is the kind of docker image you want to use
-
-    - 'latest' - complete install of latest NEST release
-    - '2.12.0' - complete install of NEST 2.12.0
-    - '2.14.0' - complete install of NEST 2.14.0
-    - '2.16.0' - complete install of NEST 2.16.0
-    - '2.18.0' - complete install of NEST 2.18.0
-    - '3.0' - complete install of NEST 3.0
-    - '3.1' - complete install of NEST 3.1
-    - 'all' - with 'all' you get all
+In the next steps, VERSION is the kind of docker image you want to use (3.1, latest, ...)
 
 Two little steps to get started
 
