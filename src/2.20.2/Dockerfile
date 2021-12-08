@@ -1,4 +1,4 @@
-FROM buildpack-deps:focal as builder31
+FROM buildpack-deps:focal as builder2202
 LABEL maintainer="s.graber@fz-juelich.de"
 
 ENV TERM=xterm \
@@ -71,9 +71,9 @@ RUN wget https://github.com/INCF/MUSIC/archive/master.tar.gz && \
 
 
 # Install NEST
-RUN wget https://github.com/nest/nest-simulator/archive/refs/tags/v3.1.tar.gz && \
+RUN wget https://github.com/nest/nest-simulator/archive/refs/tags/v2.20.2.tar.gz && \
     mkdir nest-build && \
-    tar zxf v3.1.tar.gz && \
+    tar zxf v2.20.2.tar.gz && \
     cd  nest-build && \
     cmake -DCMAKE_INSTALL_PREFIX:PATH=/opt/nest/ \
         -Dwith-warning=ON \
@@ -86,10 +86,9 @@ RUN wget https://github.com/nest/nest-simulator/archive/refs/tags/v3.1.tar.gz &&
         -Dwith-openmp=ON \
         -Dwith-libneurosim=OFF \
         -Dwith-music=/opt/music-install \
-        ../nest-simulator-3.1 && \
+        ../nest-simulator-2.20.2 && \
     make
-RUN python3 -m pip install -r ../nest-simulator-3.1/extras/nest-simulator-doc-requirements.txt && \
-        cd  nest-build && make html && make install
+RUN cd  nest-build && make install
 
 
 ###############################################################################
@@ -153,8 +152,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     python3 -m pip install jupyterlab --user &&\
     python3 -m pip install nestml --user
 
-COPY --from=builder31 /opt/nest /opt/nest
-COPY --from=builder31 /opt/music-install /opt/music-install
+COPY --from=builder2202 /opt/nest /opt/nest
+COPY --from=builder2202 /opt/music-install /opt/music-install
 
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh

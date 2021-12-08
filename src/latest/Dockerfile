@@ -88,7 +88,7 @@ RUN wget https://github.com/nest/nest-simulator/archive/refs/heads/master.tar.gz
         -Dwith-music=/opt/music-install \
         ../nest-simulator-master && \
     make
-RUN python3 -m pip install -r ../nest-simulator-master/extras/nest-simulator-doc-requirements.txt && \
+RUN python3 -m pip install -r ../nest-simulator-master/doc/requirements.txt && \
         cd  nest-build && make html && make install
 
 
@@ -151,8 +151,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     python3 -m pip install nest-desktop --user &&\
     python3 -m pip install uwsgi --user &&\
     python3 -m pip install jupyterlab --user &&\
-    python3 -m pip install nestml &&\
-    python3 -m pip install jupyterlab
+    python3 -m pip install nestml --user
 
 COPY --from=buildermaster /opt/nest /opt/nest
 COPY --from=buildermaster /opt/music-install /opt/music-install
