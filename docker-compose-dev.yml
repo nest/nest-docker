@@ -1,13 +1,13 @@
 services:
   nest-server:
-    image: docker-registry.ebrains.eu/nest/nest-simulator:latest
+    image: docker-registry.ebrains.eu/nest/nest-simulator:dev
     environment:
       - NEST_CONTAINER_MODE=nest-server
     ports:
       - "5000:5000"
 
   nest-desktop:
-    image: docker-registry.ebrains.eu/nest/nest-simulator:latest
+    image: docker-registry.ebrains.eu/nest/nest-simulator:dev
     environment:
       - LOCAL_USER_ID=`id -u $USER`
       - NEST_CONTAINER_MODE=nest-desktop
@@ -17,7 +17,7 @@ services:
       - nest-server
 
   nest-notebook:
-    image: docker-registry.ebrains.eu/nest/nest-simulator:latest
+    image: docker-registry.ebrains.eu/nest/nest-simulator:dev
     volumes:
       - .:/opt/data
     environment:
@@ -27,7 +27,7 @@ services:
       - "8080:8080"
 
   nest-jupyterlab:
-    image: docker-registry.ebrains.eu/nest/nest-simulator:latest
+    image: docker-registry.ebrains.eu/nest/nest-simulator:dev
     volumes:
       - .:/opt/data
     environment:
