@@ -6,7 +6,7 @@ If you know how to use docker, you know how to use NEST.
 
 Currently the following docker images are provided
 
-    - docker-registry.ebrains.eu/nest/nest-simulator:latest (~1,34GB)
+    - docker-registry.ebrains.eu/nest/nest-simulator:dev (~1,34GB)
     - docker-registry.ebrains.eu/nest/nest-simulator:2.12.0 (~535MB)
     - docker-registry.ebrains.eu/nest/nest-simulator:2.14.0 (~537MB)
     - docker-registry.ebrains.eu/nest/nest-simulator:2.16.0 (~539MB)
@@ -21,7 +21,7 @@ You can use the docker images direct out of docker-registry.ebrains.eu like this
 
     docker pull docker-registry.ebrains.eu/nest/nest-simulator:TAG
 
-TAG is '2.20.2'. '3.1' or 'latest'.
+TAG is '2.20.2'. '3.1' or 'dev'.
 
 #### NEST 2.20.2 
 
@@ -90,12 +90,12 @@ To use 'docker-compose' you need the definition file from the git repository. Do
 
 To stop and delete running containers use `docker-compose down`.
 
-#### NEST latest - NEW with docker-compose
+#### NEST dev - NEW with docker-compose
 
-If you want to use the compose configurtion for the latest NEST version, use the file option, e.g.:
+If you want to use the compose configurtion for the dev NEST version, use the file option, e.g.:
 
     wget https://raw.githubusercontent.com/steffengraber/nest-docker/master/docker-compose.yml
-    docker-compose -f docker-compose-latest.yml up nest-notebook
+    docker-compose -f docker-compose-dev.yml up nest-notebook
 
 ### On Windows
 
@@ -125,17 +125,17 @@ You can clone this repository and use the shell script:
     --help      print this usage information.
     <command>   can be either 'provision', 'run' or 'clean'.
     [<args>]    can be either 'notebook', 'jupyterlab', or 'interactice'.
-    [<version>] kind of docker image (e.g. 'latest', '2.12.0', '2.14.0',
+    [<version>] kind of docker image (e.g. 'dev', '2.12.0', '2.14.0',
                 '2.16.0', '2.18.0', '3.0', '3.1' or 'all').
 
-    Example:    sh run.sh provision latest
-                sh run.sh run notebook latest
-                sh run.sh run jupyterlab latest
+    Example:    sh run.sh provision dev
+                sh run.sh run notebook dev
+                sh run.sh run jupyterlab dev
 
 
 ## 1 - 2 (- 3)
 
-In the next steps, VERSION is the kind of docker image you want to use (3.1, latest, ...)
+In the next steps, VERSION is the kind of docker image you want to use (3.1, dev, ...)
 
 Two little steps to get started
 
