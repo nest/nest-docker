@@ -1,0 +1,43 @@
+# BUILD
+
+FROM nestsim/nest-build-base as builder
+LABEL maintainer="s.graber@fz-juelich.de"
+
+ARG NEST_VERSION=3.1
+
+# Install NEST
+RUN wget https://github.com/nest/nest-simulator/archive/refs/tags/v${NEST_VERSION}.tar.gz && \
+    tar -zxf v${NEST_VERSION}.tar.gz -C /nest-src && \
+    python3 -m pip install -r /nest-src/doc/requirements.txt
+
+RUN mkdir nest-build && cd nest-build && \
+    cmake -DCMAKE_INSTALL_PREFIX:PATH=/opt/nest/ \
+          -Dwith-warning=ON \
+          -Dwith-boost=ON \
+          -Dwith-ltdl=ON \
+          -Dwith-gsl=ON \
+          -Dwith-readline=ON \
+          -Dwith-python=ON \
+          -Dwith-mpi=ON \
+          -Dwith-openmp=ON \
+          -Dwith-libneurosim=OFF \
+          -Dwith-music=/opt/music-install \
+          /nest_src && \
+    make && \
+    make html && \
+    make install
+
+###############################################################################
+# DEPLOY
+
+FROM nestsim/nest-deploy-base:latest
+LABEL maintainer="s.graber@fz-juelich.de"
+
+COPY --from=builder /opt/nest /opt/nest
+COPY --from=builder /opt/music-install /opt/music-install
+
+COPY entrypoint.sh /usr/local/bin/entrypoint.sh
+RUN chmod +x /usr/local/bin/entrypoint.sh
+
+EXPOSE 5000 8000 8080
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
