@@ -4,12 +4,8 @@ stages:
   - build
   - push
 
+
 Build:
   stage: build
-  script:
+  script:    
     - docker images
-    - docker build -t docker-registry.ebrains.eu/nest/nest-simulator:dev.$CI_PIPELINE_ID ./src/dev
-  only: 
-    - main
-  tags:
-    - shell-runner
