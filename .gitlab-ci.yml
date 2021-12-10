@@ -6,5 +6,9 @@ stages:
 
 Build:
   stage: build
-  script:    
-    - docker build -t docker-registry.ebrains.eu/nest/nest-simulator:dev.$CI_PIPELINE_ID ./src/dev
+  script:   
+    - docker pull docker-registry.ebrains.eu/nest/nest-simulator:dev
+    - docker build 
+        --cache-from docker-registry.ebrains.eu/nest/nest-simulator:dev
+        --tag docker-registry.ebrains.eu/nest/nest-simulator:dev.$CI_PIPELINE_ID 
+        ./src/dev
