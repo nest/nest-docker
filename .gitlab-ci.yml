@@ -2,8 +2,9 @@ image: docker:20.0.4
 
 stages:
   - build
+  - push
 
-build_nest_docker_dev:
+Build:
   stage: build
   script:
     - docker images
