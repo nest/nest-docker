@@ -1,7 +1,5 @@
 stages:
   - build
-  - test
-#  - push
 
 #
 # BUILD
@@ -10,25 +8,12 @@ stages:
 build_nest_docker_dev:
   stage: build
   image: ubuntu:20.04
-  before_script:
+  before_script: 
     - docker login -u $DOCKER_REGISTRY_USER -p $DOCKER_REGISTRY_TOKEN docker-registry.ebrains.eu
-  script:
+  script: 
     - docker build -t docker-registry.ebrains.eu/nest/nest-simulator:dev.$CI_PIPELINE_ID ./src/dev
-    #- docker push docker-registry.ebrains.eu/nest/nest-simulator:dev.$CI_PIPELINE_ID
   only: 
     - main
   tags:
     - shell-runner
  
-#
-# TEST
-#
-
-test_nest_docker_dev:
-  stage: test
-  script:
-    - docker run docker-registry.ebrains.eu/nest/nest-simulator:dev.$CI_PIPELINE_ID python3 -c "import nest"
-    
-#
-# PUSH
-#
