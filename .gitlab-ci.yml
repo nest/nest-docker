@@ -3,15 +3,15 @@ image: docker:latest
 stages:
   - build
   - push
+before_script:
+  - echo -n $DOCKER_REGISTRY_TOKEN | docker login -u $DOCKER_REGISTRY_USER --password-stdin docker-registry.ebrains.eu
 
 Build:
   stage: build
-  before_script:
-    - docker login -u $DOCKER_REGISTRY_USER -p $DOCKER_REGISTRY_TOKEN docker-registry.ebrains.eu
   script:   
-    - docker pull DOCKER_REGISTRY_IMAGE:dev
+    - docker pull $DOCKER_REGISTRY_IMAGE:dev
     - docker build 
-        --cache-from DOCKER_REGISTRY_IMAGE:dev
-        --tag DOCKER_REGISTRY_IMAGE:dev.$CI_PIPELINE_ID 
+        --cache-from $DOCKER_REGISTRY_IMAGE:dev
+        --tag $DOCKER_REGISTRY_IMAGE:dev.$CI_PIPELINE_ID 
         ./src/dev  
     - docker push $DOCKER_REGISTRY_IMAGE:dev.$CI_PIPELINE_ID 
