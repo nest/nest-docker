@@ -3,13 +3,6 @@ image: docker:20.0.4
 stages:
   - build
 
-before_script: 
-  - docker login -u $DOCKER_REGISTRY_USER -p $DOCKER_REGISTRY_TOKEN docker-registry.ebrains.eu
-  
-#
-# BUILD
-#
-
 build_nest_docker_dev:
   stage: build
   script:
@@ -19,4 +12,3 @@ build_nest_docker_dev:
     - main
   tags:
     - shell-runner
- 
