@@ -1,15 +1,18 @@
+image: docker:20.0.4
+
 stages:
   - build
 
+before_script: 
+  - docker login -u $DOCKER_REGISTRY_USER -p $DOCKER_REGISTRY_TOKEN docker-registry.ebrains.eu
+  
 #
 # BUILD
 #
 
 build_nest_docker_dev:
+Build:
   stage: build
-  image: ubuntu:20.04
-  before_script: 
-    - docker login -u $DOCKER_REGISTRY_USER -p $DOCKER_REGISTRY_TOKEN docker-registry.ebrains.eu
   script: 
     - docker build -t docker-registry.ebrains.eu/nest/nest-simulator:dev.$CI_PIPELINE_ID ./src/dev
   only: 
