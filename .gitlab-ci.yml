@@ -8,4 +8,4 @@ stages:
 Build:
   stage: build
   script:    
-    - docker images
+    - docker build -t docker-registry.ebrains.eu/nest/nest-simulator:dev.$CI_PIPELINE_ID ./src/dev
