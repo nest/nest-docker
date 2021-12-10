@@ -1,9 +1,8 @@
-image: docker:20.04
+image: docker:latest
 
 stages:
   - build
   - push
-
 
 Build:
   stage: build
