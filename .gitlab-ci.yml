@@ -6,9 +6,12 @@ stages:
 
 Build:
   stage: build
+  before_script:
+    - docker login -u $DOCKER_REGISTRY_USER -p $DOCKER_REGISTRY_TOKEN docker-registry.ebrains.eu
   script:   
-    - docker pull docker-registry.ebrains.eu/nest/nest-simulator:dev
+    - docker pull DOCKER_REGISTRY_IMAGE:dev
     - docker build 
-        --cache-from docker-registry.ebrains.eu/nest/nest-simulator:dev
-        --tag docker-registry.ebrains.eu/nest/nest-simulator:dev.$CI_PIPELINE_ID 
-        ./src/dev
+        --cache-from DOCKER_REGISTRY_IMAGE:dev
+        --tag DOCKER_REGISTRY_IMAGE:dev.$CI_PIPELINE_ID 
+        ./src/dev  
+    - docker push $DOCKER_REGISTRY_IMAGE:dev.$CI_PIPELINE_ID 
