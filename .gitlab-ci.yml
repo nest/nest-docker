@@ -1,0 +1,34 @@
+stages:
+  - build
+  - test
+#  - push
+
+#
+# BUILD
+#
+
+build_nest_docker_dev:
+  stage: build
+  image: ubuntu:20.04
+  before_script:
+    - docker login -u $DOCKER_REGISTRY_USER -p $DOCKER_REGISTRY_TOKEN docker-registry.ebrains.eu
+  script:
+    - docker build -t docker-registry.ebrains.eu/nest/nest-simulator:dev.$CI_PIPELINE_ID ./src/dev
+    #- docker push docker-registry.ebrains.eu/nest/nest-simulator:dev.$CI_PIPELINE_ID
+  only: 
+    - main
+  tags:
+    - shell-runner
+ 
+#
+# TEST
+#
+
+test_nest_docker_dev:
+  stage: test
+  script:
+    - docker run nest/nest-simulator:latest python3 -c "import nest"
+    
+#
+# PUSH
+#
