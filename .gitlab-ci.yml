@@ -27,7 +27,7 @@ build_nest_docker_dev:
 test_nest_docker_dev:
   stage: test
   script:
-    - docker run nest/nest-simulator:latest python3 -c "import nest"
+    - docker run docker-registry.ebrains.eu/nest/nest-simulator:dev.$CI_PIPELINE_ID python3 -c "import nest"
     
 #
 # PUSH
