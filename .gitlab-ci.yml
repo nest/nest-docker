@@ -1,4 +1,4 @@
-image: docker:20.0.4
+image: docker:20.04
 
 stages:
   - build
