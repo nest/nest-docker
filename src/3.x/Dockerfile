@@ -4,14 +4,15 @@ FROM docker-registry.ebrains.eu/nest/nest-simulator-build-base as builder
 LABEL maintainer="s.graber@fz-juelich.de"
 
 ARG NEST_VERSION=3.1
+    SRC_PATH=/tmp/nest-simulator
 
 # Install NEST
 RUN wget https://github.com/nest/nest-simulator/archive/refs/tags/v${NEST_VERSION}.tar.gz && \
-    tar -zxf v${NEST_VERSION}.tar.gz -C /tmp/nest-simulator && \
-    python3 -m pip install -r /tmp/nest-simulator/doc/requirements.txt
+    tar -zxf v${NEST_VERSION}.tar.gz -C ${SRC_PATH} && \
+    python3 -m pip install -r ${SRC_PATH}/doc/requirements.txt
 
 RUN mkdir nest-build && cd nest-build && \
-    cmake -DCMAKE_INSTALL_PREFIX:PATH=/opt/nest/ \
+    cmake -DCMAKE_INSTALL_PREFIX:PATH=/opt/nest \
           -Dwith-warning=ON \
           -Dwith-boost=ON \
           -Dwith-ltdl=ON \
@@ -22,7 +23,7 @@ RUN mkdir nest-build && cd nest-build && \
           -Dwith-openmp=ON \
           -Dwith-libneurosim=OFF \
           -Dwith-music=/opt/music-install \
-          /tmp/nest-simulator && \
+          ${SRC_PATH} && \
     make && \
     make html && \
     make install
