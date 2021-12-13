@@ -1,15 +1,15 @@
 # BUILD
 
-FROM docker-registry.ebrains.eu/nest/nest-simulator-build-base as builder
+FROM docker-registry.ebrains.eu/nest/nest-simulator:nest-simulator-build-base as builder
 LABEL maintainer="s.graber@fz-juelich.de"
 
 ARG NEST_VERSION=3.1
-ARG SRC_PATH=/tmp/nest-simulator
+ARG SRC_PATH=/tmp
 
 # Install NEST
 RUN wget https://github.com/nest/nest-simulator/archive/refs/tags/v${NEST_VERSION}.tar.gz && \
-    tar -zxf v${NEST_VERSION}.tar.gz -C ${SRC_PATH} && \
-    python3 -m pip install -r ${SRC_PATH}/doc/requirements.txt
+    tar -zxf v${NEST_VERSION}.tar.gz -C ${SRC_PATH}/nest-simulator-${NEST_VERSION} && \
+    python3 -m pip install -r ${SRC_PATH}/nest-simulator-${NEST_VERSION}/doc/requirements.txt
 
 RUN mkdir nest-build && cd nest-build && \
     cmake -DCMAKE_INSTALL_PREFIX:PATH=/opt/nest \
@@ -23,7 +23,7 @@ RUN mkdir nest-build && cd nest-build && \
           -Dwith-openmp=ON \
           -Dwith-libneurosim=OFF \
           -Dwith-music=/opt/music-install \
-          ${SRC_PATH} && \
+          ${SRC_PATH}/nest-simulator-${NEST_VERSION} && \
     make && \
     make html && \
     make install
@@ -31,7 +31,7 @@ RUN mkdir nest-build && cd nest-build && \
 ###############################################################################
 # DEPLOY
 
-FROM docker-registry.ebrains.eu/nest/nest-simulator-deploy-base:latest
+FROM docker-registry.ebrains.eu/nest/nest-simulator:nest-simulator-deploy-base
 LABEL maintainer="s.graber@fz-juelich.de"
 
 COPY --from=builder /opt/nest /opt/nest
