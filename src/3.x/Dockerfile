@@ -8,8 +8,8 @@ ARG SRC_PATH=/tmp
 
 # Install NEST
 RUN wget https://github.com/nest/nest-simulator/archive/refs/tags/v${NEST_VERSION}.tar.gz && \
-    tar -zxf v${NEST_VERSION}.tar.gz -C ${SRC_PATH}/nest-simulator-${NEST_VERSION} && \
-    python3 -m pip install -r ${SRC_PATH}/nest-simulator-${NEST_VERSION}/doc/requirements.txt
+    tar -xzf v${NEST_VERSION}.tar.gz -C ${SRC_PATH} && \
+    python3 -m pip install -r ${SRC_PATH}/nest-simulator-${NEST_VERSION}/extras/nest-simulator-doc-requirements.txt
 
 RUN mkdir nest-build && cd nest-build && \
     cmake -DCMAKE_INSTALL_PREFIX:PATH=/opt/nest \
@@ -24,9 +24,10 @@ RUN mkdir nest-build && cd nest-build && \
           -Dwith-libneurosim=OFF \
           -Dwith-music=/opt/music-install \
           ${SRC_PATH}/nest-simulator-${NEST_VERSION} && \
-    make && \
+    make -j 8 && \
     make html && \
     make install
+
 
 ###############################################################################
 # DEPLOY
