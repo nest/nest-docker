@@ -27,7 +27,7 @@ Build_Base:
       --cache-from $DOCKER_REGISTRY_IMAGE:nest-simulator-deploy-base
       --tag $DOCKER_REGISTRY_IMAGE:nest-simulator-deploy-base
       .
-      - docker push $DOCKER_REGISTRY_IMAGE:nest-simulator-deploy-base
+    - docker push $DOCKER_REGISTRY_IMAGE:nest-simulator-deploy-base
   when: manual
 
 Build_DEV:
