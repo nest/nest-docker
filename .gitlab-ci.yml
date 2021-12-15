@@ -1,6 +1,4 @@
-image: docker:20
-services:
-  - docker:20-dind
+image: ubuntu:20.04
 
 stages:
   - build
