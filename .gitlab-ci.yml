@@ -9,8 +9,6 @@ before_script:
 
 Build_Base:
   stage: build
-  rules:
-    - if: $CI_PIPELINE_SOURCE == "schedule"
   script:
     - docker pull $DOCKER_REGISTRY_IMAGE:nest-simulator-build-base
     - docker pull $DOCKER_REGISTRY_IMAGE:nest-simulator-deploy-base
@@ -26,6 +24,7 @@ Build_Base:
       --tag $DOCKER_REGISTRY_IMAGE:nest-simulator-deploy-base
       ./src/base
       - docker push $DOCKER_REGISTRY_IMAGE:nest-simulator-deploy-base
+  when: manual
 
 Build_DEV:
   stage: build
