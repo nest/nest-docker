@@ -1,4 +1,4 @@
-image: docker:20
+image: docker:latest
 
 stages:
   - build
