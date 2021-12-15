@@ -5,8 +5,8 @@ ARG NEST_VERSION=master
 ARG SRC_PATH=/tmp
 
 # Install NEST
-RUN wget https://github.com/nest/nest-simulator/archive/refs/heads/${NEST_VERSION}.tar.gz && \
-    cd ${SRC_PATH} && \
+RUN cd ${SRC_PATH} && \
+    wget https://github.com/nest/nest-simulator/archive/refs/heads/${NEST_VERSION}.tar.gz && \
     tar -xzf ${NEST_VERSION}.tar.gz && \
     ls ${SRC_PATH} && \
     python3 -m pip install -r ${SRC_PATH}/nest-simulator-${NEST_VERSION}/doc/requirements.txt
