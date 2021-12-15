@@ -1,11 +1,11 @@
-image: docker:latest
+image: docker:20
 
 stages:
   - build
   - push
 
 before_script:
-  - echo -n $DOCKER_REGISTRY_TOKEN | docker login -u $DOCKER_REGISTRY_USER --password-stdin docker-registry.ebrains.eu
+  - echo -n $DOCKER_REGISTRY_TOKEN | docker login -u $DOCKER_REGISTRY_USER --password-stdin $DOCKER_REGISTRY
 
 Build_Base:
   stage: build
