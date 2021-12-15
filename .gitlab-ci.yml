@@ -7,7 +7,7 @@ stages:
 before_script:
   - echo -n $DOCKER_REGISTRY_TOKEN | docker login -u $DOCKER_REGISTRY_USER --password-stdin docker-registry.ebrains.eu
 
-Build_Base:on-schedule:
+Build_Base:
   stage: build
   rules:
     - if: $CI_PIPELINE_SOURCE == "schedule"
@@ -26,9 +26,6 @@ Build_Base:on-schedule:
       --tag $DOCKER_REGISTRY_IMAGE:nest-simulator-deploy-base
       ./src/base
       - docker push $DOCKER_REGISTRY_IMAGE:nest-simulator-deploy-base
-  only:
-    - master
-  when: manual
 
 Build_DEV:
   stage: build
