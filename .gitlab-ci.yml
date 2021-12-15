@@ -33,8 +33,6 @@ Build_Base:on-schedule:
 Build_DEV:
   stage: build
   script:
-    - docker pull $DOCKER_REGISTRY_IMAGE:nest-simulator-build-base || true
-    - docker pull $DOCKER_REGISTRY_IMAGE:nest-simulator-deploy-base || true
     - docker pull $DOCKER_REGISTRY_IMAGE:dev || true
     - docker build 
         --cache-from $DOCKER_REGISTRY_IMAGE:dev
