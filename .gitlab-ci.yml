@@ -20,13 +20,13 @@ Build_Base:
       --file src/base/Dockerfile-build-base
       --cache-from $DOCKER_REGISTRY_IMAGE:nest-simulator-build-base
       --tag $DOCKER_REGISTRY_IMAGE:nest-simulator-build-base
-      ./src/base
+      .
     - docker push $DOCKER_REGISTRY_IMAGE:nest-simulator-build-base
     - docker build
       --file src/base/Dockerfile-deploy-base
       --cache-from $DOCKER_REGISTRY_IMAGE:nest-simulator-deploy-base
       --tag $DOCKER_REGISTRY_IMAGE:nest-simulator-deploy-base
-      ./src/base
+      .
       - docker push $DOCKER_REGISTRY_IMAGE:nest-simulator-deploy-base
   when: manual
 
