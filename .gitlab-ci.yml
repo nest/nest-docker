@@ -10,8 +10,8 @@ before_script:
 Build_Base:
   stage: build
   script:
-    - docker pull $DOCKER_REGISTRY_IMAGE:nest-simulator-build-base
-    - docker pull $DOCKER_REGISTRY_IMAGE:nest-simulator-deploy-base
+    - docker pull $DOCKER_REGISTRY_IMAGE:nest-simulator-build-base || true
+    - docker pull $DOCKER_REGISTRY_IMAGE:nest-simulator-deploy-base || true
     - docker build
       --file src/base/Dockerfile-build-base
       --cache-from $DOCKER_REGISTRY_IMAGE:nest-simulator-build-base
