@@ -1,17 +1,54 @@
-image: docker:latest
+image: docker:20
 
 stages:
   - build
   - push
+
 before_script:
   - echo -n $DOCKER_REGISTRY_TOKEN | docker login -u $DOCKER_REGISTRY_USER --password-stdin docker-registry.ebrains.eu
 
-Build:
+Build_Base:on-schedule:
   stage: build
-  script:   
-    - docker pull $DOCKER_REGISTRY_IMAGE:dev
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "schedule"
+  script:
+    - docker pull $DOCKER_REGISTRY_IMAGE:nest-simulator-build-base
+    - docker pull $DOCKER_REGISTRY_IMAGE:nest-simulator-deploy-base
+    - docker build
+      --file src/base/Dockerfile-build-base
+      --cache-from $DOCKER_REGISTRY_IMAGE:nest-simulator-build-base
+      --tag $DOCKER_REGISTRY_IMAGE:nest-simulator-build-base
+      ./src/base
+    - docker push $DOCKER_REGISTRY_IMAGE:nest-simulator-build-base
+    - docker build
+      --file src/base/Dockerfile-deploy-base
+      --cache-from $DOCKER_REGISTRY_IMAGE:nest-simulator-deploy-base
+      --tag $DOCKER_REGISTRY_IMAGE:nest-simulator-deploy-base
+      ./src/base
+      - docker push $DOCKER_REGISTRY_IMAGE:nest-simulator-deploy-base
+  only:
+    - master
+  when: manual
+
+Build_DEV:
+  stage: build
+  script:
+    - docker pull $DOCKER_REGISTRY_IMAGE:nest-simulator-build-base || true
+    - docker pull $DOCKER_REGISTRY_IMAGE:nest-simulator-deploy-base || true
+    - docker pull $DOCKER_REGISTRY_IMAGE:dev || true
     - docker build 
         --cache-from $DOCKER_REGISTRY_IMAGE:dev
         --tag $DOCKER_REGISTRY_IMAGE:dev.$CI_PIPELINE_ID 
         ./src/dev  
-    - docker push $DOCKER_REGISTRY_IMAGE:dev.$CI_PIPELINE_ID 
+    - docker push $DOCKER_REGISTRY_IMAGE:dev.$CI_PIPELINE_ID
+
+Build_3x:
+  stage: build
+  script:
+    - docker pull $DOCKER_REGISTRY_IMAGE:3.x  || true
+    - docker build 
+        --cache-from $DOCKER_REGISTRY_IMAGE:3.x
+        --tag $DOCKER_REGISTRY_IMAGE:3.x.$CI_PIPELINE_ID 
+        ./src/3.x
+    - docker push $DOCKER_REGISTRY_IMAGE:3.x.$CI_PIPELINE_ID
+  when: manual
