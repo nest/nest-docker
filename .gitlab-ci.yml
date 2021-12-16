@@ -1,5 +1,5 @@
 # do not use "latest" here, if you want this to work in the future
-image: node:16-alpine
+image: docker:latest
 
 #image: ubuntu:20.04
 #image: docker:20
@@ -10,7 +10,7 @@ stages:
 
 # Use this if your GitLab runner does not use socket binding
 services:
-  - docker:20-dind
+  - docker:dind
 
 before_script:
   - docker info
