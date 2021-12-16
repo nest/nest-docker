@@ -1,5 +1,5 @@
 # do not use "latest" here, if you want this to work in the future
-image: ubuntu:latest
+image: ubuntu:20.04
 #image: docker:20
 
 stages:
@@ -7,10 +7,11 @@ stages:
   - push
 
 # Use this if your GitLab runner does not use socket binding
-#services:
-#  - docker:dind
+services:
+  - docker:dind
 
 before_script:
+  - docker info
   - docker login -u $DOCKER_REGISTRY_USER -p $DOCKER_REGISTRY_TOKEN $DOCKER_REGISTRY
 #  - echo -n $DOCKER_REGISTRY_TOKEN | docker login -u $DOCKER_REGISTRY_USER --password-stdin $DOCKER_REGISTRY
 
