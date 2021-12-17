@@ -1,7 +1,5 @@
 # do not use "latest" here, if you want this to work in the future
-image: docker:latest
-
-#image: ubuntu:20.04
+image: ubuntu:latest
 #image: docker:20
 
 stages:
@@ -13,11 +11,12 @@ stages:
 #  - docker:dind
 
 before_script:
-  - docker info
   - docker login -u $DOCKER_REGISTRY_USER -p $DOCKER_REGISTRY_TOKEN $DOCKER_REGISTRY
 #  - echo -n $DOCKER_REGISTRY_TOKEN | docker login -u $DOCKER_REGISTRY_USER --password-stdin $DOCKER_REGISTRY
 
-Build_Base:
+Build_Base:on-schedule:
+  rules:
+    - if: $S_WEEKLY == "schedule"
   stage: build
   script:
     - docker pull $DOCKER_REGISTRY_IMAGE:nest-simulator-build-base || true
@@ -34,7 +33,6 @@ Build_Base:
       --tag $DOCKER_REGISTRY_IMAGE:nest-simulator-deploy-base
       .
     - docker push $DOCKER_REGISTRY_IMAGE:nest-simulator-deploy-base
-  when: manual
 
 Build_Dev:
   stage: build
