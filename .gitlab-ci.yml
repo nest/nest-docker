@@ -17,7 +17,6 @@ before_script:
 Build_Base:
   rules:
     - if: $S_WEEKLY == "schedule"
-  stage: build
   script:
     - docker pull $DOCKER_REGISTRY_IMAGE:nest-simulator-build-base || true
     - docker pull $DOCKER_REGISTRY_IMAGE:nest-simulator-deploy-base || true
