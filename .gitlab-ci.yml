@@ -14,7 +14,7 @@ before_script:
   - docker login -u $DOCKER_REGISTRY_USER -p $DOCKER_REGISTRY_TOKEN $DOCKER_REGISTRY
 #  - echo -n $DOCKER_REGISTRY_TOKEN | docker login -u $DOCKER_REGISTRY_USER --password-stdin $DOCKER_REGISTRY
 
-Build_Base:
+Build_Base:on-schedule:
   stage: build
   rules:
     - if: $S_WEEKLY == "schedule"
