@@ -1,18 +1,50 @@
 # do not use "latest" here, if you want this to work in the future
-image: ubuntu:latest
-#image: docker:20
+default:
+  image: ubuntu:20.04
+  tags:
+    - shell-runner
 
 stages:
   - build
   - push
 
 # Use this if your GitLab runner does not use socket binding
-#services:
-#  - docker:dind
+# services:
+#   - docker:dind
 
 before_script:
-  - docker login -u $DOCKER_REGISTRY_USER -p $DOCKER_REGISTRY_TOKEN $DOCKER_REGISTRY
-#  - echo -n $DOCKER_REGISTRY_TOKEN | docker login -u $DOCKER_REGISTRY_USER --password-stdin $DOCKER_REGISTRY
+  - echo -n $DOCKER_REGISTRY_TOKEN | docker login -u $DOCKER_REGISTRY_USER --password-stdin $DOCKER_REGISTRY
+
+#  - docker login -u $DOCKER_REGISTRY_USER -p $DOCKER_REGISTRY_TOKEN $DOCKER_REGISTRY
+
+Build_Dev:
+  stage: build
+  script:
+    - docker pull $DOCKER_REGISTRY_IMAGE:dev || true
+    - docker build 
+        --cache-from $DOCKER_REGISTRY_IMAGE:dev
+        --tag $DOCKER_REGISTRY_IMAGE:dev.$CI_PIPELINE_ID 
+        ./src/dev  
+    - docker push $DOCKER_REGISTRY_IMAGE:dev.$CI_PIPELINE_ID
+  tags:
+    - shell-runner
+
+Build_3x:
+  stage: build
+  script:
+    - docker pull $DOCKER_REGISTRY_IMAGE:3.x  || true
+    - docker build 
+        --cache-from $DOCKER_REGISTRY_IMAGE:3.x
+        --tag $DOCKER_REGISTRY_IMAGE:3.x.$CI_PIPELINE_ID 
+        ./src/3.x
+    - docker push $DOCKER_REGISTRY_IMAGE:3.x.$CI_PIPELINE_ID
+  when: manual
+  tags:
+    - shell-runner
+
+############################################### 
+###               SCHEDULE                  ###
+###############################################
 
 Build_Base:on-schedule:
   stage: build
@@ -33,24 +65,6 @@ Build_Base:on-schedule:
       --tag $DOCKER_REGISTRY_IMAGE:nest-simulator-deploy-base
       .
     - docker push $DOCKER_REGISTRY_IMAGE:nest-simulator-deploy-base
+  tags:
+    - shell-runner
 
-Build_Dev:
-  stage: build
-  script:
-    - docker pull $DOCKER_REGISTRY_IMAGE:dev || true
-    - docker build 
-        --cache-from $DOCKER_REGISTRY_IMAGE:dev
-        --tag $DOCKER_REGISTRY_IMAGE:dev.$CI_PIPELINE_ID 
-        ./src/dev  
-    - docker push $DOCKER_REGISTRY_IMAGE:dev.$CI_PIPELINE_ID
-
-Build_3x:
-  stage: build
-  script:
-    - docker pull $DOCKER_REGISTRY_IMAGE:3.x  || true
-    - docker build 
-        --cache-from $DOCKER_REGISTRY_IMAGE:3.x
-        --tag $DOCKER_REGISTRY_IMAGE:3.x.$CI_PIPELINE_ID 
-        ./src/3.x
-    - docker push $DOCKER_REGISTRY_IMAGE:3.x.$CI_PIPELINE_ID
-  when: manual
