@@ -34,9 +34,9 @@ Test_Dev:
   stage: test
   needs: ["Build_Dev"]
   script:
-    - docker pull $DOCKER_REGISTRY_IMAGE:dev.$CI_PIPELINE
+    - docker pull $DOCKER_REGISTRY_IMAGE:dev.$CI_PIPELINE_ID
     - docker run -it --rm -e NEST_CONTAINER_MODE=nest-server -p 5000:5000  
-      $DOCKER_REGISTRY_IMAGE:dev.$CI_PIPELINE  
+      $DOCKER_REGISTRY_IMAGE:dev.$CI_PIPELINE_ID  
     - curl 127.0.0.1:5000/api
   tags:
     - shell-runner
@@ -45,8 +45,8 @@ Deploy_Dev:
   stage: deploy
   needs: ["Test_Dev"]
   script:
-    - docker pull $DOCKER_REGISTRY_IMAGE:dev.$CI_PIPELINE
-    - docker tag $DOCKER_REGISTRY_IMAGE:dev.$CI_PIPELINE $DOCKER_REGISTRY_IMAGE:dev
+    - docker pull $DOCKER_REGISTRY_IMAGE:dev.$CI_PIPELINE_ID
+    - docker tag $DOCKER_REGISTRY_IMAGE:dev.$CI_PIPELINE_ID $DOCKER_REGISTRY_IMAGE:dev
     - docker push $DOCKER_REGISTRY_IMAGE:dev 
   tags:
     - shell-runner
