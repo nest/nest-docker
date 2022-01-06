@@ -39,9 +39,8 @@ Test_Dev:
     - docker pull $DOCKER_REGISTRY_IMAGE:dev.$CI_PIPELINE_ID
     - docker ps
     - docker run -i -d --rm -e NEST_CONTAINER_MODE=nest-server -p 5001:5000  
-        --name $CI_PIPELINE_ID $DOCKER_REGISTRY_IMAGE:dev.$CI_PIPELINE_ID 
+        --name $CI_PIPELINE_ID $DOCKER_REGISTRY_IMAGE:dev.$CI_PIPELINE_ID && curl 0.0.0.0:5001/api
     - docker ps
-    - curl 0.0.0.0:5001/api
   tags:
     - shell-runner
 
