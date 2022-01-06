@@ -35,8 +35,7 @@ Test_Dev:
   needs: ["Build_Dev"]
   script:
     - docker pull $DOCKER_REGISTRY_IMAGE:dev.$CI_PIPELINE_ID
-    - docker stop $(sudo docker ps -a -q)
-    - docker rm $(sudo docker ps -a -q)
+    - docker container prune -f
     - docker run -i -d --rm -e NEST_CONTAINER_MODE=nest-server -p 5000:5000  
         --name test_dev $DOCKER_REGISTRY_IMAGE:dev.$CI_PIPELINE_ID 
     - docker exec test_dev sh -c "ip address"
