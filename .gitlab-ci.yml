@@ -36,6 +36,7 @@ Test_Dev:
   script:
     - docker container prune
     - docker pull $DOCKER_REGISTRY_IMAGE:dev.$CI_PIPELINE_ID
+    - docker ps
     - docker run -i -d --rm -e NEST_CONTAINER_MODE=nest-server -p 5001:5000  
         --name $CI_PIPELINE_ID $DOCKER_REGISTRY_IMAGE:dev.$CI_PIPELINE_ID 
     - docker exec $CI_PIPELINE_ID sh -c "curl 127.0.0.1:5001/api"
