@@ -38,7 +38,6 @@ Test_Dev:
     - docker container prune -f
     - docker run -i -d --rm -e NEST_CONTAINER_MODE=nest-server -p 5001:5000  
         --name test_dev $DOCKER_REGISTRY_IMAGE:dev.$CI_PIPELINE_ID 
-    - docker exec test_dev sh -c "ip address"
     - docker exec test_dev sh -c "curl 127.0.0.1:5001/api"
   tags:
     - shell-runner
