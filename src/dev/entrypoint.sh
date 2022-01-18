@@ -33,9 +33,12 @@ elif [[ "${MODE}" = 'nest-desktop' ]]; then
     exec /root/.local/bin/nest-desktop start -h 0.0.0.0 -p 8000
 
 elif [[ "${MODE}" = 'nest-server' ]]; then
-    export NEST_SERVER_RESTRICTION_OFF=${NEST_SERVER_RESTRICTION_OFF:-true}
-    export NEST_SERVER_MODULES=${NEST_SERVER_MODULES:-nest,numpy}
-    exec uwsgi --module nest.server:app --buffer-size 65535 --http-socket 0.0.0.0:5000
+    export NEST_SERVER_BUFFER_SIZE="${NEST_SERVER_BUFFER_SIZE:-65535}"
+    export NEST_SERVER_HOST="${NEST_SERVER_HOST:-0.0.0.0}"
+    export NEST_SERVER_MODULES="${NEST_SERVER_MODULES:-nest,numpy}"
+    export NEST_SERVER_RESTRICTION_OFF="${NEST_SERVER_RESTRICTION_OFF:-true}"
+    export NEST_SERVER_STDOUT="${NEST_SERVER_STDOUT:-1}"
+    exec nest-server start
 
 elif [[ "${MODE}" = 'notebook' ]]; then
     mkdir -p /opt/data; cd /opt/data
