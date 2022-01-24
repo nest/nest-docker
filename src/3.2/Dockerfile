@@ -7,8 +7,11 @@ ARG NEST_VERSION=3.2
 ARG SRC_PATH=/tmp
 
 # Install NEST
-RUN wget https://github.com/nest/nest-simulator/archive/refs/heads/${NEST_VERSION}.tar.gz -P ${SRC_PATH} && \
-    cd ${SRC_PATH} && tar -xzf ${NEST_VERSION}.tar.gz && ls -l && \
+
+RUN wget https://github.com/nest/nest-simulator/archive/refs/tags/v${NEST_VERSION}.tar.gz -P ${SRC_PATH} && \
+    cd ${SRC_PATH}  && tar -xzf v${NEST_VERSION}.tar.gz && ls -l && \
+    wget https://github.com/nest/nest-simulator/releases/download/v3.2/nest-simulator-3.2-p1-VersionNumber.patch && \
+    cd ${SRC_PATH}/nest-simulator-${NEST_VERSION}/ && patch -p1 < ${SRC_PATH}/nest-simulator-3.2-p1-VersionNumber.patch && \
     python3 -m pip install -r ${SRC_PATH}/nest-simulator-${NEST_VERSION}/doc/requirements.txt
 
 RUN mkdir nest-build && cd nest-build && \
