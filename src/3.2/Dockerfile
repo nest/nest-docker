@@ -3,7 +3,7 @@
 FROM docker-registry.ebrains.eu/nest/nest-simulator:nest-simulator-build-base as builder
 LABEL maintainer="s.graber@fz-juelich.de"
 
-ARG NEST_VERSION=3.1
+ARG NEST_VERSION=3.2
 ARG SRC_PATH=/tmp
 
 # Install NEST

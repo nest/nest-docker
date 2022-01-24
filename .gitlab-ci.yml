@@ -63,7 +63,6 @@ Build_32:
         --tag $DOCKER_REGISTRY_IMAGE:3.2.$CI_PIPELINE_ID 
         ./src/3.2
     - docker push $DOCKER_REGISTRY_IMAGE:3.2.$CI_PIPELINE_ID
-  when: manual
   tags:
     - shell-runner
 
