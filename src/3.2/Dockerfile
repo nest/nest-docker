@@ -7,9 +7,9 @@ ARG NEST_VERSION=3.2
 ARG SRC_PATH=/tmp
 
 # Install NEST
-RUN wget https://github.com/nest/nest-simulator/archive/refs/tags/v${NEST_VERSION}.tar.gz && \
-    tar -xzf v${NEST_VERSION}.tar.gz -C ${SRC_PATH} && \
-    python3 -m pip install -r ${SRC_PATH}/nest-simulator-${NEST_VERSION}/extras/nest-simulator-doc-requirements.txt
+RUN wget https://github.com/nest/nest-simulator/archive/refs/heads/${NEST_VERSION}.tar.gz -P ${SRC_PATH} && \
+    cd ${SRC_PATH} && tar -xzf ${NEST_VERSION}.tar.gz && ls -l && \
+    python3 -m pip install -r ${SRC_PATH}/nest-simulator-${NEST_VERSION}/doc/requirements.txt
 
 RUN mkdir nest-build && cd nest-build && \
     cmake -DCMAKE_INSTALL_PREFIX:PATH=/opt/nest \
