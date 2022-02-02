@@ -117,14 +117,14 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         python-tk && \
     apt-get autoremove -y && \
     rm -rf /var/lib/apt/lists/* && \
-    #update-alternatives --install /usr/bin/pip pip /usr/bin/pip3 10 && \
-    pip install quantities lazyarray neo && \
+    # update-alternatives --install /usr/bin/pip pip /usr/bin/pip3 10 && \
+    # pip install quantities lazyarray neo && \
+    python2 -m pip install ipykernel && \
+    python2 -m ipykernel install && \
     locale-gen
 ENV LANG en_US.UTF-8
 ENV LANGUAGE en_US:en
 ENV LC_ALL en_US.UTF-8
-
-RUN pip install --no-binary :all: PyNN
 
 COPY --from=builder212 /opt/nest /opt/nest
 
