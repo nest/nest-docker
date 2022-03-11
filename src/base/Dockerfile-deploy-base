@@ -7,9 +7,15 @@ ENV TERM=xterm \
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
         build-essential \
+        cmake \
         curl \
         libpcre3 \
         libpcre3-dev \
+        libboost-filesystem-dev \
+        libboost-regex-dev \
+        libboost-wave-dev \
+        libboost-program-options-dev \
+        libboost-test-dev \
         gosu \
         jupyter-notebook \
         less \
