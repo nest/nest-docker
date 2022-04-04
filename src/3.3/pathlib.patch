@@ -1,0 +1,13 @@
+diff --git a/doc/requirements.txt b/doc/requirements.txt
+index 80cff2263..ceb1b2733 100644
+--- a/doc/requirements.txt
++++ b/doc/requirements.txt
+@@ -13,7 +13,7 @@ nbsphinx
+ numpy
+ numpydoc
+ path.py
+-pathlib
++pathlib2
+ pytest
+ recommonmark
+ scipy
