@@ -70,11 +70,14 @@ RUN wget https://github.com/INCF/MUSIC/archive/master.tar.gz && \
     rm master.tar.gz
 
 
-# Install NEST
+# Install NEST \
+COPY pathlib-nest-3.1.patch  ./
 RUN wget https://github.com/nest/nest-simulator/archive/refs/tags/v3.1.tar.gz && \
     mkdir nest-build && \
     tar zxf v3.1.tar.gz && \
-    cd  nest-build && \
+    cp pathlib-nest-3.1.patch ./nest-simulator-3.1 && \
+    cd ./nest-simulator-3.1  && patch -p1 --verbose < pathlib-nest-3.1.patch && \
+    cd  ../nest-build && \
     cmake -DCMAKE_INSTALL_PREFIX:PATH=/opt/nest/ \
         -Dwith-warning=ON \
         -Dwith-boost=ON \
@@ -88,8 +91,10 @@ RUN wget https://github.com/nest/nest-simulator/archive/refs/tags/v3.1.tar.gz &&
         -Dwith-music=/opt/music-install \
         ../nest-simulator-3.1 && \
     make
+
 RUN python3 -m pip install -r ../nest-simulator-3.1/extras/nest-simulator-doc-requirements.txt && \
-        cd  nest-build && make html && make install
+    python3 -m pip install MarkupSafe==2.0.1 && \
+    cd  nest-build && make html && make install
 
 
 ###############################################################################
