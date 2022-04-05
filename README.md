@@ -6,11 +6,12 @@ If you know how to use docker, you know how to use NEST.
 
 Currently the following docker images are provided
 
-    - docker-registry.ebrains.eu/nest/nest-simulator:dev (~1,34GB)
+    - docker-registry.ebrains.eu/nest/nest-simulator:dev (~1,9GB)
     - docker-registry.ebrains.eu/nest/nest-simulator:2.20.2 (~634MB)
     - docker-registry.ebrains.eu/nest/nest-simulator:3.0 (~1,07GB)
     - docker-registry.ebrains.eu/nest/nest-simulator:3.1 (~1,34GB)
-    - docker-registry.ebrains.eu/nest/nest-simulator:3.2 (~1,34GB)
+    - docker-registry.ebrains.eu/nest/nest-simulator:3.2 (~1,9GB)
+    - docker-registry.ebrains.eu/nest/nest-simulator:3.3 (~1,9GB)
 
 ## Usage
 
@@ -18,7 +19,7 @@ You can use the docker images direct out of docker-registry.ebrains.eu like this
 
     docker pull docker-registry.ebrains.eu/nest/nest-simulator:TAG
 
-TAG is '2.20.2'. '3.2' or 'dev'.
+TAG is '2.20.2', '3.2', '3.3' or 'dev'.
 
 #### NEST 2.20.2 
 
@@ -32,7 +33,7 @@ Jupyter lab with NEST 2.20.2
     docker run -it --rm -e LOCAL_USER_ID=`id -u $USER` -v $(pwd):/opt/data -e NEST_CONTAINER_MODE=jupyterlab /
                -p 8080:8080 docker-registry.ebrains.eu/nest/nest-simulator:2.20.2
 
-#### NEST 3.2
+#### NEST 3.3
 
 To use 'docker-compose' you need the definition file from the git repository. Download it:
 
@@ -45,7 +46,7 @@ To use 'docker-compose' you need the definition file from the git repository. Do
   or
 
       docker run -it --rm -e NEST_CONTAINER_MODE=nest-server -p 5000:5000 /
-           docker-registry.ebrains.eu/nest/nest-simulator:3.2   
+           docker-registry.ebrains.eu/nest/nest-simulator:3.3   
     
   Starts the NEST API server container and opens the corresponding port 5000. Test it with `curl localhost:5000/api`.
 
@@ -56,9 +57,9 @@ To use 'docker-compose' you need the definition file from the git repository. Do
   or
 
       docker run -it --rm -e NEST_CONTAINER_MODE=nest-server -p 5000:5000 /
-          docker-registry.ebrains.eu/nest/nest-simulator:3.2
+          docker-registry.ebrains.eu/nest/nest-simulator:3.3
       docker run -it --rm -e LOCAL_USER_ID=`id -u $USER` -p 8000:8000  /
-          -e NEST_CONTAINER_MODE=nest-desktop docker-registry.ebrains.eu/nest/nest-simulator:3.2
+          -e NEST_CONTAINER_MODE=nest-desktop docker-registry.ebrains.eu/nest/nest-simulator:3.3
 
   Starts the NEST server and the NEST desktop web interface. Port 8000 is also made available.
   Open in the web browser: `http://localhost:8000`
@@ -70,9 +71,9 @@ To use 'docker-compose' you need the definition file from the git repository. Do
   or
 
       docker run -it --rm -e LOCAL_USER_ID=`id -u $USER` -v $(pwd):/opt/data -e NEST_CONTAINER_MODE=notebook /
-          -p 8080:8080 docker-registry.ebrains.eu/nest/nest-simulator:3.2
+          -p 8080:8080 docker-registry.ebrains.eu/nest/nest-simulator:3.3
     
-  Starts a notebook server with pre-installed NEST 3.2. The corresponding URL is displayed in the console.
+  Starts a notebook server with pre-installed NEST 3.3. The corresponding URL is displayed in the console.
 
 - Jupyter lab with NEST
 
@@ -81,7 +82,7 @@ To use 'docker-compose' you need the definition file from the git repository. Do
   or
 
       docker run -it --rm -e LOCAL_USER_ID=`id -u $USER` -v $(pwd):/opt/data -e NEST_CONTAINER_MODE=jupyterlab /
-          -p 8080:8080 docker-registry.ebrains.eu/nest/nest-simulator:3.2)
+          -p 8080:8080 docker-registry.ebrains.eu/nest/nest-simulator:3.3)
     
   Starts a jupyter lab server with pre-installed NEST 3.3. The corresponding URL is displayed in the console.
 
@@ -123,7 +124,7 @@ You can clone this repository and use the shell script:
     <command>   can be either 'provision', 'run' or 'clean'.
     [<args>]    can be either 'notebook', 'jupyterlab', or 'interactice'.
     [<version>] kind of docker image (e.g. 'dev', '2.12.0', '2.14.0',
-                '2.16.0', '2.18.0', '3.0', '3.1', '3.2' or 'all').
+                '2.16.0', '2.18.0', '3.0', '3.1', '3.2', '3.3' or 'all').
 
     Example:    sh run.sh provision dev
                 sh run.sh run notebook dev
@@ -185,7 +186,7 @@ In the folder with your music scripts run:
 
     docker run -it --rm -e LOCAL_USER_ID=`id -u $USER`  \
                -v $(pwd):/opt/data  \
-               docker-registry.ebrains.eu/nest/nest-simulator:3.2 /bin/bash
+               docker-registry.ebrains.eu/nest/nest-simulator:3.3 /bin/bash
 
 You are now on container's shell.
     
@@ -200,7 +201,7 @@ You are now on container's shell.
 
 -   Export a docker image
 
-        docker save docker-registry.ebrains.eu/nest/nest-simulator:3.2 | gzip -c > nest-docker.tar.gz  
+        docker save docker-registry.ebrains.eu/nest/nest-simulator:3.3 | gzip -c > nest-docker.tar.gz  
 
 -   Import a docker image
 
