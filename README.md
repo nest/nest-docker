@@ -25,12 +25,12 @@ TAG is '2.20.2', '3.2', '3.3' or 'dev'.
 
 Jupyter notebook with NEST 2.20.2:
 
-    docker run -it --rm -e LOCAL_USER_ID=`id -u $USER` -v $(pwd):/opt/data -e NEST_CONTAINER_MODE=notebook /
+    docker run -it --rm -e LOCAL_USER_ID=`id -u $USER` -v $(pwd):/opt/data -e NEST_CONTAINER_MODE=notebook \
                -p 8080:8080 docker-registry.ebrains.eu/nest/nest-simulator:2.20.2
 
 Jupyter lab with NEST 2.20.2
 
-    docker run -it --rm -e LOCAL_USER_ID=`id -u $USER` -v $(pwd):/opt/data -e NEST_CONTAINER_MODE=jupyterlab /
+    docker run -it --rm -e LOCAL_USER_ID=`id -u $USER` -v $(pwd):/opt/data -e NEST_CONTAINER_MODE=jupyterlab \
                -p 8080:8080 docker-registry.ebrains.eu/nest/nest-simulator:2.20.2
 
 #### NEST 3.3
@@ -45,7 +45,7 @@ To use 'docker-compose' you need the definition file from the git repository. Do
 
   or
 
-      docker run -it --rm -e NEST_CONTAINER_MODE=nest-server -p 5000:5000 /
+      docker run -it --rm -e NEST_CONTAINER_MODE=nest-server -p 5000:5000 \
            docker-registry.ebrains.eu/nest/nest-simulator:3.3   
     
   Starts the NEST API server container and opens the corresponding port 5000. Test it with `curl localhost:5000/api`.
@@ -56,9 +56,9 @@ To use 'docker-compose' you need the definition file from the git repository. Do
   
   or
 
-      docker run -it --rm -e NEST_CONTAINER_MODE=nest-server -p 5000:5000 /
+      docker run -it --rm -e NEST_CONTAINER_MODE=nest-server -p 5000:5000 \
           docker-registry.ebrains.eu/nest/nest-simulator:3.3
-      docker run -it --rm -e LOCAL_USER_ID=`id -u $USER` -p 8000:8000  /
+      docker run -it --rm -e LOCAL_USER_ID=`id -u $USER` -p 8000:8000  \
           -e NEST_CONTAINER_MODE=nest-desktop docker-registry.ebrains.eu/nest/nest-simulator:3.3
 
   Starts the NEST server and the NEST desktop web interface. Port 8000 is also made available.
@@ -70,7 +70,7 @@ To use 'docker-compose' you need the definition file from the git repository. Do
 
   or
 
-      docker run -it --rm -e LOCAL_USER_ID=`id -u $USER` -v $(pwd):/opt/data -e NEST_CONTAINER_MODE=notebook /
+      docker run -it --rm -e LOCAL_USER_ID=`id -u $USER` -v $(pwd):/opt/data -e NEST_CONTAINER_MODE=notebook \
           -p 8080:8080 docker-registry.ebrains.eu/nest/nest-simulator:3.3
     
   Starts a notebook server with pre-installed NEST 3.3. The corresponding URL is displayed in the console.
@@ -81,7 +81,7 @@ To use 'docker-compose' you need the definition file from the git repository. Do
 
   or
 
-      docker run -it --rm -e LOCAL_USER_ID=`id -u $USER` -v $(pwd):/opt/data -e NEST_CONTAINER_MODE=jupyterlab /
+      docker run -it --rm -e LOCAL_USER_ID=`id -u $USER` -v $(pwd):/opt/data -e NEST_CONTAINER_MODE=jupyterlab \
           -p 8080:8080 docker-registry.ebrains.eu/nest/nest-simulator:3.3)
     
   Starts a jupyter lab server with pre-installed NEST 3.3. The corresponding URL is displayed in the console.
@@ -99,7 +99,7 @@ If you want to use the compose configurtion for the dev NEST version, use the fi
 
 e.g.:
 
-    docker run -it --rm -v %cd%:/opt/data -p 8080:8080 -e NEST_CONTAINER_MODE=<args> / 
+    docker run -it --rm -v %cd%:/opt/data -p 8080:8080 -e NEST_CONTAINER_MODE=<args> \
         docker-registry.ebrains.eu/nest/nest-simulator:<version>
 
 In Powershell, '%cd%' might not work for the current directory. Then
