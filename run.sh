@@ -50,7 +50,7 @@ case $command in
         echo
 
         echo "Provisioning needs an argument: 'dev' 'latest_daint' '2.12.0', '2.14.0',"
-        echo "'2.16.0', '2.18.0', '2.20.0', '2.20.1', '2.20.2', '3.0','3.1', '3.2', '3.3' or 'all'."
+        echo "'2.16.0', '2.18.0', '2.20.0', '2.20.1', '2.20.2', '3.0','3.1', '3.2', '3.3', 'all' or 'base'."
         echo
         while test $# -gt 0; do
             case "$1" in
@@ -61,6 +61,15 @@ case $command in
                 echo
                 echo "Finished!"
                 ;;
+            base)
+                echo "Build the NEST base image"
+                echo
+                docker build -t docker-registry.ebrains.eu/nest/nest-simulator:nest-simulator-build-base --file ./src/base/Dockerfile-build-base ./src/base/
+                docker build -t docker-registry.ebrains.eu/nest/nest-simulator:nest-simulator-deploy-base --file ./src/base/Dockerfile-deploy-base ./src/base/
+                echo
+                echo "Finished!"
+                ;;
+
             all)
                 echo "Build the NEST image for NEST 2.12.0, 2.14.0,"
                 echo "2.16.0, 2.18.0, 2.20.0, 2.20.1, 2.20.2, 3.0, 3.1, 3.2, 3.3, dev and latest_daint"
