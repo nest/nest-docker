@@ -1,0 +1,12 @@
+diff --git a/extras/nest-simulator-doc-requirements.txt b/extras/nest-simulator-doc-requirements.txt
+index fd05ac5de..e2824e386 100644
+--- a/extras/nest-simulator-doc-requirements.txt
++++ b/extras/nest-simulator-doc-requirements.txt
+@@ -13,7 +13,6 @@ nbsphinx
+ numpy
+ numpydoc
+ path.py
+-pathlib
+ pytest
+ recommonmark
+ scipy
