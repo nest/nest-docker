@@ -65,6 +65,7 @@ Test_Dev:
   needs: ["Build_Dev"]
   script:
     - docker pull $DOCKER_REGISTRY_IMAGE:dev.$CI_PIPELINE_ID
+    - docker stop $(docker ps -q)
     - docker ps
     - docker run -i -d --rm -e NEST_CONTAINER_MODE=nest-server -p 5000:5000  
         --name $CI_PIPELINE_ID $DOCKER_REGISTRY_IMAGE:dev.$CI_PIPELINE_ID
@@ -103,6 +104,7 @@ Test_33:
   needs: ["Build_33"]
   script:
     - docker pull $DOCKER_REGISTRY_IMAGE:3.3.$CI_PIPELINE_ID
+    - docker stop $(docker ps -q)
     - docker ps
     - docker run -i -d --rm -e NEST_CONTAINER_MODE=nest-server -p 5000:5000  
         --name $CI_PIPELINE_ID $DOCKER_REGISTRY_IMAGE:3.3.$CI_PIPELINE_ID
@@ -141,6 +143,7 @@ Test_32:
   needs: ["Build_32"]
   script:
     - docker pull $DOCKER_REGISTRY_IMAGE:3.2.$CI_PIPELINE_ID
+    - docker stop $(docker ps -q)
     - docker ps
     - docker run -i -d --rm -e NEST_CONTAINER_MODE=nest-server -p 5000:5000  
         --name $CI_PIPELINE_ID $DOCKER_REGISTRY_IMAGE:3.2.$CI_PIPELINE_ID
@@ -180,6 +183,7 @@ Test_31:
   needs: ["Build_31"]
   script:
     - docker pull $DOCKER_REGISTRY_IMAGE:3.1.$CI_PIPELINE_ID
+    - docker stop $(docker ps -q)
     - docker ps
     - docker run -i -d --rm -e NEST_CONTAINER_MODE=nest-server -p 5000:5000  
         --name $CI_PIPELINE_ID $DOCKER_REGISTRY_IMAGE:3.1.$CI_PIPELINE_ID
@@ -219,6 +223,7 @@ Test_30:
   needs: ["Build_30"]
   script:
     - docker pull $DOCKER_REGISTRY_IMAGE:3.0.$CI_PIPELINE_ID
+    - docker stop $(docker ps -q)
     - docker ps
     - docker run -i -d --rm -e NEST_CONTAINER_MODE=nest-server -p 5000:5000  
         --name $CI_PIPELINE_ID $DOCKER_REGISTRY_IMAGE:3.0.$CI_PIPELINE_ID
