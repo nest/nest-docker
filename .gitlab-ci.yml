@@ -209,7 +209,7 @@ Build_30:
     - docker build 
         --cache-from $DOCKER_REGISTRY_IMAGE:3.0
         --tag $DOCKER_REGISTRY_IMAGE:3.0.$CI_PIPELINE_ID 
-        ./src/3.1
+        ./src/3.0
     - docker push $DOCKER_REGISTRY_IMAGE:3.0.$CI_PIPELINE_ID
   tags:
     - shell-runner
