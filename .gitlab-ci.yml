@@ -90,7 +90,6 @@ Deploy_Dev:
 
 Build_33:
   stage: build
-  when: manual
   script:
     - docker pull $DOCKER_REGISTRY_IMAGE:3.3  || true
     - docker build 
@@ -106,6 +105,8 @@ Test_33:
   needs: ["Build_33"]
   script:
     - docker pull $DOCKER_REGISTRY_IMAGE:3.3.$CI_PIPELINE_ID
+    - docker stop $(docker ps -q) 2>/dev/null || true
+    - docker rm -f $(docker ps -aq) 2>/dev/null || true
     - docker ps
     - docker run -i -d --rm -e NEST_CONTAINER_MODE=nest-server -p 5000:5000  
         --name $CI_PIPELINE_ID $DOCKER_REGISTRY_IMAGE:3.3.$CI_PIPELINE_ID
@@ -145,7 +146,8 @@ Test_32:
   needs: ["Build_32"]
   script:
     - docker pull $DOCKER_REGISTRY_IMAGE:3.2.$CI_PIPELINE_ID
-    - docker stop $(docker ps -q)
+    - docker stop $(docker ps -q) 2>/dev/null || true
+    - docker rm -f $(docker ps -aq) 2>/dev/null || true
     - docker ps
     - docker run -i -d --rm -e NEST_CONTAINER_MODE=nest-server -p 5000:5000  
         --name $CI_PIPELINE_ID $DOCKER_REGISTRY_IMAGE:3.2.$CI_PIPELINE_ID
@@ -185,7 +187,8 @@ Test_31:
   needs: ["Build_31"]
   script:
     - docker pull $DOCKER_REGISTRY_IMAGE:3.1.$CI_PIPELINE_ID
-    - docker stop $(docker ps -q)
+    - docker stop $(docker ps -q) 2>/dev/null || true
+    - docker rm -f $(docker ps -aq) 2>/dev/null || true
     - docker ps
     - docker run -i -d --rm -e NEST_CONTAINER_MODE=nest-server -p 5000:5000  
         --name $CI_PIPELINE_ID $DOCKER_REGISTRY_IMAGE:3.1.$CI_PIPELINE_ID
@@ -225,7 +228,8 @@ Test_30:
   needs: ["Build_30"]
   script:
     - docker pull $DOCKER_REGISTRY_IMAGE:3.0.$CI_PIPELINE_ID
-    - docker stop $(docker ps -q)
+    - docker stop $(docker ps -q) 2>/dev/null || true
+    - docker rm -f $(docker ps -aq) 2>/dev/null || true
     - docker ps
     - docker run -i -d --rm -e NEST_CONTAINER_MODE=nest-server -p 5000:5000  
         --name $CI_PIPELINE_ID $DOCKER_REGISTRY_IMAGE:3.0.$CI_PIPELINE_ID
@@ -264,9 +268,9 @@ Test_2202:
   stage: test
   needs: ["Build_2202"]
   script:
-    - docker rm -f $(docker ps -a -q)
-    - docker container prune
     - docker pull $DOCKER_REGISTRY_IMAGE:2.20.2.$CI_PIPELINE_ID
+    - docker stop $(docker ps -q) 2>/dev/null || true
+    - docker rm -f $(docker ps -aq) 2>/dev/null || true
     - docker ps
     - docker run -i -d --rm -e NEST_CONTAINER_MODE=nest-server -p 5000:5000  
         --name $CI_PIPELINE_ID $DOCKER_REGISTRY_IMAGE:2.20.2.$CI_PIPELINE_ID
@@ -305,9 +309,9 @@ Test_2180:
   stage: test
   needs: ["Build_2180"]
   script:
-    - docker rm -f $(docker ps -a -q)
-    - docker container prune
     - docker pull $DOCKER_REGISTRY_IMAGE:2.18.0.$CI_PIPELINE_ID
+    - docker stop $(docker ps -q) 2>/dev/null || true
+    - docker rm -f $(docker ps -aq) 2>/dev/null || true
     - docker ps
     - docker run -i -d --rm -e NEST_CONTAINER_MODE=nest-server -p 5000:5000  
         --name $CI_PIPELINE_ID $DOCKER_REGISTRY_IMAGE:2.18.0.$CI_PIPELINE_ID
@@ -346,9 +350,9 @@ Test_2160:
   stage: test
   needs: ["Build_2160"]
   script:
-    - docker rm -f $(docker ps -a -q)
-    - docker container prune
     - docker pull $DOCKER_REGISTRY_IMAGE:2.16.0.$CI_PIPELINE_ID
+    - docker stop $(docker ps -q) 2>/dev/null || true
+    - docker rm -f $(docker ps -aq) 2>/dev/null || true
     - docker ps
     - docker run -i -d --rm -e NEST_CONTAINER_MODE=nest-server -p 5000:5000  
         --name $CI_PIPELINE_ID $DOCKER_REGISTRY_IMAGE:2.16.0.$CI_PIPELINE_ID
@@ -387,9 +391,9 @@ Test_2140:
   stage: test
   needs: ["Build_2140"]
   script:
-    - docker rm -f $(docker ps -a -q)
-    - docker container prune
     - docker pull $DOCKER_REGISTRY_IMAGE:2.14.0.$CI_PIPELINE_ID
+    - docker stop $(docker ps -q) 2>/dev/null || true
+    - docker rm -f $(docker ps -aq) 2>/dev/null || true
     - docker ps
     - docker run -i -d --rm -e NEST_CONTAINER_MODE=nest-server -p 5000:5000  
         --name $CI_PIPELINE_ID $DOCKER_REGISTRY_IMAGE:2.14.0.$CI_PIPELINE_ID
@@ -428,9 +432,9 @@ Test_2120:
   stage: test
   needs: ["Build_2120"]
   script:
-    - docker rm -f $(docker ps -a -q)
-    - docker container prune
     - docker pull $DOCKER_REGISTRY_IMAGE:2.12.0.$CI_PIPELINE_ID
+    - docker stop $(docker ps -q) 2>/dev/null || true
+    - docker rm -f $(docker ps -aq) 2>/dev/null || true
     - docker ps
     - docker run -i -d --rm -e NEST_CONTAINER_MODE=nest-server -p 5000:5000  
         --name $CI_PIPELINE_ID $DOCKER_REGISTRY_IMAGE:2.12.0.$CI_PIPELINE_ID
