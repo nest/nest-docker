@@ -65,8 +65,8 @@ Test_Dev:
   needs: ["Build_Dev"]
   script:
     - docker pull $DOCKER_REGISTRY_IMAGE:dev.$CI_PIPELINE_ID
-    - docker stop $CI_PIPELINE_ID 2>/dev/null || true
-    - docker rm -f $CI_PIPELINE_ID 2>/dev/null || true
+    - docker stop $(docker ps -q) 2>/dev/null || true
+    - docker rm -f $(docker ps -aq) 2>/dev/null || true
     - docker ps
     - docker run -i -d --rm -e NEST_CONTAINER_MODE=nest-server -p 5000:5000  
         --name $CI_PIPELINE_ID $DOCKER_REGISTRY_IMAGE:dev.$CI_PIPELINE_ID
