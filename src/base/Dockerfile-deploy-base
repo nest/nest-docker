@@ -56,4 +56,5 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     python3 -m pip install gunicorn && \
     python3 -m pip install jupyterlab && \
     python3 -m pip install elephant[extras] && \
+    python3 -m pip install MarkupSafe==2.0.1 && \ 
     python3 -m pip install nestml --pre
