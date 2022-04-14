@@ -40,6 +40,8 @@ LABEL maintainer="s.graber@fz-juelich.de"
 COPY --from=builder /opt/nest /opt/nest
 COPY --from=builder /opt/music-install /opt/music-install
 
+RUN python3 -m pip install nestml --pre --upgrade
+
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
 
