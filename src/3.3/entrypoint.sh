@@ -16,7 +16,7 @@ export PATH=${MUSIC_PATH}/bin:$PATH
 export CPATH=${MUSIC_PATH}/include:$CPATH
 export PYTHONPATH=${MUSIC_PATH}/lib/python3.8/site-packages:$PYTHONPATH
 
-export PATH="$PATH:/root/.local/bin"
+export PATH="$PATH:/usr/local/bin"
 
 MODE="${NEST_CONTAINER_MODE:-$1}"
 if [[ "${MODE}" = 'interactive' ]]; then
@@ -28,10 +28,10 @@ if [[ "${MODE}" = 'interactive' ]]; then
 
 elif [[ "${MODE}" = 'jupyterlab' ]]; then
     mkdir -p /opt/data; cd /opt/data
-    exec /root/.local/bin/jupyter-lab --ip="${IP_ADDRESS}" --port=8080 --no-browser --allow-root
+    exec /usr/local/bin/jupyter-lab --ip="${IP_ADDRESS}" --port=8080 --no-browser --allow-root
 
 elif [[ "${MODE}" = 'nest-desktop' ]]; then
-    exec /root/.local/bin/nest-desktop start -h 0.0.0.0 -p 8000
+    exec /usr/local/bin/nest-desktop start -h 0.0.0.0 -p 8000
 
 elif [[ "${MODE}" = 'nest-server' ]]; then
     export NEST_SERVER_BUFFER_SIZE="${NEST_SERVER_BUFFER_SIZE:-65535}"
