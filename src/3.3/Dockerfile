@@ -10,8 +10,7 @@ RUN wget  https://github.com/nest/nest-simulator/archive/refs/tags/v${NEST_VERSI
     cd ${SRC_PATH} && tar -xzf v${NEST_VERSION}.tar.gz && ls -l && \
     cp pathlib-nest-3.3.patch ${SRC_PATH}/nest-simulator-${NEST_VERSION}/ && \
     cd ${SRC_PATH}/nest-simulator-${NEST_VERSION}/ && patch -p1 --verbose < pathlib-nest-3.3.patch && \
-    python3 -m pip install -r ${SRC_PATH}/nest-simulator-${NEST_VERSION}/doc/requirements.txt && \
-    python3 -m pip install MarkupSafe==2.0.1
+    python3 -m pip install -r ${SRC_PATH}/nest-simulator-${NEST_VERSION}/doc/requirements.txt
 
 RUN mkdir nest-build && cd nest-build && \
     cmake -DCMAKE_INSTALL_PREFIX:PATH=/opt/nest \
