@@ -27,10 +27,10 @@ if [[ "${MODE}" = 'interactive' ]]; then
 
 elif [[ "${MODE}" = 'jupyterlab' ]]; then
     mkdir -p /opt/data; cd /opt/data
-    exec /root/.local/bin/jupyter-lab --ip="${IP_ADDRESS}" --port=8080 --no-browser --allow-root
+    exec /usr/local/bin/jupyter-lab --ip="${IP_ADDRESS}" --port=8080 --no-browser --allow-root
 
 elif [[ "${MODE}" = 'nest-desktop' ]]; then
-    exec /root/.local/bin/nest-desktop start -h 0.0.0.0 -p 8000
+    exec /usr/local/bin/nest-desktop start -h 0.0.0.0 -p 8000
 
 elif [[ "${MODE}" = 'nest-server' ]]; then
     export NEST_SERVER_BUFFER_SIZE="${NEST_SERVER_BUFFER_SIZE:-65535}"

@@ -82,7 +82,7 @@ To use 'docker-compose' you need the definition file from the git repository. Do
   or
 
       docker run -it --rm -e LOCAL_USER_ID=`id -u $USER` -v $(pwd):/opt/data -e NEST_CONTAINER_MODE=jupyterlab \
-          -p 8080:8080 docker-registry.ebrains.eu/nest/nest-simulator:3.3)
+          -p 8080:8080 docker-registry.ebrains.eu/nest/nest-simulator:3.3
     
   Starts a jupyter lab server with pre-installed NEST 3.3. The corresponding URL is displayed in the console.
 
