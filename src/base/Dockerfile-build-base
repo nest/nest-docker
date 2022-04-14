@@ -11,21 +11,19 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     cmake \
     cython3 \
     jq \
-    libboost-filesystem-dev \
-    libboost-regex-dev \
-    libboost-wave-dev \
-    libboost-program-options-dev \
-    libboost-test-dev \
+    libboost-dev \
     libgomp1 \
     libgsl-dev \
     libltdl7 \
     libltdl-dev \
     libmusic1v5 \
+    libncurses-dev \
     libopenmpi-dev \
     libomp-dev \
     libpcre3 \
     libpcre3-dev \
     libpython3.8 \
+    libreadline-dev \
     llvm-dev \
     openmpi-bin \
     pandoc \
@@ -48,8 +46,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     python-dev \
     vera++ \
     wget && \
-    apt-get autoremove -y && \
-    rm -rf /var/lib/apt/lists/* && \
     # update-alternatives --remove-all python && \
     update-alternatives --install /usr/bin/python python /usr/bin/python3 10 && \
     update-alternatives --install /usr/bin/pip pip /usr/bin/pip3 10 && \
