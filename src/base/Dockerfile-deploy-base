@@ -20,7 +20,7 @@ RUN apt-get update && apt autoremove && apt autoclean && apt-get install -y --no
         libncurses-dev \
         libopenmpi-dev \
         libomp-dev \
-        libpython \
+        libpython3-dev \
         libreadline-dev \
         nano \
         openmpi-bin \
