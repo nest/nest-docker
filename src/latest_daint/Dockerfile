@@ -43,7 +43,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     python3-setuptools \
     python3-statsmodels \
     python3-tk \
-    python-dev \
     vera++ \
     wget  && \
     rm -rf /var/lib/apt/lists/* && \
