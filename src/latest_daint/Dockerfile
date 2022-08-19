@@ -27,7 +27,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libomp-dev \
     libpcre3 \
     libpcre3-dev \
-    libpython \
+    libpython3-dev \
     llvm-dev \
     pep8 \
     python3-dev \
@@ -96,7 +96,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         libgsl-dev  \
         libltdl7 \
         libomp-dev \
-        libpython \
+        libpython3-dev \
         nano \
         openssh-client \
         openssh-server \
