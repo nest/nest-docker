@@ -43,7 +43,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     python3-sphinx \
     python3-statsmodels \
     python3-tk \
-    python-dev \
     vera++ \
     wget && \
     # update-alternatives --remove-all python && \
