@@ -142,20 +142,14 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     rm -rf /var/lib/apt/lists/* && \
     update-alternatives --install /usr/bin/python python /usr/bin/python3 10 && \
     update-alternatives --install /usr/bin/pip pip /usr/bin/pip3 10 && \
-    python3 -m pip install quantities lazyarray neo  && \
-    python3 -m pip install uwsgi &&\
-    # wget https://github.com/NeuralEnsemble/PyNN/archive/nest-dev.tar.gz && \
-    # tar -xzf nest-dev.tar.gz && \
-    # cd PyNN-nest-dev && \
-    # python3 setup.py install && \
-    # cd .. && rm -rf PyNN-nest-dev && rm nest-dev.tar.gz
-    python3 -m pip install --no-binary :all: PyNN && \
+    python3 -m pip install quantities lazyarray neo --user   && \
+    python3 -m pip install --no-binary :all: PyNN --user  && \
     python3 -m pip install Flask  --user && \
     python3 -m pip install Flask-cors  --user && \
     python3 -m pip install RestrictedPython  --user && \
-    python3 -m pip install nest-desktop --user &&\
-    python3 -m pip install uwsgi --user &&\
-    python3 -m pip install jupyterlab --user &&\
+    python3 -m pip install nest-desktop --user && \
+    python3 -m pip install uwsgi --user && \
+    python3 -m pip install jupyterlab --user && \
     python3 -m pip install nestml --user
 
 COPY --from=builder31 /opt/nest /opt/nest
