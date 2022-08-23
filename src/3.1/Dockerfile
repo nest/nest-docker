@@ -1,4 +1,4 @@
-FROM buildpack-deps:focal as builder31
+FROM buildpack-deps:jammy as builder31
 LABEL maintainer="s.graber@fz-juelich.de"
 
 ENV TERM=xterm \
@@ -25,7 +25,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libomp-dev \
     libpcre3 \
     libpcre3-dev \
-    libpython3.8 \
+    libpython3.10 \
     llvm-dev \
     openmpi-bin \
     pandoc \
@@ -45,7 +45,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     python3-sphinx \
     python3-statsmodels \
     python3-tk \
-    python-dev \
     vera++ \
     wget  && \
     apt-get autoremove -y && \
@@ -94,12 +93,13 @@ RUN wget https://github.com/nest/nest-simulator/archive/refs/tags/v3.1.tar.gz &&
 
 RUN python3 -m pip install -r ../nest-simulator-3.1/extras/nest-simulator-doc-requirements.txt && \
     python3 -m pip install MarkupSafe==2.0.1 && \
+    python3 -m pip install sphinx_gallery==0.10.1 && \
     cd  nest-build && make html && make install
 
 
 ###############################################################################
 
-FROM ubuntu:focal
+FROM ubuntu:jammy
 LABEL maintainer="s.graber@fz-juelich.de"
 
 ENV TERM=xterm \
@@ -119,7 +119,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         libltdl7 \
         libopenmpi-dev \
         libomp-dev \
-        libpython3.8 \
+        libpython3.10 \
         nano \
         openmpi-bin \
         openssh-client \
