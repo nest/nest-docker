@@ -1,4 +1,4 @@
-FROM buildpack-deps:focal as builder
+FROM buildpack-deps:jammy as builder
 LABEL maintainer="s.graber@fz-juelich.de"
 
 ENV TERM=xterm \
@@ -22,7 +22,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libomp-dev \
     libpcre3 \
     libpcre3-dev \
-    libpython3.8 \
+    libpython3.10 \
     libreadline-dev \
     llvm-dev \
     openmpi-bin \
@@ -43,7 +43,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     python3-sphinx \
     python3-statsmodels \
     python3-tk \
-    python-dev \
     vera++ \
     wget && \
     # update-alternatives --remove-all python && \
