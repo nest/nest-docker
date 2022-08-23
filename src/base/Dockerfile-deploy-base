@@ -1,4 +1,4 @@
-FROM ubuntu:focal
+FROM ubuntu:jammy
 LABEL maintainer="s.graber@fz-juelich.de"
 
 ENV TERM=xterm \
@@ -20,7 +20,7 @@ RUN apt-get update && apt autoremove && apt autoclean && apt-get install -y --no
         libncurses-dev \
         libopenmpi-dev \
         libomp-dev \
-        libpython3.8 \
+        libpython3-all-dev \
         libreadline-dev \
         nano \
         openmpi-bin \
