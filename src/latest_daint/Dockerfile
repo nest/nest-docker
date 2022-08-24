@@ -1,4 +1,4 @@
-FROM buildpack-deps:focal as buildermaster
+FROM buildpack-deps:jammy as buildermaster
 LABEL maintainer="s.graber@fz-juelich.de"
 
 ARG WITH_MPI=ON
@@ -27,7 +27,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libomp-dev \
     libpcre3 \
     libpcre3-dev \
-    libpython3.8 \
+    libpython3-dev \
     llvm-dev \
     pep8 \
     python3-dev \
@@ -43,7 +43,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     python3-setuptools \
     python3-statsmodels \
     python3-tk \
-    python-dev \
     vera++ \
     wget  && \
     rm -rf /var/lib/apt/lists/* && \
@@ -75,7 +74,7 @@ RUN git clone https://github.com/nest/nest-simulator.git && \
 
 ###############################################################################
 
-FROM ubuntu:focal
+FROM ubuntu:jammy
 LABEL maintainer="s.graber@fz-juelich.de"
 
 ENV TERM=xterm \
@@ -96,7 +95,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         libgsl-dev  \
         libltdl7 \
         libomp-dev \
-        libpython3.8 \
+        libpython3-dev \
         nano \
         openssh-client \
         openssh-server \

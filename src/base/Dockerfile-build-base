@@ -1,4 +1,4 @@
-FROM buildpack-deps:jammy as builder
+FROM buildpack-deps:focal as builder
 LABEL maintainer="s.graber@fz-juelich.de"
 
 ENV TERM=xterm \
@@ -22,7 +22,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libomp-dev \
     libpcre3 \
     libpcre3-dev \
-    libpython3-all-dev \
+    libpython3.10 \
     libreadline-dev \
     llvm-dev \
     openmpi-bin \

@@ -15,6 +15,7 @@ RUN wget https://github.com/nest/nest-simulator/archive/refs/tags/v${NEST_VERSIO
     cd ${SRC_PATH}/nest-simulator-${NEST_VERSION}/ && patch -p1 < ${SRC_PATH}/nest-simulator-3.2-p1-VersionNumber.patch && \
     patch -p1 < pathlib-nest-3.2.patch && \
     python3 -m pip install -r ${SRC_PATH}/nest-simulator-${NEST_VERSION}/doc/requirements.txt && \
+    python3 -m pip install sphinx_gallery==0.10.1 && \
     python3 -m pip install MarkupSafe==2.0.1
 
 RUN mkdir nest-build && cd nest-build && \

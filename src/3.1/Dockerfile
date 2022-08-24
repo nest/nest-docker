@@ -1,4 +1,4 @@
-FROM buildpack-deps:focal as builder31
+FROM buildpack-deps:jammy as builder31
 LABEL maintainer="s.graber@fz-juelich.de"
 
 ENV TERM=xterm \
@@ -25,7 +25,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libomp-dev \
     libpcre3 \
     libpcre3-dev \
-    libpython3.8 \
+    libpython3.10 \
     llvm-dev \
     openmpi-bin \
     pandoc \
@@ -45,7 +45,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     python3-sphinx \
     python3-statsmodels \
     python3-tk \
-    python-dev \
     vera++ \
     wget  && \
     apt-get autoremove -y && \
@@ -94,12 +93,13 @@ RUN wget https://github.com/nest/nest-simulator/archive/refs/tags/v3.1.tar.gz &&
 
 RUN python3 -m pip install -r ../nest-simulator-3.1/extras/nest-simulator-doc-requirements.txt && \
     python3 -m pip install MarkupSafe==2.0.1 && \
+    python3 -m pip install sphinx_gallery==0.10.1 && \
     cd  nest-build && make html && make install
 
 
 ###############################################################################
 
-FROM ubuntu:focal
+FROM ubuntu:jammy
 LABEL maintainer="s.graber@fz-juelich.de"
 
 ENV TERM=xterm \
@@ -119,7 +119,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         libltdl7 \
         libopenmpi-dev \
         libomp-dev \
-        libpython3.8 \
+        libpython3.10 \
         nano \
         openmpi-bin \
         openssh-client \
@@ -142,20 +142,14 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     rm -rf /var/lib/apt/lists/* && \
     update-alternatives --install /usr/bin/python python /usr/bin/python3 10 && \
     update-alternatives --install /usr/bin/pip pip /usr/bin/pip3 10 && \
-    python3 -m pip install quantities lazyarray neo  && \
-    python3 -m pip install uwsgi &&\
-    # wget https://github.com/NeuralEnsemble/PyNN/archive/nest-dev.tar.gz && \
-    # tar -xzf nest-dev.tar.gz && \
-    # cd PyNN-nest-dev && \
-    # python3 setup.py install && \
-    # cd .. && rm -rf PyNN-nest-dev && rm nest-dev.tar.gz
-    python3 -m pip install --no-binary :all: PyNN && \
+    python3 -m pip install quantities lazyarray neo --user   && \
+    python3 -m pip install --no-binary :all: PyNN --user  && \
     python3 -m pip install Flask  --user && \
     python3 -m pip install Flask-cors  --user && \
     python3 -m pip install RestrictedPython  --user && \
-    python3 -m pip install nest-desktop --user &&\
-    python3 -m pip install uwsgi --user &&\
-    python3 -m pip install jupyterlab --user &&\
+    python3 -m pip install nest-desktop --user && \
+    python3 -m pip install uwsgi --user && \
+    python3 -m pip install jupyterlab --user && \
     python3 -m pip install nestml --user
 
 COPY --from=builder31 /opt/nest /opt/nest

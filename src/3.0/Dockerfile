@@ -1,4 +1,4 @@
-FROM buildpack-deps:focal as builder30
+FROM buildpack-deps:jammy as builder30
 LABEL maintainer="s.graber@fz-juelich.de"
 
 ARG WITH_MPI=ON
@@ -27,7 +27,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libomp-dev \
     libpcre3 \
     libpcre3-dev \
-    libpython3.8 \
+    libpython3.10 \
     llvm-dev \
     openmpi-bin \
     pandoc \
@@ -47,7 +47,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     python3-sphinx \
     python3-statsmodels \
     python3-tk \
-    python-dev \
     vera++ \
     wget  && \
     apt-get autoremove -y && \
@@ -55,6 +54,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     # update-alternatives --remove-all python && \
     update-alternatives --install /usr/bin/python python /usr/bin/python3 10 && \
     update-alternatives --install /usr/bin/pip pip /usr/bin/pip3 10 && \
+    python3 -m pip install sphinx_gallery==0.10.1 && \
     python3 -m pip install --upgrade pip setuptools wheel mock
 
 
@@ -111,7 +111,7 @@ RUN python3 -m pip install -r ../nest-simulator-3.0/extras/nest-simulator-doc-re
 
 ###############################################################################
 
-FROM ubuntu:focal
+FROM ubuntu:jammy
 LABEL maintainer="s.graber@fz-juelich.de"
 
 ENV TERM=xterm \
@@ -131,7 +131,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         libltdl7 \
         libopenmpi-dev \
         libomp-dev \
-        libpython3.8 \
+        libpython3.10 \
         nano \
         openmpi-bin \
         openssh-client \

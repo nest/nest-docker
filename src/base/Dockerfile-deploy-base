@@ -1,4 +1,4 @@
-FROM ubuntu:jammy
+FROM ubuntu:focal
 LABEL maintainer="s.graber@fz-juelich.de"
 
 ENV TERM=xterm \
@@ -20,7 +20,7 @@ RUN apt-get update && apt autoremove && apt autoclean && apt-get install -y --no
         libncurses-dev \
         libopenmpi-dev \
         libomp-dev \
-        libpython3-all-dev \
+        libpython3.10 \
         libreadline-dev \
         nano \
         openmpi-bin \
@@ -51,7 +51,6 @@ RUN apt-get update && apt autoremove && apt autoclean && apt-get install -y --no
     python3 -m pip install Flask-cors --upgrade && \
     python3 -m pip install RestrictedPython --upgrade && \
     python3 -m pip install nest-desktop && \
-    python3 -m pip install uwsgi && \
     python3 -m pip install MarkupSafe==2.0.1 && \
     python3 -m pip install gunicorn && \
     python3 -m pip install jupyterlab && \
