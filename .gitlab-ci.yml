@@ -1,6 +1,6 @@
 # do not use "latest" here, if you want this to work in the future
 default:
-  image: ubuntu:22.04
+  image: ubuntu:20.04
   tags:
     - shell-runner
 
