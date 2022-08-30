@@ -50,6 +50,8 @@ Build_Base:on-schedule:
 
 Build_Dev:
   stage: build
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
   script:
     - docker pull $DOCKER_REGISTRY_IMAGE:dev || true
     - docker build 
@@ -90,6 +92,8 @@ Deploy_Dev:
 
 Build_33:
   stage: build
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
   script:
     - docker pull $DOCKER_REGISTRY_IMAGE:3.3  || true
     - docker build 
@@ -130,6 +134,8 @@ Deploy_33:
 
 Build_32:
   stage: build
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
   when: manual
   script:
     - docker pull $DOCKER_REGISTRY_IMAGE:3.2  || true
@@ -171,6 +177,8 @@ Deploy_32:
 
 Build_31:
   stage: build
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
   when: manual
   script:
     - docker pull $DOCKER_REGISTRY_IMAGE:3.1  || true
@@ -212,6 +220,8 @@ Deploy_31:
 
 Build_30:
   stage: build
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
   when: manual
   script:
     - docker pull $DOCKER_REGISTRY_IMAGE:3.0  || true
@@ -253,6 +263,8 @@ Deploy_30:
 
 Build_2202:
   stage: build
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
   when: manual
   script:
     - docker pull $DOCKER_REGISTRY_IMAGE:2.20.2  || true
@@ -294,6 +306,8 @@ Deploy_2202:
 
 Build_2180:
   stage: build
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
   when: manual
   script:
     - docker pull $DOCKER_REGISTRY_IMAGE:2.18.0  || true
@@ -335,6 +349,8 @@ Deploy_2180:
 
 Build_2160:
   stage: build
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
   when: manual
   script:
     - docker pull $DOCKER_REGISTRY_IMAGE:2.16.0  || true
@@ -376,6 +392,8 @@ Deploy_2160:
 
 Build_2140:
   stage: build
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
   when: manual
   script:
     - docker pull $DOCKER_REGISTRY_IMAGE:2.14.0  || true
@@ -417,6 +435,8 @@ Deploy_2140:
 
 Build_2120:
   stage: build
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
   when: manual
   script:
     - docker pull $DOCKER_REGISTRY_IMAGE:2.12.0  || true
