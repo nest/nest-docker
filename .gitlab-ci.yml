@@ -25,8 +25,6 @@ before_script:
 Build_Base:on-schedule:
   stage: build
   rules:
-    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
-      when: never
     - if: $S_WEEKLY == "schedule"
   script:
     - docker pull $DOCKER_REGISTRY_IMAGE:nest-simulator-build-base || true
