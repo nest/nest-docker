@@ -88,7 +88,7 @@ Build_Dev:
 
 Deploy_Dev:
   stage: deploy
-  needs: ["Test_Dev"]
+  needs: ["Build_Dev"]
   script:
     # - docker pull $DOCKER_REGISTRY_IMAGE:dev.$CI_PIPELINE_ID
     # - docker tag $DOCKER_REGISTRY_IMAGE:dev.$CI_PIPELINE_ID $DOCKER_REGISTRY_IMAGE:dev
@@ -137,7 +137,7 @@ Build_33:
 
 Deploy_33:
   stage: deploy
-  needs: ["Test_33"]
+  needs: ["Build_33"]
   script:
     # - docker pull $DOCKER_REGISTRY_IMAGE:3.3.$CI_PIPELINE_ID
     # - docker tag $DOCKER_REGISTRY_IMAGE:3.3.$CI_PIPELINE_ID $DOCKER_REGISTRY_IMAGE:3.3
