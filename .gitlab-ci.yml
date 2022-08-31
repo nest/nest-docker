@@ -121,13 +121,13 @@ Test_33:
     - docker tag $DOCKER_REGISTRY_IMAGE:3.3.$CI_PIPELINE_ID $DOCKER_REGISTRY_IMAGE:3.3
   tags:
     - shell-runner
-    -
+
 Deploy_33:
   stage: deploy
   needs: ["Test_33"]
   script:
-    # - docker pull $DOCKER_REGISTRY_IMAGE:3.3.$CI_PIPELINE_ID
-    # - docker tag $DOCKER_REGISTRY_IMAGE:3.3.$CI_PIPELINE_ID $DOCKER_REGISTRY_IMAGE:3.3
+    - docker pull $DOCKER_REGISTRY_IMAGE:3.3.$CI_PIPELINE_ID
+    - docker tag $DOCKER_REGISTRY_IMAGE:3.3.$CI_PIPELINE_ID $DOCKER_REGISTRY_IMAGE:3.3
     - docker push $DOCKER_REGISTRY_IMAGE:3.3
   tags:
     - shell-runner
