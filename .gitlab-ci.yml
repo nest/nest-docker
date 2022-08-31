@@ -60,38 +60,30 @@ Build_Dev:
         --cache-from $DOCKER_REGISTRY_IMAGE:dev
         --tag $DOCKER_REGISTRY_IMAGE:dev.$CI_PIPELINE_ID 
         ./src/dev
-    # - docker push $DOCKER_REGISTRY_IMAGE:dev.$CI_PIPELINE_ID
-    # Be sure no containers are running
+    - docker push $DOCKER_REGISTRY_IMAGE:dev.$CI_PIPELINE_ID
+    tags:
+    - shell-runner
+
+Test_Dev:
+  stage: test
+  needs: ["Build_Dev"]
+  script:
+    - docker pull $DOCKER_REGISTRY_IMAGE:dev.$CI_PIPELINE_ID
     - docker stop $(docker ps -q) 2>/dev/null || true
     - docker rm -f $(docker ps -aq) 2>/dev/null || true
-    # Simple test
+    - docker ps
     - docker run -i -d --rm -e NEST_CONTAINER_MODE=nest-server -p 5000:5000
-      --name $CI_PIPELINE_ID $DOCKER_REGISTRY_IMAGE:dev.$CI_PIPELINE_ID
-    # Rename
-    - docker tag $DOCKER_REGISTRY_IMAGE:dev.$CI_PIPELINE_ID $DOCKER_REGISTRY_IMAGE:dev
+        --name $CI_PIPELINE_ID $DOCKER_REGISTRY_IMAGE:dev.$CI_PIPELINE_ID
+    - docker ps
   tags:
     - shell-runner
 
-#Test_Dev:
-#  stage: test
-#  needs: ["Build_Dev"]
-#  script:
-#    - docker pull $DOCKER_REGISTRY_IMAGE:dev.$CI_PIPELINE_ID
-#    - docker stop $(docker ps -q) 2>/dev/null || true
-#    - docker rm -f $(docker ps -aq) 2>/dev/null || true
-#    - docker ps
-#    - docker run -i -d --rm -e NEST_CONTAINER_MODE=nest-server -p 5000:5000
-#        --name $CI_PIPELINE_ID $DOCKER_REGISTRY_IMAGE:dev.$CI_PIPELINE_ID
-#    - docker ps
-#  tags:
-#    - shell-runner
-
 Deploy_Dev:
   stage: deploy
-  needs: ["Build_Dev"]
+  needs: ["Test_Dev"]
   script:
-    # - docker pull $DOCKER_REGISTRY_IMAGE:dev.$CI_PIPELINE_ID
-    # - docker tag $DOCKER_REGISTRY_IMAGE:dev.$CI_PIPELINE_ID $DOCKER_REGISTRY_IMAGE:dev
+    - docker pull $DOCKER_REGISTRY_IMAGE:dev.$CI_PIPELINE_ID
+    - docker tag $DOCKER_REGISTRY_IMAGE:dev.$CI_PIPELINE_ID $DOCKER_REGISTRY_IMAGE:dev
     - docker push $DOCKER_REGISTRY_IMAGE:dev
   tags:
     - shell-runner
@@ -112,32 +104,27 @@ Build_33:
         --cache-from $DOCKER_REGISTRY_IMAGE:3.3
         --tag $DOCKER_REGISTRY_IMAGE:3.3.$CI_PIPELINE_ID 
         ./src/3.3
-    # - docker push $DOCKER_REGISTRY_IMAGE:3.3.$CI_PIPELINE_ID
-    - docker stop $(docker ps -q) 2>/dev/null || true
-    - docker rm -f $(docker ps -aq) 2>/dev/null || true
-    - docker run -i -d --rm -e NEST_CONTAINER_MODE=nest-server -p 5000:5000
-      --name $CI_PIPELINE_ID $DOCKER_REGISTRY_IMAGE:3.3.$CI_PIPELINE_ID
-  tags:
+    - docker push $DOCKER_REGISTRY_IMAGE:3.3.$CI_PIPELINE_ID
+    tags:
     - shell-runner
 
-#Test_33:
-#  stage: test
-#  needs: ["Build_33"]
-#  script:
-#    - docker pull $DOCKER_REGISTRY_IMAGE:3.3.$CI_PIPELINE_ID
-#    - docker stop $(docker ps -q) 2>/dev/null || true
-#    - docker rm -f $(docker ps -aq) 2>/dev/null || true
-#    - docker ps
-#    - docker run -i -d --rm -e NEST_CONTAINER_MODE=nest-server -p 5000:5000
-#        --name $CI_PIPELINE_ID $DOCKER_REGISTRY_IMAGE:3.3.$CI_PIPELINE_ID
-#    - docker tag $DOCKER_REGISTRY_IMAGE:3.3.$CI_PIPELINE_ID $DOCKER_REGISTRY_IMAGE:3.3
-#    - docker ps
-#  tags:
-#    - shell-runner
-
+Test_33:
+  stage: test
+  needs: ["Build_33"]
+  script:
+    - docker pull $DOCKER_REGISTRY_IMAGE:3.3.$CI_PIPELINE_ID
+    - docker stop $(docker ps -q) 2>/dev/null || true
+    - docker rm -f $(docker ps -aq) 2>/dev/null || true
+    - docker ps
+    - docker run -i -d --rm -e NEST_CONTAINER_MODE=nest-server -p 5000:5000
+        --name $CI_PIPELINE_ID $DOCKER_REGISTRY_IMAGE:3.3.$CI_PIPELINE_ID
+    - docker tag $DOCKER_REGISTRY_IMAGE:3.3.$CI_PIPELINE_ID $DOCKER_REGISTRY_IMAGE:3.3
+  tags:
+    - shell-runner
+    -
 Deploy_33:
   stage: deploy
-  needs: ["Build_33"]
+  needs: ["Test_33"]
   script:
     # - docker pull $DOCKER_REGISTRY_IMAGE:3.3.$CI_PIPELINE_ID
     # - docker tag $DOCKER_REGISTRY_IMAGE:3.3.$CI_PIPELINE_ID $DOCKER_REGISTRY_IMAGE:3.3
@@ -151,6 +138,7 @@ Deploy_33:
 
 Build_32:
   stage: build
+  needs: ["Build_33"]
   rules:
     - if: $CI_PIPELINE_SOURCE == "schedule"
       when: never
@@ -195,6 +183,7 @@ Deploy_32:
 
 Build_31:
   stage: build
+  needs: ["Build_33"]
   rules:
     - if: $CI_PIPELINE_SOURCE == "schedule"
       when: never
@@ -239,6 +228,7 @@ Deploy_31:
 
 Build_30:
   stage: build
+  needs: ["Build_33"]
   rules:
     - if: $CI_PIPELINE_SOURCE == "schedule"
       when: never
@@ -283,6 +273,7 @@ Deploy_30:
 
 Build_2202:
   stage: build
+  needs: ["Build_30"]
   rules:
     - if: $CI_PIPELINE_SOURCE == "schedule"
       when: never
@@ -327,6 +318,7 @@ Deploy_2202:
 
 Build_2180:
   stage: build
+  needs: ["Build_30"]
   rules:
     - if: $CI_PIPELINE_SOURCE == "schedule"
       when: never
@@ -371,6 +363,7 @@ Deploy_2180:
 
 Build_2160:
   stage: build
+  needs: ["Build_30"]
   rules:
     - if: $CI_PIPELINE_SOURCE == "schedule"
       when: never
@@ -415,6 +408,7 @@ Deploy_2160:
 
 Build_2140:
   stage: build
+  needs: ["Build_30"]
   rules:
     - if: $CI_PIPELINE_SOURCE == "schedule"
       when: never
@@ -459,6 +453,7 @@ Deploy_2140:
 
 Build_2120:
   stage: build
+  needs: ["Build_30"]
   rules:
     - if: $CI_PIPELINE_SOURCE == "schedule"
       when: never
