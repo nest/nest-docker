@@ -1,0 +1,179 @@
+###############################################
+###               v2.18.0                   ###
+###############################################
+
+Build_2180:
+  stage: build
+  needs: ["Build_30"]
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "schedule"
+      when: never
+    - when: manual
+  script:
+    - docker pull $DOCKER_REGISTRY_IMAGE:2.18.0  || true
+    - docker build 
+        --cache-from $DOCKER_REGISTRY_IMAGE:2.18.0  
+        --tag $DOCKER_REGISTRY_IMAGE:2.18.0.$CI_PIPELINE_ID 
+        ./src/3.1
+    - docker push $DOCKER_REGISTRY_IMAGE:2.18.0.$CI_PIPELINE_ID
+  tags:
+    - shell-runner
+
+Test_2180:
+  stage: test
+  needs: ["Build_2180"]
+  script:
+    - docker pull $DOCKER_REGISTRY_IMAGE:2.18.0.$CI_PIPELINE_ID
+    - docker stop $(docker ps -q) 2>/dev/null || true
+    - docker rm -f $(docker ps -aq) 2>/dev/null || true
+    - docker ps
+    - docker run -i -d --rm -e NEST_CONTAINER_MODE=nest-server -p 5000:5000  
+        --name $CI_PIPELINE_ID $DOCKER_REGISTRY_IMAGE:2.18.0.$CI_PIPELINE_ID
+    - docker ps
+  tags:
+    - shell-runner
+
+Deploy_2180:
+  stage: deploy
+  needs: ["Test_2180"]
+  script:
+    - docker pull $DOCKER_REGISTRY_IMAGE:2.18.0.$CI_PIPELINE_ID
+    - docker tag $DOCKER_REGISTRY_IMAGE:2.18.0.$CI_PIPELINE_ID $DOCKER_REGISTRY_IMAGE:2.18.0
+    - docker push $DOCKER_REGISTRY_IMAGE:2.18.0
+  tags:
+    - shell-runner
+
+###############################################
+###               v2.16.0                   ###
+###############################################
+
+Build_2160:
+  stage: build
+  needs: ["Build_30"]
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "schedule"
+      when: never
+    - when: manual
+  script:
+    - docker pull $DOCKER_REGISTRY_IMAGE:2.16.0  || true
+    - docker build 
+        --cache-from $DOCKER_REGISTRY_IMAGE:2.16.0  
+        --tag $DOCKER_REGISTRY_IMAGE:2.16.0.$CI_PIPELINE_ID 
+        ./src/3.1
+    - docker push $DOCKER_REGISTRY_IMAGE:2.16.0.$CI_PIPELINE_ID
+  tags:
+    - shell-runner
+
+Test_2160:
+  stage: test
+  needs: ["Build_2160"]
+  script:
+    - docker pull $DOCKER_REGISTRY_IMAGE:2.16.0.$CI_PIPELINE_ID
+    - docker stop $(docker ps -q) 2>/dev/null || true
+    - docker rm -f $(docker ps -aq) 2>/dev/null || true
+    - docker ps
+    - docker run -i -d --rm -e NEST_CONTAINER_MODE=nest-server -p 5000:5000  
+        --name $CI_PIPELINE_ID $DOCKER_REGISTRY_IMAGE:2.16.0.$CI_PIPELINE_ID
+    - docker ps
+  tags:
+    - shell-runner
+
+Deploy_2160:
+  stage: deploy
+  needs: ["Test_2160"]
+  script:
+    - docker pull $DOCKER_REGISTRY_IMAGE:2.16.0.$CI_PIPELINE_ID
+    - docker tag $DOCKER_REGISTRY_IMAGE:2.16.0.$CI_PIPELINE_ID $DOCKER_REGISTRY_IMAGE:2.16.0
+    - docker push $DOCKER_REGISTRY_IMAGE:2.16.0
+  tags:
+    - shell-runner
+
+###############################################
+###               v2.14.0                   ###
+###############################################
+
+Build_2140:
+  stage: build
+  needs: ["Build_30"]
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "schedule"
+      when: never
+    - when: manual
+  script:
+    - docker pull $DOCKER_REGISTRY_IMAGE:2.14.0  || true
+    - docker build 
+        --cache-from $DOCKER_REGISTRY_IMAGE:2.14.0  
+        --tag $DOCKER_REGISTRY_IMAGE:2.14.0.$CI_PIPELINE_ID 
+        ./src/3.1
+    - docker push $DOCKER_REGISTRY_IMAGE:2.14.0.$CI_PIPELINE_ID
+  tags:
+    - shell-runner
+
+Test_2140:
+  stage: test
+  needs: ["Build_2140"]
+  script:
+    - docker pull $DOCKER_REGISTRY_IMAGE:2.14.0.$CI_PIPELINE_ID
+    - docker stop $(docker ps -q) 2>/dev/null || true
+    - docker rm -f $(docker ps -aq) 2>/dev/null || true
+    - docker ps
+    - docker run -i -d --rm -e NEST_CONTAINER_MODE=nest-server -p 5000:5000  
+        --name $CI_PIPELINE_ID $DOCKER_REGISTRY_IMAGE:2.14.0.$CI_PIPELINE_ID
+    - docker ps
+  tags:
+    - shell-runner
+
+Deploy_2140:
+  stage: deploy
+  needs: ["Test_2140"]
+  script:
+    - docker pull $DOCKER_REGISTRY_IMAGE:2.14.0.$CI_PIPELINE_ID
+    - docker tag $DOCKER_REGISTRY_IMAGE:2.14.0.$CI_PIPELINE_ID $DOCKER_REGISTRY_IMAGE:2.14.0
+    - docker push $DOCKER_REGISTRY_IMAGE:2.14.0
+  tags:
+    - shell-runner
+
+###############################################
+###               v2.12.0                   ###
+###############################################
+
+Build_2120:
+  stage: build
+  needs: ["Build_30"]
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "schedule"
+      when: never
+    - when: manual
+  script:
+    - docker pull $DOCKER_REGISTRY_IMAGE:2.12.0  || true
+    - docker build 
+        --cache-from $DOCKER_REGISTRY_IMAGE:2.12.0  
+        --tag $DOCKER_REGISTRY_IMAGE:2.12.0.$CI_PIPELINE_ID 
+        ./src/3.1
+    - docker push $DOCKER_REGISTRY_IMAGE:2.12.0.$CI_PIPELINE_ID
+  tags:
+    - shell-runner
+
+Test_2120:
+  stage: test
+  needs: ["Build_2120"]
+  script:
+    - docker pull $DOCKER_REGISTRY_IMAGE:2.12.0.$CI_PIPELINE_ID
+    - docker stop $(docker ps -q) 2>/dev/null || true
+    - docker rm -f $(docker ps -aq) 2>/dev/null || true
+    - docker ps
+    - docker run -i -d --rm -e NEST_CONTAINER_MODE=nest-server -p 5000:5000  
+        --name $CI_PIPELINE_ID $DOCKER_REGISTRY_IMAGE:2.12.0.$CI_PIPELINE_ID
+    - docker ps
+  tags:
+    - shell-runner
+
+Deploy_2120:
+  stage: deploy
+  needs: ["Test_2120"]
+  script:
+    - docker pull $DOCKER_REGISTRY_IMAGE:2.12.0.$CI_PIPELINE_ID
+    - docker tag $DOCKER_REGISTRY_IMAGE:2.12.0.$CI_PIPELINE_ID $DOCKER_REGISTRY_IMAGE:2.12.0
+    - docker push $DOCKER_REGISTRY_IMAGE:2.12.0
+  tags:
+    - shell-runner

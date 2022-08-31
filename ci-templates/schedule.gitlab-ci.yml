@@ -1,0 +1,25 @@
+###############################################
+###               SCHEDULE                  ###
+###############################################
+
+Build_Base:on-schedule:
+  stage: build
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "schedule"
+  script:
+    - docker pull $DOCKER_REGISTRY_IMAGE:nest-simulator-build-base || true
+    - docker pull $DOCKER_REGISTRY_IMAGE:nest-simulator-deploy-base || true
+    - docker build
+      --file src/base/Dockerfile-build-base
+      --cache-from $DOCKER_REGISTRY_IMAGE:nest-simulator-build-base
+      --tag $DOCKER_REGISTRY_IMAGE:nest-simulator-build-base
+      .
+    - docker push $DOCKER_REGISTRY_IMAGE:nest-simulator-build-base
+    - docker build
+      --file src/base/Dockerfile-deploy-base
+      --cache-from $DOCKER_REGISTRY_IMAGE:nest-simulator-deploy-base
+      --tag $DOCKER_REGISTRY_IMAGE:nest-simulator-deploy-base
+      .
+    - docker push $DOCKER_REGISTRY_IMAGE:nest-simulator-deploy-base
+  tags:
+    - shell-runner
