@@ -4,6 +4,7 @@ services:
   nest-server:
     image: docker-registry.ebrains.eu/nest/nest-simulator:3.3
     environment:
+      LOCAL_USER_ID: "`id -u $USER`"
       NEST_CONTAINER_MODE: "nest-server"
     ports:
       - "5000:5000"
