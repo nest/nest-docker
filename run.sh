@@ -83,8 +83,8 @@ case $command in
                 docker build -t nest/nest-simulator:2.20.1 ./src/2.20.2
                 docker build -t nest/nest-simulator:3.0 ./src/3.0
                 docker build -t nest/nest-simulator:3.1 ./src/3.1
-                docker build -t nest/nest-simulator:3.1 ./src/3.2
-                docker build -t nest/nest-simulator:3.1 ./src/3.3
+                docker build -t nest/nest-simulator:3.2 ./src/3.2
+                docker build -t nest/nest-simulator:3.3 ./src/3.3
                 docker build -t nest/nest-simulator:dev ./src/dev
                 docker build -t nest/nest-simulator:latest_daint ./src/latest_daint
                 echo
