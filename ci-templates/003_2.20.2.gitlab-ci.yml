@@ -4,7 +4,7 @@
 
 Build_2202:
   stage: build
-  needs: ["Build_30"]
+  needs: ["Build_Base"]
   rules:
     - when: manual
   script:
