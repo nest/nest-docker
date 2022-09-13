@@ -4,6 +4,7 @@
 
 Build_33:
   stage: build
+  needs: ["Build_Base"]
   rules:
     - if: $CI_PIPELINE_SOURCE == "schedule"
       when: never
