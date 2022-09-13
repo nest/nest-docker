@@ -5,10 +5,6 @@
 Build_30:
   stage: build
   needs: ["Build_33"]
-  rules:
-    - if: $CI_PIPELINE_SOURCE == "schedule"
-      when: never
-    - when: manual
   script:
     - docker pull $DOCKER_REGISTRY_IMAGE:3.0  || true
     - docker build 
