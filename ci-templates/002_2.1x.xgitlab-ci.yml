@@ -4,7 +4,7 @@
 
 Build_2180:
   stage: build
-  needs: ["Build_30"]
+  needs: ["Build_Base"]
   rules:
     - when: manual
   script:
@@ -47,7 +47,7 @@ Deploy_2180:
 
 Build_2160:
   stage: build
-  needs: ["Build_30"]
+  needs: ["Build_Base"]
   rules:
     - when: manual
   script:
@@ -90,7 +90,7 @@ Deploy_2160:
 
 Build_2140:
   stage: build
-  needs: ["Build_30"]
+  needs: ["Build_Base"]
   rules:
     - when: manual
   script:
@@ -133,7 +133,7 @@ Deploy_2140:
 
 Build_2120:
   stage: build
-  needs: ["Build_30"]
+  needs: ["Build_Base"]
   rules:
     - if: $CI_PIPELINE_SOURCE == "schedule"
       when: never
