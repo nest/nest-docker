@@ -23,7 +23,7 @@ RUN mkdir nest-build && cd nest-build && \
           -Dwith-libneurosim=OFF \
           -Dwith-music=/opt/music-install \
           ${SRC_PATH}/nest-simulator-${NEST_VERSION} && \
-    make -j 8 && \
+    make -j $(nproc) && \
     make html && \
     make install
 
