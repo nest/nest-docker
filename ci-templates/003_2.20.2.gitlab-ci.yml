@@ -5,6 +5,8 @@
 Build_2202:
   stage: build
   needs: ["Build_30"]
+  rules:
+    - when: manual
   script:
     - docker pull $DOCKER_REGISTRY_IMAGE:2.20.2  || true
     - docker build 
