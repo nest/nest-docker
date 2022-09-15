@@ -14,7 +14,7 @@ Build_Dev:
     - docker save $DOCKER_REGISTRY_IMAGE:dev.$CI_PIPELINE_ID > build_image.tar
   artifacts:
     paths:
-      - bimage.tar
+      - image.tar
     expire_in: 1 day
   tags:
     - shell-runner
