@@ -13,8 +13,8 @@ before_script:
   - echo -n $DOCKER_REGISTRY_TOKEN | docker login -u $DOCKER_REGISTRY_USER --password-stdin $DOCKER_REGISTRY
   - echo -n $DOCKERHUB_REGISTRY_TOKEN | docker login -u $DOCKERHUB_REGISTRY_USER --password-stdin
 
-include: 'ci-templates/*.yml'
-
+# include: 'ci-templates/*.yml'
+include: 'ci-templates/000_dev.gitlab-ci.yml'
 
 
 
