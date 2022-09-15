@@ -29,7 +29,7 @@ Build_Dev:
         --cache-from $DOCKER_REGISTRY_IMAGE:dev
         --tag $DOCKER_REGISTRY_IMAGE:dev.$CI_PIPELINE_ID 
         ./src/dev
-    - docker save $DOCKER_REGISTRY_IMAGE:dev.$CI_PIPELINE_ID > build_image.tar
+    - docker save $DOCKER_REGISTRY_IMAGE:dev.$CI_PIPELINE_ID > image.tar
   artifacts:
     paths:
       - image.tar
