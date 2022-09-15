@@ -39,7 +39,7 @@ COPY --from=builder /opt/nest /opt/nest
 COPY --from=builder /opt/music-install /opt/music-install
 
 RUN python3 -m pip uninstall nestml
-    && python3 -m pip install https://github.com/nest/nestml/archive/refs/heads
+RUN python3 -m pip install https://github.com/nest/nestml/archive/refs/heads/master.zip --upgrade
 
 
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
