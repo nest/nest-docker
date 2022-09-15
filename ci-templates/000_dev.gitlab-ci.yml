@@ -4,7 +4,7 @@
 
 Build_Dev:
   stage: build
-  needs: ["Build_Base"]
+  #needs: ["Build_Base"]
   script:
     - docker pull $DOCKER_REGISTRY_IMAGE:dev || true
     - docker build 
