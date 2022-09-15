@@ -11,6 +11,7 @@ stages:
 
 before_script:
   - echo -n $DOCKER_REGISTRY_TOKEN | docker login -u $DOCKER_REGISTRY_USER --password-stdin $DOCKER_REGISTRY
+  - echo -n $DOCKERHUB_REGISTRY_TOKEN | docker login -u $DOCKERHUB_REGISTRY_USER --password-stdin $DOCKERHUB_REGISTRY
 
 include: 'ci-templates/*.yml'
 
