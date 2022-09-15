@@ -37,7 +37,7 @@ Test_Dev:
 
 Deploy_Dev:
   stage: deploy
-  needs: ["Test_Dev"]
+  needs: ["Test_Dev, Build_Dev"]
   dependencies:
     - Build_Dev
   script:
