@@ -55,7 +55,10 @@ Test_Dev:
 
 Deploy_Dev:
   stage: deploy
-  needs: ["Test_Dev, Build_Dev"]
+  needs:
+    - job: Test_Dev
+    - job: Build_Dev
+      artifacts: true
   dependencies:
     - Build_Dev
   script:
