@@ -14,7 +14,7 @@ Build_Dev:
     - docker save $DOCKER_REGISTRY_IMAGE:dev.$CI_PIPELINE_ID > build_image.tar
   artifacts:
     paths:
-      - build_image.tar
+      - bimage.tar
     expire_in: 1 day
   tags:
     - shell-runner
@@ -27,16 +27,11 @@ Test_Dev:
   script:
     - docker stop $(docker ps -q) 2>/dev/null || true
     - docker rm -f $(docker ps -aq) 2>/dev/null || true
-    - docker load  < build_image.tar
+    - docker load  < image.tar
     - docker ps
     - docker run -i -d --rm -e NEST_CONTAINER_MODE=nest-server -p 5000:5000
         --name $CI_PIPELINE_ID $DOCKER_REGISTRY_IMAGE:dev.$CI_PIPELINE_ID
     - docker ps
-    - docker save $DOCKER_REGISTRY_IMAGE:dev.$CI_PIPELINE_ID > test_image.tar
-  artifacts:
-    paths:
-      - test_image.tar
-    expire_in: 1 day
   tags:
     - shell-runner
 
@@ -44,9 +39,9 @@ Deploy_Dev:
   stage: deploy
   needs: ["Test_Dev"]
   dependencies:
-    - Test_Dev
+    - Build_Dev
   script:
-    - docker load < test_image.tar
+    - docker load < image.tar
     - docker tag $DOCKER_REGISTRY_IMAGE:dev.$CI_PIPELINE_ID $DOCKER_REGISTRY_IMAGE:dev
     - docker push $DOCKER_REGISTRY_IMAGE:dev
   tags:
