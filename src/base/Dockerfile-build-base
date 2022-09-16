@@ -24,6 +24,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libpcre3-dev \
     libpython3.10 \
     libreadline-dev \
+    libzmq3-dev \
     llvm-dev \
     openmpi-bin \
     pandoc \
