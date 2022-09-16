@@ -11,62 +11,11 @@ stages:
 
 before_script:
   - echo -n $DOCKER_REGISTRY_TOKEN | docker login -u $DOCKER_REGISTRY_USER --password-stdin $DOCKER_REGISTRY
-  - echo -n $DOCKERHUB_REGISTRY_TOKEN | docker login -u $DOCKERHUB_REGISTRY_USER --password-stdin
 
-# include: 'ci-templates/*.yml'
-#include: 'ci-templates/000_dev.gitlab-ci.yml'
+include: 'ci-templates/*.yml'
 
-###############################################
-###               DEV                       ###
-###############################################
 
-Build_Dev:
-  stage: build
-  #needs: ["Build_Base"]
-  script:
-    - docker pull $DOCKER_REGISTRY_IMAGE:dev || true
-    - docker build 
-        --cache-from $DOCKER_REGISTRY_IMAGE:dev
-        --tag $DOCKER_REGISTRY_IMAGE:dev.$CI_PIPELINE_ID 
-        ./src/dev
-    - docker save $DOCKER_REGISTRY_IMAGE:dev.$CI_PIPELINE_ID > image.tar
-  artifacts:
-    paths:
-      - image.tar
-    expire_in: 1 day
-  tags:
-    - shell-runner
 
-Test_Dev:
-  stage: test
-  needs: ["Build_Dev"]
-  dependencies:
-    - Build_Dev
-  script:
-    - docker stop $(docker ps -q) 2>/dev/null || true
-    - docker rm -f $(docker ps -aq) 2>/dev/null || true
-    - docker load  < image.tar
-    - docker ps
-    - docker run -i -d --rm -e NEST_CONTAINER_MODE=nest-server -p 5000:5000
-        --name $CI_PIPELINE_ID $DOCKER_REGISTRY_IMAGE:dev.$CI_PIPELINE_ID
-    - docker ps
-  tags:
-    - shell-runner
-
-Deploy_Dev:
-  stage: deploy
-  needs:
-    - job: Test_Dev
-    - job: Build_Dev
-      artifacts: true
-  dependencies:
-    - Build_Dev
-  script:
-    - docker load < image.tar
-    - docker tag $DOCKER_REGISTRY_IMAGE:dev.$CI_PIPELINE_ID $DOCKER_REGISTRY_IMAGE:dev
-    - docker push $DOCKER_REGISTRY_IMAGE:dev
-  tags:
-    - shell-runner
 
 
 
