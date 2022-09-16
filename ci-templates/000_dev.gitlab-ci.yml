@@ -4,30 +4,24 @@
 
 Build_Dev:
   stage: build
-  #needs: ["Build_Base"]
+  needs: ["Build_Base"]
   script:
     - docker pull $DOCKER_REGISTRY_IMAGE:dev || true
     - docker build 
         --cache-from $DOCKER_REGISTRY_IMAGE:dev
         --tag $DOCKER_REGISTRY_IMAGE:dev.$CI_PIPELINE_ID 
         ./src/dev
-    - docker save $DOCKER_REGISTRY_IMAGE:dev.$CI_PIPELINE_ID > build_image.tar
-  artifacts:
-    paths:
-      - image.tar
-    expire_in: 1 day
+    - docker push $DOCKER_REGISTRY_IMAGE:dev.$CI_PIPELINE_ID
   tags:
     - shell-runner
 
 Test_Dev:
   stage: test
   needs: ["Build_Dev"]
-  dependencies:
-    - Build_Dev
   script:
+    - docker pull $DOCKER_REGISTRY_IMAGE:dev.$CI_PIPELINE_ID
     - docker stop $(docker ps -q) 2>/dev/null || true
     - docker rm -f $(docker ps -aq) 2>/dev/null || true
-    - docker load  < image.tar
     - docker ps
     - docker run -i -d --rm -e NEST_CONTAINER_MODE=nest-server -p 5000:5000
         --name $CI_PIPELINE_ID $DOCKER_REGISTRY_IMAGE:dev.$CI_PIPELINE_ID
@@ -37,11 +31,9 @@ Test_Dev:
 
 Deploy_Dev:
   stage: deploy
-  needs: ["Test_Dev, Build_Dev"]
-  dependencies:
-    - Build_Dev
+  needs: ["Test_Dev"]
   script:
-    - docker load < image.tar
+    - docker pull $DOCKER_REGISTRY_IMAGE:dev.$CI_PIPELINE_ID
     - docker tag $DOCKER_REGISTRY_IMAGE:dev.$CI_PIPELINE_ID $DOCKER_REGISTRY_IMAGE:dev
     - docker push $DOCKER_REGISTRY_IMAGE:dev
   tags:
