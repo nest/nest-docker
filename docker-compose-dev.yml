@@ -7,7 +7,7 @@ services:
       LOCAL_USER_ID: "`id -u $USER`"
       NEST_CONTAINER_MODE: "nest-server"
     ports:
-      - "5000:5000"
+      - "52425:52425"
 
   nest-desktop:
     image: docker-registry.ebrains.eu/nest/nest-simulator:dev

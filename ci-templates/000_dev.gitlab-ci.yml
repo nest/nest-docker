@@ -7,9 +7,9 @@ Build_Dev:
   needs: ["Build_Base"]
   script:
     - docker pull $DOCKER_REGISTRY_IMAGE:dev || true
-    - docker build 
+    - docker build
         --cache-from $DOCKER_REGISTRY_IMAGE:dev
-        --tag $DOCKER_REGISTRY_IMAGE:dev.$CI_PIPELINE_ID 
+        --tag $DOCKER_REGISTRY_IMAGE:dev.$CI_PIPELINE_ID
         ./src/dev
     - docker push $DOCKER_REGISTRY_IMAGE:dev.$CI_PIPELINE_ID
   tags:
@@ -23,7 +23,7 @@ Test_Dev:
     - docker stop $(docker ps -q) 2>/dev/null || true
     - docker rm -f $(docker ps -aq) 2>/dev/null || true
     - docker ps
-    - docker run -i -d --rm -e NEST_CONTAINER_MODE=nest-server -p 5000:5000
+    - docker run -i -d --rm -e NEST_CONTAINER_MODE=nest-server -p 52425:52425
         --name $CI_PIPELINE_ID $DOCKER_REGISTRY_IMAGE:dev.$CI_PIPELINE_ID
     - docker ps
   tags:
