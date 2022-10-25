@@ -1,0 +1,42 @@
+###############################################
+###               v2.20.2                   ###
+###############################################
+
+Build_2202:
+  stage: build
+  needs: ["Build_Base"]
+  rules:
+    - when: manual
+  script:
+    - docker pull $DOCKER_REGISTRY_IMAGE:2.20.2  || true
+    - docker build 
+        --cache-from $DOCKER_REGISTRY_IMAGE:2.20.2  
+        --tag $DOCKER_REGISTRY_IMAGE:2.20.2.$CI_PIPELINE_ID 
+        ./src/3.1
+    - docker push $DOCKER_REGISTRY_IMAGE:2.20.2.$CI_PIPELINE_ID
+  tags:
+    - shell-runner
+
+Test_2202:
+  stage: test
+  needs: ["Build_2202"]
+  script:
+    - docker pull $DOCKER_REGISTRY_IMAGE:2.20.2.$CI_PIPELINE_ID
+    - docker stop $(docker ps -q) 2>/dev/null || true
+    - docker rm -f $(docker ps -aq) 2>/dev/null || true
+    - docker ps
+    - docker run -i -d --rm -e NEST_CONTAINER_MODE=nest-server -p 5000:5000  
+        --name $CI_PIPELINE_ID $DOCKER_REGISTRY_IMAGE:2.20.2.$CI_PIPELINE_ID
+    - docker ps
+  tags:
+    - shell-runner
+
+Deploy_2202:
+  stage: deploy
+  needs: ["Test_2202"]
+  script:
+    - docker pull $DOCKER_REGISTRY_IMAGE:2.20.2.$CI_PIPELINE_ID
+    - docker tag $DOCKER_REGISTRY_IMAGE:2.20.2.$CI_PIPELINE_ID $DOCKER_REGISTRY_IMAGE:2.20.2
+    - docker push $DOCKER_REGISTRY_IMAGE:2.20.2
+  tags:
+    - shell-runner

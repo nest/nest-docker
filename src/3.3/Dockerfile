@@ -26,7 +26,7 @@ RUN mkdir nest-build && cd nest-build && \
           -Dwith-libneurosim=OFF \
           -Dwith-music=/opt/music-install \
           ${SRC_PATH}/nest-simulator-${NEST_VERSION} && \
-    make -j 8  && \
+    make -j $(nproc) && \
     make html && \
     make install
 
@@ -40,7 +40,9 @@ LABEL maintainer="s.graber@fz-juelich.de"
 COPY --from=builder /opt/nest /opt/nest
 COPY --from=builder /opt/music-install /opt/music-install
 
-RUN python3 -m pip install nestml --pre --upgrade
+RUN python3 -m pip install --upgrade pip && \
+    python3 -m pip uninstall nestml -y && \
+    python3 -m pip install nestml --pre --upgrade
 
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh

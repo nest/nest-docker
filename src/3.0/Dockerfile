@@ -17,7 +17,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     cmake \
     cython3 \
     jq \
-    libboost1.67-dev \
+    libboost-dev \
     libgomp1 \
     libgsl-dev \
     libltdl7 \
@@ -120,6 +120,7 @@ ENV TERM=xterm \
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
         build-essential \
+        cmake \
         curl \
         libpcre3 \
         libpcre3-dev \
