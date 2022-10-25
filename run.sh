@@ -54,7 +54,7 @@ case $command in
         echo
         while test $# -gt 0; do
             case "$1" in
-            dev | latest_daint | 2.12.0 | 2.14.0 | 2.16.0 | 2.18.0 | 2.20.0 | 2.20.1 | 2.20.2 |  3.0 | 3.1 | 3.2 | 3.3| 3.4)
+            dev | latest_daint | 2.12.0 | 2.14.0 | 2.16.0 | 2.18.0 | 2.20.0 | 2.20.1 | 2.20.2 |  3.0 | 3.1 | 3.2 | 3.3| 3.4 )
                 echo "Build the NEST image for NEST $1"
                 echo
                 docker build -t docker-registry.ebrains.eu/nest/nest-simulator:"$1" ./src/"$1"
