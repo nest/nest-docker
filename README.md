@@ -21,7 +21,7 @@ You can use the docker images direct out of docker-registry.ebrains.eu like this
 
 TAG is '2.20.2', '3.2', '3.3' or 'dev'.
 
-#### NEST 2.20.2 
+#### NEST 2.20.2
 
 Jupyter notebook with NEST 2.20.2:
 
@@ -45,18 +45,18 @@ To use 'docker-compose' you need the definition file from the git repository. Do
 
   or
 
-      docker run -it --rm -e NEST_CONTAINER_MODE=nest-server -p 5000:5000 \
+      docker run -it --rm -e NEST_CONTAINER_MODE=nest-server -p 52425:52425 \
            docker-registry.ebrains.eu/nest/nest-simulator:3.3   
-    
-  Starts the NEST API server container and opens the corresponding port 5000. Test it with `curl localhost:5000/api`.
+
+  Starts the NEST API server container and opens the corresponding port 52425. Test it with `curl localhost:52425/api`.
 
 - NEST desktop
 
       docker-compose up nest-desktop
-  
+
   or
 
-      docker run -it --rm -e NEST_CONTAINER_MODE=nest-server -p 5000:5000 \
+      docker run -it --rm -e NEST_CONTAINER_MODE=nest-server -p 52425:52425 \
           docker-registry.ebrains.eu/nest/nest-simulator:3.3
       docker run -it --rm -e LOCAL_USER_ID=`id -u $USER` -p 8000:8000  \
           -e NEST_CONTAINER_MODE=nest-desktop docker-registry.ebrains.eu/nest/nest-simulator:3.3
@@ -72,7 +72,7 @@ To use 'docker-compose' you need the definition file from the git repository. Do
 
       docker run -it --rm -e LOCAL_USER_ID=`id -u $USER` -v $(pwd):/opt/data -e NEST_CONTAINER_MODE=notebook \
           -p 8080:8080 docker-registry.ebrains.eu/nest/nest-simulator:3.3
-    
+
   Starts a notebook server with pre-installed NEST 3.3. The corresponding URL is displayed in the console.
 
 - Jupyter lab with NEST
@@ -83,7 +83,7 @@ To use 'docker-compose' you need the definition file from the git repository. Do
 
       docker run -it --rm -e LOCAL_USER_ID=`id -u $USER` -v $(pwd):/opt/data -e NEST_CONTAINER_MODE=jupyterlab \
           -p 8080:8080 docker-registry.ebrains.eu/nest/nest-simulator:3.3
-    
+
   Starts a jupyter lab server with pre-installed NEST 3.3. The corresponding URL is displayed in the console.
 
 To stop and delete running containers use `docker-compose down`.
@@ -189,7 +189,7 @@ In the folder with your music scripts run:
                docker-registry.ebrains.eu/nest/nest-simulator:3.3 /bin/bash
 
 You are now on container's shell.
-    
+
     cd /opt/nest/share/doc/nest/examples/music/
     mpirun --allow-run-as-root -np 2 music ./minimalmusicsetup.music
 
@@ -206,7 +206,7 @@ You are now on container's shell.
 -   Import a docker image
 
         gunzip -c nest-docker.tar.gz | docker load
-       
+
 -   Execute an interactive bash shell on a running container.
 
         docker exec -it <nest_container_name> bash
@@ -219,5 +219,5 @@ You are now on container's shell.
 
     docker login docker-registry.ebrains.eu
     docker build -t nest-simulator:<VERSION> /path/to/recipe --squash
-    docker tag nest/nest-simulator:<VERSION>  docker-registry.ebrains.eu/nest/nest-simulator:<VERSION> 
-    docker push docker-registry.ebrains.eu/nest/nest-simulator:<VERSION> 
+    docker tag nest/nest-simulator:<VERSION>  docker-registry.ebrains.eu/nest/nest-simulator:<VERSION>
+    docker push docker-registry.ebrains.eu/nest/nest-simulator:<VERSION>

@@ -45,5 +45,5 @@ RUN python3 -m pip install --upgrade pip && \
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
 
-EXPOSE 5000 8000 8080
+EXPOSE 8000 8080 52425
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
