@@ -30,13 +30,15 @@ elif [[ "${MODE}" = 'jupyterlab' ]]; then
     exec /usr/local/bin/jupyter-lab --ip="${IP_ADDRESS}" --port=8080 --no-browser --allow-root
 
 elif [[ "${MODE}" = 'nest-desktop' ]]; then
-    exec /usr/local/bin/nest-desktop start -h 0.0.0.0 -p 8000
+    export NEST_DESKTOP_HOST="${NEST_DESKTOP_HOST:-0.0.0.0}"
+    export NEST_DESKTOP_PORT="${NEST_DESKTOP_PORT:-8000}"
+    exec /usr/local/bin/nest-desktop start
 
 elif [[ "${MODE}" = 'nest-server' ]]; then
-    export NEST_SERVER_BUFFER_SIZE="${NEST_SERVER_BUFFER_SIZE:-65535}"
     export NEST_SERVER_HOST="${NEST_SERVER_HOST:-0.0.0.0}"
     export NEST_SERVER_MODULES="${NEST_SERVER_MODULES:-nest,numpy}"
-    export NEST_SERVER_RESTRICTION_OFF="${NEST_SERVER_RESTRICTION_OFF:-true}"
+    export NEST_SERVER_PORT="${NEST_SERVER_PORT:-52425}"
+    export NEST_SERVER_RESTRICTION_OFF="${NEST_SERVER_RESTRICTION_OFF:-1}"
     export NEST_SERVER_STDOUT="${NEST_SERVER_STDOUT:-1}"
     exec nest-server start
 
