@@ -20,6 +20,8 @@ Build_2180:
 Test_2180:
   stage: test
   needs: ["Build_2180"]
+  rules:
+    - when: manual
   script:
     - docker pull $DOCKER_REGISTRY_IMAGE:2.18.0.$CI_PIPELINE_ID
     - docker stop $(docker ps -q) 2>/dev/null || true
@@ -34,6 +36,8 @@ Test_2180:
 Deploy_2180:
   stage: deploy
   needs: ["Test_2180"]
+  rules:
+    - when: manual
   script:
     - docker pull $DOCKER_REGISTRY_IMAGE:2.18.0.$CI_PIPELINE_ID
     - docker tag $DOCKER_REGISTRY_IMAGE:2.18.0.$CI_PIPELINE_ID $DOCKER_REGISTRY_IMAGE:2.18.0
@@ -63,6 +67,8 @@ Build_2160:
 Test_2160:
   stage: test
   needs: ["Build_2160"]
+  rules:
+    - when: manual
   script:
     - docker pull $DOCKER_REGISTRY_IMAGE:2.16.0.$CI_PIPELINE_ID
     - docker stop $(docker ps -q) 2>/dev/null || true
@@ -77,6 +83,8 @@ Test_2160:
 Deploy_2160:
   stage: deploy
   needs: ["Test_2160"]
+  rules:
+    - when: manual
   script:
     - docker pull $DOCKER_REGISTRY_IMAGE:2.16.0.$CI_PIPELINE_ID
     - docker tag $DOCKER_REGISTRY_IMAGE:2.16.0.$CI_PIPELINE_ID $DOCKER_REGISTRY_IMAGE:2.16.0
@@ -106,6 +114,8 @@ Build_2140:
 Test_2140:
   stage: test
   needs: ["Build_2140"]
+  rules:
+    - when: manual
   script:
     - docker pull $DOCKER_REGISTRY_IMAGE:2.14.0.$CI_PIPELINE_ID
     - docker stop $(docker ps -q) 2>/dev/null || true
@@ -120,6 +130,8 @@ Test_2140:
 Deploy_2140:
   stage: deploy
   needs: ["Test_2140"]
+  rules:
+    - when: manual
   script:
     - docker pull $DOCKER_REGISTRY_IMAGE:2.14.0.$CI_PIPELINE_ID
     - docker tag $DOCKER_REGISTRY_IMAGE:2.14.0.$CI_PIPELINE_ID $DOCKER_REGISTRY_IMAGE:2.14.0
@@ -135,8 +147,6 @@ Build_2120:
   stage: build
   needs: ["Build_Base"]
   rules:
-    - if: $CI_PIPELINE_SOURCE == "schedule"
-      when: never
     - when: manual
   script:
     - docker pull $DOCKER_REGISTRY_IMAGE:2.12.0  || true
@@ -151,6 +161,8 @@ Build_2120:
 Test_2120:
   stage: test
   needs: ["Build_2120"]
+  rules:
+    - when: manual
   script:
     - docker pull $DOCKER_REGISTRY_IMAGE:2.12.0.$CI_PIPELINE_ID
     - docker stop $(docker ps -q) 2>/dev/null || true
@@ -165,6 +177,8 @@ Test_2120:
 Deploy_2120:
   stage: deploy
   needs: ["Test_2120"]
+  rules:
+    - when: manual
   script:
     - docker pull $DOCKER_REGISTRY_IMAGE:2.12.0.$CI_PIPELINE_ID
     - docker tag $DOCKER_REGISTRY_IMAGE:2.12.0.$CI_PIPELINE_ID $DOCKER_REGISTRY_IMAGE:2.12.0
