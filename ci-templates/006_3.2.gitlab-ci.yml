@@ -20,6 +20,8 @@ Build_32:
 Test_32:
   stage: test
   needs: ["Build_32"]
+  rules:
+    - when: manual
   script:
     - docker pull $DOCKER_REGISTRY_IMAGE:3.2.$CI_PIPELINE_ID
     - docker stop $(docker ps -q) 2>/dev/null || true
@@ -34,6 +36,8 @@ Test_32:
 Deploy_32:
   stage: deploy
   needs: ["Test_32"]
+  rules:
+    - when: manual
   script:
     - docker pull $DOCKER_REGISTRY_IMAGE:3.2.$CI_PIPELINE_ID
     - docker tag $DOCKER_REGISTRY_IMAGE:3.2.$CI_PIPELINE_ID $DOCKER_REGISTRY_IMAGE:3.2
