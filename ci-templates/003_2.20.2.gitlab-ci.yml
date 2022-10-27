@@ -7,6 +7,7 @@ Build_2202:
   needs: ["Build_Base"]
   rules:
     - when: manual
+    - allow_failure: true
   script:
     - docker pull $DOCKER_REGISTRY_IMAGE:2.20.2  || true
     - docker build 
@@ -22,6 +23,7 @@ Test_2202:
   needs: ["Build_2202"]
   rules:
     - when: manual
+    - allow_failure: true
   script:
     - docker pull $DOCKER_REGISTRY_IMAGE:2.20.2.$CI_PIPELINE_ID
     - docker stop $(docker ps -q) 2>/dev/null || true
@@ -38,6 +40,7 @@ Deploy_2202:
   needs: ["Test_2202"]
   rules:
     - when: manual
+    - allow_failure: true
   script:
     - docker pull $DOCKER_REGISTRY_IMAGE:2.20.2.$CI_PIPELINE_ID
     - docker tag $DOCKER_REGISTRY_IMAGE:2.20.2.$CI_PIPELINE_ID $DOCKER_REGISTRY_IMAGE:2.20.2
