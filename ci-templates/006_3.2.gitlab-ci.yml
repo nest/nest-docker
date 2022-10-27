@@ -21,7 +21,11 @@ Build_32:
 Test_32:
   stage: test
   needs: ["Build_32"]
+  variables:
+    DORUN: "false"
   rules:
+    - if: $DORUN== "false"
+      when: never
     - when: manual
     - allow_failure: true
   script:
@@ -38,7 +42,11 @@ Test_32:
 Deploy_32:
   stage: deploy
   needs: ["Test_32"]
+  variables:
+    DORUN: "false"
   rules:
+    - if: $DORUN== "false"
+      when: never
     - when: manual
     - allow_failure: true
   script:

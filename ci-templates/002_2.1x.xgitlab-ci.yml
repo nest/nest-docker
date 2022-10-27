@@ -21,7 +21,11 @@ Build_2180:
 Test_2180:
   stage: test
   needs: ["Build_2180"]
+  variables:
+    DORUN: "false"
   rules:
+    - if: $DORUN== "false"
+      when: never
     - when: manual
     - allow_failure: true
   script:
@@ -38,7 +42,11 @@ Test_2180:
 Deploy_2180:
   stage: deploy
   needs: ["Test_2180"]
+  variables:
+    DORUN: "false"
   rules:
+    - if: $DORUN== "false"
+      when: never
     - when: manual
     - allow_failure: true
   script:
@@ -71,7 +79,11 @@ Build_2160:
 Test_2160:
   stage: test
   needs: ["Build_2160"]
+  variables:
+    DORUN: "false"
   rules:
+    - if: $DORUN== "false"
+      when: never
     - when: manual
     - allow_failure: true
   script:
@@ -88,7 +100,11 @@ Test_2160:
 Deploy_2160:
   stage: deploy
   needs: ["Test_2160"]
+  variables:
+    DORUN: "false"
   rules:
+    - if: $DORUN== "false"
+      when: never
     - when: manual
     - allow_failure: true
   script:
@@ -121,7 +137,11 @@ Build_2140:
 Test_2140:
   stage: test
   needs: ["Build_2140"]
+  variables:
+    DORUN: "false"
   rules:
+    - if: $DORUN== "false"
+      when: never
     - when: manual
     - allow_failure: true
   script:
@@ -138,7 +158,11 @@ Test_2140:
 Deploy_2140:
   stage: deploy
   needs: ["Test_2140"]
+  variables:
+    DORUN: "false"
   rules:
+    - if: $DORUN== "false"
+      when: never
     - when: manual
     - allow_failure: true
   script:
@@ -171,7 +195,11 @@ Build_2120:
 Test_2120:
   stage: test
   needs: ["Build_2120"]
+  variables:
+    DORUN: "false"
   rules:
+    - if: $DORUN== "false"
+      when: never
     - when: manual
     - allow_failure: true
   script:
@@ -188,7 +216,11 @@ Test_2120:
 Deploy_2120:
   stage: deploy
   needs: ["Test_2120"]
+  variables:
+    DORUN: "false"
   rules:
+    - if: $DORUN== "false"
+      when: never
     - when: manual
     - allow_failure: true
   script:
