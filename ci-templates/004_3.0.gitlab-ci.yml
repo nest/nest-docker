@@ -5,7 +5,11 @@
 Build_30:
   stage: build
   needs: ["Build_Base"]
+  variables:
+    DORUN: "false"
   rules:
+    - if: $DORUN== "false"
+      when: never
     - when: manual
     - allow_failure: true
   script:
