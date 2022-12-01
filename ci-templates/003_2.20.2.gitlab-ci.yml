@@ -17,7 +17,7 @@ Build_2202:
     - docker build 
         --cache-from $DOCKER_REGISTRY_IMAGE:2.20.2  
         --tag $DOCKER_REGISTRY_IMAGE:2.20.2.$CI_PIPELINE_ID 
-        ./src/3.1
+        ./src/2.20.2
     - docker push $DOCKER_REGISTRY_IMAGE:2.20.2.$CI_PIPELINE_ID
   tags:
     - shell-runner
