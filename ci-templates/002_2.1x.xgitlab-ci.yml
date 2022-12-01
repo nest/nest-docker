@@ -17,7 +17,7 @@ Build_2180:
     - docker build 
         --cache-from $DOCKER_REGISTRY_IMAGE:2.18.0  
         --tag $DOCKER_REGISTRY_IMAGE:2.18.0.$CI_PIPELINE_ID 
-        ./src/3.1
+        ./src/2.18.0
     - docker push $DOCKER_REGISTRY_IMAGE:2.18.0.$CI_PIPELINE_ID
   tags:
     - shell-runner
@@ -79,7 +79,7 @@ Build_2160:
     - docker build 
         --cache-from $DOCKER_REGISTRY_IMAGE:2.16.0  
         --tag $DOCKER_REGISTRY_IMAGE:2.16.0.$CI_PIPELINE_ID 
-        ./src/3.1
+        ./src/2.16.0
     - docker push $DOCKER_REGISTRY_IMAGE:2.16.0.$CI_PIPELINE_ID
   tags:
     - shell-runner
@@ -141,7 +141,7 @@ Build_2140:
     - docker build 
         --cache-from $DOCKER_REGISTRY_IMAGE:2.14.0  
         --tag $DOCKER_REGISTRY_IMAGE:2.14.0.$CI_PIPELINE_ID 
-        ./src/3.1
+        ./src/2.14.0
     - docker push $DOCKER_REGISTRY_IMAGE:2.14.0.$CI_PIPELINE_ID
   tags:
     - shell-runner
@@ -203,7 +203,7 @@ Build_2120:
     - docker build 
         --cache-from $DOCKER_REGISTRY_IMAGE:2.12.0  
         --tag $DOCKER_REGISTRY_IMAGE:2.12.0.$CI_PIPELINE_ID 
-        ./src/3.1
+        ./src/2.12.0
     - docker push $DOCKER_REGISTRY_IMAGE:2.12.0.$CI_PIPELINE_ID
   tags:
     - shell-runner
