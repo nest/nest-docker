@@ -13,6 +13,7 @@ RUN wget https://github.com/nest/nest-simulator/archive/refs/heads/${NEST_VERSIO
 RUN mkdir nest-build && cd nest-build && \
     cmake -DCMAKE_INSTALL_PREFIX:PATH=/opt/nest \
           -Dwith-warning=ON \
+          -Dwith-userdoc=ON \
           -Dwith-boost=ON \
           -Dwith-ltdl=ON \
           -Dwith-gsl=ON \
@@ -24,7 +25,7 @@ RUN mkdir nest-build && cd nest-build && \
           -Dwith-music=/opt/music-install \
           ${SRC_PATH}/nest-simulator-${NEST_VERSION} && \
     make -j $(nproc) && \
-    make html && \
+    make docs && \
     make install
 
 
