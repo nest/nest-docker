@@ -130,8 +130,8 @@ ENV LANG en_US.UTF-8
 ENV LANGUAGE en_US:en
 ENV LC_ALL en_US.UTF-8
 
-RUN pip install quantities lazyarray neo && \
-    pip install --no-binary :all: PyNN
+RUN python3 -m pip install quantities lazyarray && \
+    python3 -m pip install PyNN==0.9.6
 
 COPY --from=builder216 /opt/nest /opt/nest
 
