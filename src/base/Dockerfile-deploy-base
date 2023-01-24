@@ -51,7 +51,6 @@ RUN apt-get update && apt autoremove && apt autoclean && apt-get install -y --no
     python3 -m pip install Flask --upgrade && \
     python3 -m pip install Flask-cors --upgrade && \
     python3 -m pip install RestrictedPython --upgrade && \
-    python3 -m pip install nest-desktop && \
     python3 -m pip install MarkupSafe==2.0.1 && \
     python3 -m pip install gunicorn && \
     python3 -m pip install jupyterlab && \

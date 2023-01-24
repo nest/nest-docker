@@ -15,7 +15,7 @@ services:
       LOCAL_USER_ID: "`id -u $USER`"
       NEST_CONTAINER_MODE: "nest-desktop"
     ports:
-      - "8000:8000"
+      - "54286:54286"
     depends_on:
       - nest-server
 
