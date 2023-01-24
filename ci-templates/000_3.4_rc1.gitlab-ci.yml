@@ -2,7 +2,7 @@
 ###               DEV                       ###
 ###############################################
 
-Build_Dev:
+Build_34:
   stage: build
   needs: ["Build_Base"]
   script:
@@ -15,9 +15,9 @@ Build_Dev:
   tags:
     - shell-runner
 
-Test_Dev:
+Test_34:
   stage: test
-  needs: ["Build_Dev"]
+  needs: ["Build_34"]
   script:
     - docker pull $DOCKER_REGISTRY_IMAGE:3.4_rc1.$CI_PIPELINE_ID
     - docker stop $(docker ps -q) 2>/dev/null || true
@@ -29,9 +29,9 @@ Test_Dev:
   tags:
     - shell-runner
 
-Deploy_Dev:
+Deploy_34:
   stage: deploy
-  needs: ["Test_Dev"]
+  needs: ["Test_34"]
   script:
     - docker pull $DOCKER_REGISTRY_IMAGE:3.4_rc1.$CI_PIPELINE_ID
     - docker tag $DOCKER_REGISTRY_IMAGE:3.4_rc1.$CI_PIPELINE_ID $DOCKER_REGISTRY_IMAGE:3.4_rc1
