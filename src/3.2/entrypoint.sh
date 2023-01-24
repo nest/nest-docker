@@ -30,7 +30,7 @@ elif [[ "${MODE}" = 'jupyterlab' ]]; then
     exec /usr/local/bin/jupyter-lab --ip="${IP_ADDRESS}" --port=8080 --no-browser --allow-root
 
 elif [[ "${MODE}" = 'nest-desktop' ]]; then
-    exec /usr/local/bin/nest-desktop start -h 0.0.0.0 -p 8000
+    exec nest-desktop start -h 0.0.0.0 -p 8000
 
 elif [[ "${MODE}" = 'nest-server' ]]; then
     export NEST_SERVER_BUFFER_SIZE="${NEST_SERVER_BUFFER_SIZE:-65535}"

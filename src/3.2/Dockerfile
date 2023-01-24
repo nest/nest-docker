@@ -46,6 +46,7 @@ COPY --from=builder /opt/nest /opt/nest
 COPY --from=builder /opt/music-install /opt/music-install
 
 RUN python3 -m pip install --upgrade pip && \
+    python3 -m pip install nest-desktop==3.1.* && \
     python3 -m pip install uwsgi
 
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh

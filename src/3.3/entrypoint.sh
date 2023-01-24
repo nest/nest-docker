@@ -33,7 +33,7 @@ elif [[ "${MODE}" = 'jupyterlab' ]]; then
 elif [[ "${MODE}" = 'nest-desktop' ]]; then
     export NEST_DESKTOP_HOST="${NEST_DESKTOP_HOST:-0.0.0.0}"
     export NEST_DESKTOP_PORT="${NEST_DESKTOP_PORT:-8000}"
-    exec /usr/local/bin/nest-desktop start
+    exec nest-desktop start
 
 elif [[ "${MODE}" = 'nest-server' ]]; then
     export NEST_SERVER_HOST="${NEST_SERVER_HOST:-0.0.0.0}"

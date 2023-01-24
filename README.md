@@ -39,7 +39,7 @@ To use 'docker-compose' you need the definition file from the git repository. Do
 
     wget https://raw.githubusercontent.com/steffengraber/nest-docker/master/docker-compose.yml
 
-- NEST server
+- NEST Server
 
       docker-compose up nest-server
 
@@ -50,7 +50,7 @@ To use 'docker-compose' you need the definition file from the git repository. Do
 
   Starts the NEST API server container and opens the corresponding port 52425. Test it with `curl localhost:52425/api`.
 
-- NEST desktop
+- NEST Desktop
 
       docker-compose up nest-desktop
 
@@ -58,11 +58,11 @@ To use 'docker-compose' you need the definition file from the git repository. Do
 
       docker run -it --rm -e NEST_CONTAINER_MODE=nest-server -p 52425:52425 \
           docker-registry.ebrains.eu/nest/nest-simulator:3.3
-      docker run -it --rm -e LOCAL_USER_ID=`id -u $USER` -p 8000:8000  \
+      docker run -it --rm -e LOCAL_USER_ID=`id -u $USER` -p 54286:54286  \
           -e NEST_CONTAINER_MODE=nest-desktop docker-registry.ebrains.eu/nest/nest-simulator:3.3
 
-  Starts the NEST server and the NEST desktop web interface. Port 8000 is also made available.
-  Open in the web browser: `http://localhost:8000`
+  Starts the NEST server and the NEST desktop web interface. Port 54286 is also made available.
+  Open in the web browser: `http://localhost:54286`
 
 - Jupyter notebook with NEST
 
