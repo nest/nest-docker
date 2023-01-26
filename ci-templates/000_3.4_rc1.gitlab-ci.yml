@@ -25,7 +25,7 @@ Test_34:
     - docker ps
     - docker run -i -d --rm -e NEST_CONTAINER_MODE=nest-server -p 52425:52425
         --name $CI_PIPELINE_ID $DOCKER_REGISTRY_IMAGE:3.4_rc1.$CI_PIPELINE_ID
-    - docker run -i --rm $CI_PIPELINE_ID $DOCKER_REGISTRY_IMAGE:3.4_rc1.$CI_PIPELINE_ID bash /opt/test.sh
+    - docker run -i --rm $DOCKER_REGISTRY_IMAGE:3.4_rc1.$CI_PIPELINE_ID bash /opt/test.sh
     - docker ps
   tags:
     - shell-runner
