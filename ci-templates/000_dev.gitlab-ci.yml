@@ -25,6 +25,7 @@ Test_Dev:
     - docker ps
     - docker run -i -d --rm -e NEST_CONTAINER_MODE=nest-server -p 52425:52425
         --name $CI_PIPELINE_ID $DOCKER_REGISTRY_IMAGE:dev.$CI_PIPELINE_ID
+    - docker run -i --rm $DOCKER_REGISTRY_IMAGE:dev.$CI_PIPELINE_ID bash /opt/test-nest.sh
     - docker ps
   tags:
     - shell-runner
