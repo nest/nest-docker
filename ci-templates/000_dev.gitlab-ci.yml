@@ -37,5 +37,11 @@ Deploy_Dev:
     - docker pull $DOCKER_REGISTRY_IMAGE:dev.$CI_PIPELINE_ID
     - docker tag $DOCKER_REGISTRY_IMAGE:dev.$CI_PIPELINE_ID $DOCKER_REGISTRY_IMAGE:dev
     - docker push $DOCKER_REGISTRY_IMAGE:dev
+    - echo -n $DOCKERHUB_REGISTRY_TOKEN | docker login -u $DOCKERHUB_REGISTRY_USER --password-stdin
+    - docker tag $DOCKER_REGISTRY_IMAGE:dev nestsim/nest:dev
+    - docker push nestsim/nest:dev
+    - docker tag $DOCKER_REGISTRY_IMAGE:dev nestsim/nest:latest
+    - docker push nestsim/nest:latest
+    - docker logout $DOCKERHUB_REGISTRY
   tags:
     - shell-runner
