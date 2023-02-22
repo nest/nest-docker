@@ -2,7 +2,7 @@ version: "3"
 
 services:
   nest-server:
-    image: docker-registry.ebrains.eu/nest/nest-simulator:3.3
+    image: docker-registry.ebrains.eu/nest/nest-simulator:3.4
     environment:
       LOCAL_USER_ID: "`id -u $USER`"
       NEST_CONTAINER_MODE: "nest-server"
@@ -10,7 +10,7 @@ services:
       - "5000:5000"
 
   nest-desktop:
-    image: docker-registry.ebrains.eu/nest/nest-simulator:3.3
+    image: docker-registry.ebrains.eu/nest/nest-simulator:3.4
     environment:
       LOCAL_USER_ID: "`id -u $USER`"
       NEST_CONTAINER_MODE: "nest-desktop"
@@ -20,7 +20,7 @@ services:
       - nest-server
 
   nest-notebook:
-    image: docker-registry.ebrains.eu/nest/nest-simulator:3.3
+    image: docker-registry.ebrains.eu/nest/nest-simulator:3.4
     volumes:
       - .:/opt/data
     environment:
@@ -30,7 +30,7 @@ services:
       - "8080:8080"
 
   nest-jupyterlab:
-    image: docker-registry.ebrains.eu/nest/nest-simulator:3.3
+    image: docker-registry.ebrains.eu/nest/nest-simulator:3.4
     volumes:
       - .:/opt/data
     environment:
