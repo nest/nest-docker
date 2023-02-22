@@ -57,5 +57,9 @@ Deploy_31:
     - docker pull $DOCKER_REGISTRY_IMAGE:3.1.$CI_PIPELINE_ID
     - docker tag $DOCKER_REGISTRY_IMAGE:3.1.$CI_PIPELINE_ID $DOCKER_REGISTRY_IMAGE:3.1
     - docker push $DOCKER_REGISTRY_IMAGE:3.1
+    - echo -n $DOCKERHUB_REGISTRY_TOKEN | docker login -u $DOCKERHUB_REGISTRY_USER --password-stdin
+    - docker tag $DOCKER_REGISTRY_IMAGE:3.1 nestsim/nest:3.1
+    - docker push nestsim/nest:3.1
+    - docker logout $DOCKERHUB_REGISTRY
   tags:
     - shell-runner
