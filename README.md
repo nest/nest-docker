@@ -12,7 +12,7 @@ Currently the following docker images are provided
     - nestsim/nest:3.1 (~1,34GB)
     - nestsim/nest:3.2 (~1,9GB)
     - nestsim/nest:3.3 (~1,9GB)
-    - nestsim/nest:3.3 (~2,27GB)
+    - nestsim/nest:3.4 (~2,27GB)
 
 ## Usage
 
