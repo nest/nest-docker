@@ -6,12 +6,12 @@ Build_34:
   stage: build
   needs: ["Build_Base"]
   script:
-    - docker pull $DOCKER_REGISTRY_IMAGE:3.4_rc2 || true
+    - docker pull $DOCKER_REGISTRY_IMAGE:3.4 || true
     - docker build
-        --cache-from $DOCKER_REGISTRY_IMAGE:3.4_rc2
-        --tag $DOCKER_REGISTRY_IMAGE:3.4_rc2.$CI_PIPELINE_ID
-        ./src/3.4_rc2
-    - docker push $DOCKER_REGISTRY_IMAGE:3.4_rc2.$CI_PIPELINE_ID
+        --cache-from $DOCKER_REGISTRY_IMAGE:3.4
+        --tag $DOCKER_REGISTRY_IMAGE:3.4.$CI_PIPELINE_ID
+        ./src/3.4
+    - docker push $DOCKER_REGISTRY_IMAGE:3.4.$CI_PIPELINE_ID
   tags:
     - shell-runner
 
@@ -19,13 +19,13 @@ Test_34:
   stage: test
   needs: ["Build_34"]
   script:
-    - docker pull $DOCKER_REGISTRY_IMAGE:3.4_rc2.$CI_PIPELINE_ID
+    - docker pull $DOCKER_REGISTRY_IMAGE:3.4.$CI_PIPELINE_ID
     - docker stop $(docker ps -q) 2>/dev/null || true
     - docker rm -f $(docker ps -aq) 2>/dev/null || true
     - docker ps
     - docker run -i -d --rm -e NEST_CONTAINER_MODE=nest-server -p 52425:52425
-        --name $CI_PIPELINE_ID $DOCKER_REGISTRY_IMAGE:3.4_rc2.$CI_PIPELINE_ID
-    - docker run -i --rm $DOCKER_REGISTRY_IMAGE:3.4_rc2.$CI_PIPELINE_ID bash /opt/test-nest.sh
+        --name $CI_PIPELINE_ID $DOCKER_REGISTRY_IMAGE:3.4.$CI_PIPELINE_ID
+    - docker run -i --rm $DOCKER_REGISTRY_IMAGE:3.4.$CI_PIPELINE_ID bash /opt/test-nest.sh
     - docker ps
   tags:
     - shell-runner
@@ -34,11 +34,11 @@ Deploy_34:
   stage: deploy
   needs: ["Test_34"]
   script:
-    - docker pull $DOCKER_REGISTRY_IMAGE:3.4_rc2.$CI_PIPELINE_ID
-    - docker tag $DOCKER_REGISTRY_IMAGE:3.4_rc2.$CI_PIPELINE_ID $DOCKER_REGISTRY_IMAGE:3.4_rc2
-    - docker push $DOCKER_REGISTRY_IMAGE:3.4_rc2
+    - docker pull $DOCKER_REGISTRY_IMAGE:3.4.$CI_PIPELINE_ID
+    - docker tag $DOCKER_REGISTRY_IMAGE:3.4.$CI_PIPELINE_ID $DOCKER_REGISTRY_IMAGE:3.4
+    - docker push $DOCKER_REGISTRY_IMAGE:3.4
     - echo -n $DOCKERHUB_REGISTRY_TOKEN | docker login -u $DOCKERHUB_REGISTRY_USER --password-stdin
-    - docker tag $DOCKER_REGISTRY_IMAGE:3.4_rc2 nestsim/nest:3.4
+    - docker tag $DOCKER_REGISTRY_IMAGE:3.4 nestsim/nest:3.4
     - docker push nestsim/nest:3.4
     - docker logout $DOCKERHUB_REGISTRY
   tags:
