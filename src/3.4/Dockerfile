@@ -40,7 +40,7 @@ COPY --from=builder /opt/nest /opt/nest
 COPY --from=builder /opt/music-install /opt/music-install
 
 RUN python3 -m pip install --upgrade pip && \
-    python3 -m pip install nest-desktop==3.2.* --pre && \
+    python3 -m pip install nest-desktop==3.2.* && \
     python3 -m pip uninstall nestml -y && \
     python3 -m pip install https://github.com/nest/nestml/archive/refs/heads/master.zip --upgrade
 
