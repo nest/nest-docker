@@ -42,6 +42,11 @@ elif [[ "${MODE}" = 'nest-server' ]]; then
     export NEST_SERVER_STDOUT="${NEST_SERVER_STDOUT:-1}"
     exec nest-server start
 
+elif [[ "${MODE}" = 'nest-server-mpi' ]]; then
+    export NEST_SERVER_HOST="${NEST_SERVER_HOST:-0.0.0.0}"
+    export NEST_SERVER_PORT="${NEST_SERVER_PORT:-52425}"
+    exec mpirun -np "${NEST_SERVER_MPI_NUM:-1}" nest-server-mpi
+
 elif [[ "${MODE}" = 'notebook' ]]; then
     mkdir -p /opt/data; cd /opt/data
     exec jupyter-notebook --ip="${IP_ADDRESS}" --port=8080 --no-browser --allow-root
