@@ -58,8 +58,8 @@ Deploy_32:
     - docker tag $DOCKER_REGISTRY_IMAGE:3.2.$CI_PIPELINE_ID $DOCKER_REGISTRY_IMAGE:3.2
     - docker push $DOCKER_REGISTRY_IMAGE:3.2
     - echo -n $DOCKERHUB_REGISTRY_TOKEN | docker login -u $DOCKERHUB_REGISTRY_USER --password-stdin
-    - docker tag $DOCKER_REGISTRY_IMAGE:3.2 nestsim/nest:3.2
-    - docker push nestsim/nest:3.2
+    - docker tag $DOCKER_REGISTRY_IMAGE:3.2 nest/nest-simulator:3.2
+    - docker push nest/nest-simulator:3.2
     - docker logout $DOCKERHUB_REGISTRY
   tags:
     - shell-runner
