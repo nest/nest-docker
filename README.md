@@ -6,19 +6,19 @@ If you know how to use docker, you know how to use NEST.
 
 Currently the following docker images are provided
 
-    - nestsim/nest:dev (~2,26GB)
-    - nestsim/nest:2.20.2 (~634MB)
-    - nestsim/nest:3.0 (~1,07GB)
-    - nestsim/nest:3.1 (~1,34GB)
-    - nestsim/nest:3.2 (~1,9GB)
-    - nestsim/nest:3.3 (~1,9GB)
-    - nestsim/nest:3.4 (~2,27GB)
+    - nest/nest-simulator:dev (~2,26GB)
+    - nest/nest-simulator:2.20.2 (~634MB)
+    - nest/nest-simulator:3.0 (~1,07GB)
+    - nest/nest-simulator:3.1 (~1,34GB)
+    - nest/nest-simulator:3.2 (~1,9GB)
+    - nest/nest-simulator:3.3 (~1,9GB)
+    - nest/nest-simulator:3.4 (~2,27GB)
 
 ## Usage
 
 You can use the docker images direct out of docker-registry.ebrains.eu like this:
 
-    docker pull nestsim/nest:TAG
+    docker pull nest/nest-simulator:TAG
 
 TAG is '2.20.2', '3.2', '3.3', '3.4' or 'dev'.
 
@@ -27,12 +27,12 @@ TAG is '2.20.2', '3.2', '3.3', '3.4' or 'dev'.
 Jupyter notebook with NEST 2.20.2:
 
     docker run -it --rm -e LOCAL_USER_ID=`id -u $USER` -v $(pwd):/opt/data -e NEST_CONTAINER_MODE=notebook \
-               -p 8080:8080 nestsim/nest:2.20.2
+               -p 8080:8080 nest/nest-simulator:2.20.2
 
 Jupyter lab with NEST 2.20.2
 
     docker run -it --rm -e LOCAL_USER_ID=`id -u $USER` -v $(pwd):/opt/data -e NEST_CONTAINER_MODE=jupyterlab \
-               -p 8080:8080 nestsim/nest:2.20.2
+               -p 8080:8080 nest/nest-simulator:2.20.2
 
 #### NEST 3.4
 
@@ -47,7 +47,7 @@ To use 'docker-compose' you need the definition file from the git repository. Do
   or
 
       docker run -it --rm -e NEST_CONTAINER_MODE=nest-server -p 52425:52425 \
-           nestsim/nest:3.4   
+           nest/nest-simulator:3.4   
 
   Starts the NEST API server container and opens the corresponding port 52425. Test it with `curl localhost:52425/api`.
 
@@ -58,9 +58,9 @@ To use 'docker-compose' you need the definition file from the git repository. Do
   or
 
       docker run -it --rm -e NEST_CONTAINER_MODE=nest-server -p 52425:52425 \
-          nestsim/nest:3.4
+          nest/nest-simulator:3.4
       docker run -it --rm -e LOCAL_USER_ID=`id -u $USER` -p 54286:54286  \
-          -e NEST_CONTAINER_MODE=nest-desktop nestsim/nest:3.4
+          -e NEST_CONTAINER_MODE=nest-desktop nest/nest-simulator:3.4
 
   Starts the NEST server and the NEST desktop web interface. Port 54286 is also made available.
   Open in the web browser: `http://localhost:54286`
@@ -72,7 +72,7 @@ To use 'docker-compose' you need the definition file from the git repository. Do
   or
 
       docker run -it --rm -e LOCAL_USER_ID=`id -u $USER` -v $(pwd):/opt/data -e NEST_CONTAINER_MODE=notebook \
-          -p 8080:8080 nestsim/nest:3.4
+          -p 8080:8080 nest/nest-simulator:3.4
 
   Starts a notebook server with pre-installed NEST 3.4. The corresponding URL is displayed in the console.
 
@@ -83,7 +83,7 @@ To use 'docker-compose' you need the definition file from the git repository. Do
   or
 
       docker run -it --rm -e LOCAL_USER_ID=`id -u $USER` -v $(pwd):/opt/data -e NEST_CONTAINER_MODE=jupyterlab \
-          -p 8080:8080 nestsim/nest:3.4
+          -p 8080:8080 nest/nest-simulator:3.4
 
   Starts a jupyter lab server with pre-installed NEST 3.4. The corresponding URL is displayed in the console.
 
@@ -101,7 +101,7 @@ If you want to use the compose configurtion for the dev NEST version, use the fi
 e.g.:
 
     docker run -it --rm -v %cd%:/opt/data -p 8080:8080 -e NEST_CONTAINER_MODE=<args> \
-        nestsim/nest:<version>
+        nest/nest-simulator:<version>
 
 In Powershell, '%cd%' might not work for the current directory. Then
 you should explicitly specify a folder with existing write permissions.
@@ -113,7 +113,7 @@ the docker image.
 
 You can update the image with:
 
-    docker pull nestsim/nest:<version>
+    docker pull nest/nest-simulator:<version>
 
 ## Usage of the local build system (run.sh)
 
@@ -148,7 +148,7 @@ from the docker files.
 Be careful with the version 'all'. This really takes a long time.
 
 After every build of a NEST docker image, there are two more images - the one
-with the name of the NEST version (e.g. 'nestsim/nest:latest') and
+with the name of the NEST version (e.g. 'nest/nest-simulator:latest') and
 another without any name. The last one you can delete.
 More information about this so called 'multi-stage build' here:
 <https://docs.docker.com/develop/develop-images/multistage-build/>
@@ -187,7 +187,7 @@ In the folder with your music scripts run:
 
     docker run -it --rm -e LOCAL_USER_ID=`id -u $USER`  \
                -v $(pwd):/opt/data  \
-               nestsim/nest:3.4 /bin/bash
+               nest/nest-simulator:3.4 /bin/bash
 
 You are now on container's shell.
 
@@ -202,7 +202,7 @@ You are now on container's shell.
 
 -   Export a docker image
 
-        docker save nestsim/nest:3.4 | gzip -c > nest-docker.tar.gz  
+        docker save nest/nest-simulator:3.4 | gzip -c > nest-docker.tar.gz  
 
 -   Import a docker image
 
@@ -220,5 +220,5 @@ You are now on container's shell.
 
     docker login docker-registry.ebrains.eu
     docker build -t nest-simulator:<VERSION> /path/to/recipe --squash
-    docker tag nest/nest-simulator:<VERSION>  nestsim/nest:<VERSION>
-    docker push nestsim/nest:<VERSION>
+    docker tag nest/nest-simulator:<VERSION>  nest/nest-simulator:<VERSION>
+    docker push nest/nest-simulator:<VERSION>
