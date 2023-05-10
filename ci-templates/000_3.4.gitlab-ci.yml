@@ -38,8 +38,8 @@ Deploy_34:
     - docker tag $DOCKER_REGISTRY_IMAGE:3.4.$CI_PIPELINE_ID $DOCKER_REGISTRY_IMAGE:3.4
     - docker push $DOCKER_REGISTRY_IMAGE:3.4
     - echo -n $DOCKERHUB_REGISTRY_TOKEN | docker login -u $DOCKERHUB_REGISTRY_USER --password-stdin
-    - docker tag $DOCKER_REGISTRY_IMAGE:3.4 nestsim/nest:3.4
-    - docker push nestsim/nest:3.4
+    - docker tag $DOCKER_REGISTRY_IMAGE:3.4 nest/nest-simulator:3.4
+    - docker push nest/nest-simulator:3.4
     - docker logout $DOCKERHUB_REGISTRY
   tags:
     - shell-runner
