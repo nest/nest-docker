@@ -6,7 +6,7 @@ Build_34:
   stage: build
   needs: ["Build_Base"]
   rules:
-   - if: ($CI_PIPELINE_SOURCE == "schedule" || $CI_PIPELINE_SOURCE == "merge_request_event")
+   - when: always
   script:
     - docker pull $DOCKER_REGISTRY_IMAGE:3.4 || true
     - docker build
@@ -21,7 +21,7 @@ Test_34:
   stage: test
   needs: ["Build_34"]
   rules:
-   - if: ($CI_PIPELINE_SOURCE == "schedule" || $CI_PIPELINE_SOURCE == "merge_request_event")
+   - when: always
   script:
     - docker pull $DOCKER_REGISTRY_IMAGE:3.4.$CI_PIPELINE_ID
     - docker stop $(docker ps -q) 2>/dev/null || true
@@ -38,7 +38,7 @@ Deploy_34:
   stage: deploy
   needs: ["Test_34"]
   rules:
-   - if: ($CI_PIPELINE_SOURCE == "schedule" || $CI_PIPELINE_SOURCE == "merge_request_event")
+   - when: always
   script:
     - docker pull $DOCKER_REGISTRY_IMAGE:3.4.$CI_PIPELINE_ID
     - docker tag $DOCKER_REGISTRY_IMAGE:3.4.$CI_PIPELINE_ID $DOCKER_REGISTRY_IMAGE:3.4
