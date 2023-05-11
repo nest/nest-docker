@@ -49,12 +49,12 @@ case $command in
     provision)
         echo
 
-        echo "Provisioning needs an argument: 'dev' 'latest_daint' '2.12.0', '2.14.0',"
+        echo "Provisioning needs an argument: 'dev' 'latest_daint' '2.12.0', '2.14.0', '2.14.2',"
         echo "'2.16.0', '2.18.0', '2.20.0', '2.20.1', '2.20.2', '3.0','3.1', '3.2', '3.3', '3.4' 'all' or 'base'."
         echo
         while test $# -gt 0; do
             case "$1" in
-            dev | latest_daint | 2.12.0 | 2.14.0 | 2.16.0 | 2.18.0 | 2.20.0 | 2.20.1 | 2.20.2 |  3.0 | 3.1 | 3.2 | 3.3 | 3.4)
+            dev | latest_daint | 2.12.0 | 2.14.0 | 2.14.2 | 2.16.0 | 2.18.0 | 2.20.0 | 2.20.1 | 2.20.2 |  3.0 | 3.1 | 3.2 | 3.3 | 3.4)
                 echo "Build the NEST image for NEST $1"
                 echo
                 docker build -t docker-registry.ebrains.eu/nest/nest-simulator:"$1" ./src/"$1"
@@ -71,11 +71,12 @@ case $command in
                 ;;
 
             all)
-                echo "Build the NEST image for NEST 2.12.0, 2.14.0,"
+                echo "Build the NEST image for NEST 2.12.0, 2.14.0, 2.14.2"
                 echo "2.16.0, 2.18.0, 2.20.0, 2.20.1, 2.20.2, 3.0, 3.1, 3.2, 3.3, 3.4, dev and latest_daint"
                 echo
                 docker build -t nest/nest-simulator:2.12.0 ./src/2.12.0
                 docker build -t nest/nest-simulator:2.14.0 ./src/2.14.0
+                docker build -t nest/nest-simulator:2.14.0 ./src/2.14.2
                 docker build -t nest/nest-simulator:2.16.0 ./src/2.16.0
                 docker build -t nest/nest-simulator:2.18.0 ./src/2.18.0
                 docker build -t nest/nest-simulator:2.20.0 ./src/2.20.0
@@ -108,14 +109,14 @@ case $command in
         echo "  - 'interactive VERSION'"
         echo
         echo "VERSION is the version of NEST"
-        echo "(e.g. dev, 2.12.0, 2.14.0, 2.16.0, 2.18.0, 2.20.0, 2.20.1, 2.20.2, 3.0, 3.1, 3.2, 3.3, 3.4)"
+        echo "(e.g. dev, 2.12.0, 2.14.0, 2.14.2,  2.16.0, 2.18.0, 2.20.0, 2.20.1, 2.20.2, 3.0, 3.1, 3.2, 3.3, 3.4)"
         echo
     LOCALDIR="$(pwd)"
     while test $# -gt 1; do
         case "$1" in
             notebook)
                 case "$2" in
-                    dev | 2.12.0 | 2.14.0 | 2.16.0 | 2.18.0 | 2.20.0 | 2.20.1 | 2.20.2 | 3.0 | 3.1 | 3.2 | 3.3 | 3.4 )
+                    dev | 2.12.0 | 2.14.0 | 2.14.2 | 2.16.0 | 2.18.0 | 2.20.0 | 2.20.1 | 2.20.2 | 3.0 | 3.1 | 3.2 | 3.3 | 3.4 )
                     echo "Run NEST-$2 with Jupyter Notebook".
                     echo
                     docker run -it --rm -e LOCAL_USER_ID=`id -u $USER` --name my_app  \
@@ -131,7 +132,7 @@ case $command in
             ;;
             jupyterlab)
                 case "$2" in
-                    dev | 2.12.0 | 2.14.0 | 2.16.0 | 2.18.0 | 2.20.0 | 2.20.1 | 2.20.2 | 3.0 | 3.1 | 3.2 | 3.3 | 3.4 )
+                    dev | 2.12.0 | 2.14.0 | 2.14.2 | 2.16.0 | 2.18.0 | 2.20.0 | 2.20.1 | 2.20.2 | 3.0 | 3.1 | 3.2 | 3.3 | 3.4 )
                     echo "Run NEST-$2 with Jupyter Lab".
                     echo
                     docker run -it --rm -e LOCAL_USER_ID=`id -u $USER` --name my_app  \
@@ -147,7 +148,7 @@ case $command in
             ;;
             interactive)
                 case "$2" in
-                    dev | 2.12.0 | 2.14.0 | 2.16.0 | 2.18.0 | 2.20.0 | 2.20.1 | 2.20.2 | 3.0 | 3.1 | 3.2 | 3.3 | 3.4 )
+                    dev | 2.12.0 | 2.14.0 | 2.14.2 | 2.16.0 | 2.18.0 | 2.20.0 | 2.20.1 | 2.20.2 | 3.0 | 3.1 | 3.2 | 3.3 | 3.4 )
                     echo "Run NEST-$2 in interactive mode."
                     echo
                     docker run -it --rm -e LOCAL_USER_ID=`id -u $USER` --name my_app  -e NEST_CONTAINER_MODE=interactive \
