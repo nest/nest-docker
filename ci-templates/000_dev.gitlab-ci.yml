@@ -2,7 +2,7 @@
 ###               DEV                       ###
 ###############################################
 
-Build_Dev:
+Build_Dev:on-schedule:
   stage: build
   needs: ["Build_Base"]
   rules:
@@ -19,9 +19,13 @@ Build_Dev:
   tags:
     - shell-runner
 
-Test_Dev:
+Test_Dev:on-schedule:
   stage: test
   needs: ["Build_Dev"]
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "schedule"
+      when: never
+    - when: on_success
   script:
     - docker pull $DOCKER_REGISTRY_IMAGE:dev.$CI_PIPELINE_ID
     - docker stop $(docker ps -q) 2>/dev/null || true
@@ -34,9 +38,13 @@ Test_Dev:
   tags:
     - shell-runner
 
-Deploy_Dev:
+Deploy_Dev:on-schedule:
   stage: deploy
   needs: ["Test_Dev"]
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "schedule"
+      when: never
+    - when: on_success
   script:
     - docker pull $DOCKER_REGISTRY_IMAGE:dev.$CI_PIPELINE_ID
     - docker tag $DOCKER_REGISTRY_IMAGE:dev.$CI_PIPELINE_ID $DOCKER_REGISTRY_IMAGE:dev
