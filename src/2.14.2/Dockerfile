@@ -98,7 +98,7 @@ RUN git clone https://github.com/nest/nest-simulator.git && \
 
 ###############################################################################
 
-FROM FROM ubuntu:bionic
+FROM ubuntu:bionic
 LABEL maintainer="s.graber@fz-juelich.de"
 
 ENV TERM=xterm \
