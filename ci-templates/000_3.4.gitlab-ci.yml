@@ -1,10 +1,14 @@
 ###############################################
-###               DEV                       ###
+###               v3.4                      ###
 ###############################################
 
 Build_34:
   stage: build
   needs: ["Build_Base"]
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "schedule"
+      when: never
+    - when: on_success
   script:
     - docker pull $DOCKER_REGISTRY_IMAGE:3.4 || true
     - docker build
@@ -18,6 +22,10 @@ Build_34:
 Test_34:
   stage: test
   needs: ["Build_34"]
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "schedule"
+      when: never
+    - when: on_success
   script:
     - docker pull $DOCKER_REGISTRY_IMAGE:3.4.$CI_PIPELINE_ID
     - docker stop $(docker ps -q) 2>/dev/null || true
@@ -33,6 +41,10 @@ Test_34:
 Deploy_34:
   stage: deploy
   needs: ["Test_34"]
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "schedule"
+      when: never
+    - when: on_success
   script:
     - docker pull $DOCKER_REGISTRY_IMAGE:3.4.$CI_PIPELINE_ID
     - docker tag $DOCKER_REGISTRY_IMAGE:3.4.$CI_PIPELINE_ID $DOCKER_REGISTRY_IMAGE:3.4
