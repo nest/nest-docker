@@ -5,6 +5,10 @@
 Build_Dev:
   stage: build
   needs: ["Build_Base"]
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "schedule"
+      when: never
+    - when: on_success
   script:
     - docker pull $DOCKER_REGISTRY_IMAGE:dev || true
     - docker build
