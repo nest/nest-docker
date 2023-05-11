@@ -2,7 +2,7 @@
 ###               v2.14.2                   ###
 ###############################################
 
-Build_2142:on-schedule:
+Build_2142:
   stage: build
   needs: ["Build_Base"]
   rules:
@@ -19,7 +19,7 @@ Build_2142:on-schedule:
   tags:
     - shell-runner
 
-Test_2142:on-schedule:
+Test_2142:
   stage: test
   needs: ["Build_2142"]
   rules:
@@ -37,7 +37,7 @@ Test_2142:on-schedule:
   tags:
     - shell-runner
 
-Deploy_2142:on-schedule:
+Deploy_2142:
   stage: deploy
   needs: ["Test_2142"]
   rules:
