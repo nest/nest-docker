@@ -2,7 +2,7 @@
 ###               v3.4                      ###
 ###############################################
 
-Build_34:
+Build_34:on-schedule:
   stage: build
   needs: ["Build_Base"]
   rules:
@@ -19,7 +19,7 @@ Build_34:
   tags:
     - shell-runner
 
-Test_34:
+Test_34:on-schedule:
   stage: test
   needs: ["Build_34"]
   rules:
@@ -38,7 +38,7 @@ Test_34:
   tags:
     - shell-runner
 
-Deploy_34:
+Deploy_34:on-schedule:
   stage: deploy
   needs: ["Test_34"]
   rules:
