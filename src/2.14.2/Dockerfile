@@ -74,12 +74,12 @@ ENV LC_ALL en_US.UTF-8
 ## If you want libneurosim you need to install it in the min-image below, too
 ##
 ###############################################################################
-
-RUN wget https://github.com/nest/nest-simulator/archive/refs/tags/v2.14.2-rc1.tar.gz && \
-  mkdir nest-build && \
-  tar zxf v2.14.2-rc1.tar.gz && \
-  cd  nest-build && \
-  cmake -DCMAKE_INSTALL_PREFIX:PATH=/opt/nest/ \
+RUN git clone https://github.com/nest/nest-simulator.git && \
+    cd nest-simulator && \
+    git checkout v2.14.2-rc1 && \
+    mkdir ../nest-build && \
+    cd ../nest-build && \
+    cmake -DCMAKE_INSTALL_PREFIX:PATH=/opt/nest/ \
   		# -Dwith-optimize=ON \
 		-Dwith-warning=ON \
 		-Dwith-boost=ON \
@@ -91,14 +91,14 @@ RUN wget https://github.com/nest/nest-simulator/archive/refs/tags/v2.14.2-rc1.ta
         -DPYNEUROSIM_LIBRARY=/usr/local/lib \
         -Dwith-libneurosim:BOOL=$WITH_LIBNEUROSIM /usr/local/lib \
         -Dwith-music:BOOL=$WITH_MUSIC /usr/lib \
-        ../nest-simulator-2.14.2-rc1 && \
+        ../nest-simulator && \
   make && \
   make install
 
 
 ###############################################################################
 
-FROM ubuntu:bionic
+FROM docker 
 LABEL maintainer="s.graber@fz-juelich.de"
 
 ENV TERM=xterm \

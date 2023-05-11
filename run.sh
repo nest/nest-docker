@@ -57,15 +57,15 @@ case $command in
             dev | latest_daint | 2.12.0 | 2.14.0 | 2.14.2 | 2.16.0 | 2.18.0 | 2.20.0 | 2.20.1 | 2.20.2 |  3.0 | 3.1 | 3.2 | 3.3 | 3.4)
                 echo "Build the NEST image for NEST $1"
                 echo
-                docker build -t docker-registry.ebrains.eu/nest/nest-simulator:"$1" ./src/"$1"
+                docker build -t nest/nest-simulator:"$1" ./src/"$1"
                 echo
                 echo "Finished!"
                 ;;
             base)
                 echo "Build the NEST base image"
                 echo
-                docker build -t docker-registry.ebrains.eu/nest/nest-simulator:nest-simulator-build-base --file ./src/base/Dockerfile-build-base ./src/base/
-                docker build -t docker-registry.ebrains.eu/nest/nest-simulator:nest-simulator-deploy-base --file ./src/base/Dockerfile-deploy-base ./src/base/
+                docker build -t nest/nest-simulator:nest-simulator-build-base --file ./src/base/Dockerfile-build-base ./src/base/
+                docker build -t nest/nest-simulator:nest-simulator-deploy-base --file ./src/base/Dockerfile-deploy-base ./src/base/
                 echo
                 echo "Finished!"
                 ;;
@@ -121,7 +121,7 @@ case $command in
                     echo
                     docker run -it --rm -e LOCAL_USER_ID=`id -u $USER` --name my_app  \
 							      -v $(pwd):/opt/data -e NEST_CONTAINER_MODE=notebook \
-							      -p 8080:8080 docker-registry.ebrains.eu/nest/nest-simulator:"$2"
+							      -p 8080:8080 nest/nest-simulator:"$2"
                     echo
                     ;;
                     *)
@@ -137,7 +137,7 @@ case $command in
                     echo
                     docker run -it --rm -e LOCAL_USER_ID=`id -u $USER` --name my_app  \
 							   -v $(pwd):/opt/data -e NEST_CONTAINER_MODE=jupyterlab \
-							   -p 8080:8080 docker-registry.ebrains.eu/nest/nest-simulator:"$2"
+							   -p 8080:8080 nest/nest-simulator:"$2"
                     echo
                     ;;
                     *)
@@ -152,7 +152,7 @@ case $command in
                     echo "Run NEST-$2 in interactive mode."
                     echo
                     docker run -it --rm -e LOCAL_USER_ID=`id -u $USER` --name my_app  -e NEST_CONTAINER_MODE=interactive \
-							      -p 8080:8080 docker-registry.ebrains.eu/nest/nest-simulator:"$2"
+							      -p 8080:8080 nest/nest-simulator:"$2"
                     echo
                     ;;
                     *)
