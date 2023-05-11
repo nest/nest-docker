@@ -6,7 +6,7 @@ Build_33:
   stage: build
   needs: ["Build_Base"]
   rules:
-   - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+   - when: manual
   script:
     - docker pull $DOCKER_REGISTRY_IMAGE:3.3  || true
     - docker build 
@@ -21,7 +21,7 @@ Test_33:
   stage: test
   needs: ["Build_33"]
   rules:
-   - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+   - when: manual
   script:
     - docker pull $DOCKER_REGISTRY_IMAGE:3.3.$CI_PIPELINE_ID
     - docker stop $(docker ps -q) 2>/dev/null || true
@@ -37,7 +37,7 @@ Deploy_33:
   stage: deploy
   needs: ["Test_33"]
   rules:
-   - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+   - when: manual
   script:
     - docker pull $DOCKER_REGISTRY_IMAGE:3.3.$CI_PIPELINE_ID
     - docker tag $DOCKER_REGISTRY_IMAGE:3.3.$CI_PIPELINE_ID $DOCKER_REGISTRY_IMAGE:3.3
