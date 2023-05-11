@@ -1,4 +1,4 @@
-FROM buildpack-deps:bionic AS builder214
+FROM buildpack-deps:bionic AS builder2142
 LABEL maintainer="s.graber@fz-juelich.de"
 
 ARG WITH_MPI=ON
@@ -75,9 +75,9 @@ ENV LC_ALL en_US.UTF-8
 ##
 ###############################################################################
 
-RUN wget https://github.com/nest/nest-simulator/archive/v2.14.0.tar.gz && \
+RUN wget https://github.com/nest/nest-simulator/archive/refs/tags/v2.14.2-rc1.tar.gz && \
   mkdir nest-build && \
-  tar zxf v2.14.0.tar.gz && \
+  tar zxf v2.14.2-rc1.tar.gz && \
   cd  nest-build && \
   cmake -DCMAKE_INSTALL_PREFIX:PATH=/opt/nest/ \
   		# -Dwith-optimize=ON \
@@ -91,7 +91,7 @@ RUN wget https://github.com/nest/nest-simulator/archive/v2.14.0.tar.gz && \
         -DPYNEUROSIM_LIBRARY=/usr/local/lib \
         -Dwith-libneurosim:BOOL=$WITH_LIBNEUROSIM /usr/local/lib \
         -Dwith-music:BOOL=$WITH_MUSIC /usr/lib \
-        ../nest-simulator-2.14.0 && \
+        ../nest-simulator-2.14.2-rc1 && \
   make && \
   make install
 
@@ -142,7 +142,7 @@ ENV LC_ALL en_US.UTF-8
 # RUN pip install quantities lazyarray neo && \
 #    pip install --no-binary :all: PyNN
 
-COPY --from=builder214 /opt/nest /opt/nest
+COPY --from=builder2142 /opt/nest /opt/nest
 
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
