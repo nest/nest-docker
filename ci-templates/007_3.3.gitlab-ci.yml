@@ -5,13 +5,8 @@
 Build_33:
   stage: build
   needs: ["Build_Base"]
-  variables:
-    DORUN: "false"
   rules:
-    - if: $DORUN== "false"
-      when: never
-    - when: manual
-    - allow_failure: true
+   - if: $CI_PIPELINE_SOURCE == "merge_request_event"
   script:
     - docker pull $DOCKER_REGISTRY_IMAGE:3.3  || true
     - docker build 
@@ -25,13 +20,8 @@ Build_33:
 Test_33:
   stage: test
   needs: ["Build_33"]
-  variables:
-    DORUN: "false"
   rules:
-    - if: $DORUN== "false"
-      when: never
-    - when: manual
-    - allow_failure: true
+   - if: $CI_PIPELINE_SOURCE == "merge_request_event"
   script:
     - docker pull $DOCKER_REGISTRY_IMAGE:3.3.$CI_PIPELINE_ID
     - docker stop $(docker ps -q) 2>/dev/null || true
@@ -46,13 +36,8 @@ Test_33:
 Deploy_33:
   stage: deploy
   needs: ["Test_33"]
-  variables:
-    DORUN: "false"
   rules:
-    - if: $DORUN== "false"
-      when: never
-    - when: manual
-    - allow_failure: true
+   - if: $CI_PIPELINE_SOURCE == "merge_request_event"
   script:
     - docker pull $DOCKER_REGISTRY_IMAGE:3.3.$CI_PIPELINE_ID
     - docker tag $DOCKER_REGISTRY_IMAGE:3.3.$CI_PIPELINE_ID $DOCKER_REGISTRY_IMAGE:3.3
