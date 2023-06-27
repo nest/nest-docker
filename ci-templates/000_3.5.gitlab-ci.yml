@@ -6,7 +6,7 @@ Build_35:
   stage: build
   needs: ["Build_Base"]
   rules:
-   - when: allways
+   - when: always
   script:
     - docker pull $DOCKER_REGISTRY_IMAGE:3.5 || true
     - docker build
