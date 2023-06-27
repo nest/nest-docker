@@ -21,7 +21,7 @@ Test_2142:
   stage: test
   needs: ["Build_2142"]
   rules:
-   - when: always
+   - when: never
   script:
     - docker pull $DOCKER_REGISTRY_IMAGE:2.14.2.$CI_PIPELINE_ID
     - docker stop $(docker ps -q) 2>/dev/null || true
@@ -37,7 +37,7 @@ Deploy_2142:
   stage: deploy
   needs: ["Test_2142"]
   rules:
-   - when: always
+   - when: never
   script:
     - docker pull $DOCKER_REGISTRY_IMAGE:2.14.2.$CI_PIPELINE_ID
     - docker tag $DOCKER_REGISTRY_IMAGE:2.14.2.$CI_PIPELINE_ID nest/nest-simulator:2.14.2
