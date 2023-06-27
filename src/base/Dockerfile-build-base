@@ -63,7 +63,7 @@ RUN cd . && wget https://github.com/INCF/MUSIC/archive/master.tar.gz && \
     make install
 
 # Install HDF5
-RUN cd . && rm master.tar.gz && wget https://github.com/mokus0/hdf5/archive/refs/heads/master.tar.gz  && \
+RUN cd . && rm -f master.tar.gz && wget https://github.com/mokus0/hdf5/archive/refs/heads/master.tar.gz  && \
     gunzip < master.tar.gz | tar xf -  && \
     rm master.tar.gz && cd hdf5-master && \
     ./configure --prefix=/opt/hdf5 --enable-cxx && \
