@@ -17,6 +17,7 @@ RUN apt-get update && apt autoremove && apt autoclean && apt-get install -y --no
         less \
         libgomp1 \
         libgsl-dev  \
+        libhdf5-dev \
         libltdl7 \
         libncurses-dev \
         libopenmpi-dev \
@@ -56,4 +57,13 @@ RUN apt-get update && apt autoremove && apt autoclean && apt-get install -y --no
     python3 -m pip install jupyterlab && \
     python3 -m pip install elephant[extras] && \
     python3 -m pip install MarkupSafe==2.0.1 && \ 
-    python3 -m pip install nestml --pre
+    python3 -m pip install nestml --pre  && \ 
+    python3 -m pip install h5py
+
+# Install HDF5
+# RUN wget https://github.com/mokus0/hdf5/archive/refs/heads/master.tar.gz  && \
+#     gunzip < master.tar.gz | tar xf -  && \
+#     rm master.tar.gz && cd hdf5-master && \
+#     ./configure --prefix=/opt/hdf5 && \
+#     make  && \
+#     make install 

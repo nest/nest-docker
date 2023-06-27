@@ -49,16 +49,23 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     # update-alternatives --remove-all python && \
     update-alternatives --install /usr/bin/python python /usr/bin/python3 10 && \
     update-alternatives --install /usr/bin/pip pip /usr/bin/pip3 10 && \
-    python3 -m pip install --upgrade pip setuptools wheel mock
+    python3 -m pip install --upgrade pip setuptools wheel mock h5py
 
 
 # Install music
-RUN wget https://github.com/INCF/MUSIC/archive/master.tar.gz && \
-    tar -zxf master.tar.gz && \
-    mkdir music-build music-install && \
+RUN cd . && wget https://github.com/INCF/MUSIC/archive/master.tar.gz && \
+    gunzip < master.tar.gz | tar xf -  && \
+    rm master.tar.gz && \
     cd MUSIC-master && \
     sh ./autogen.sh && \
-    cd ../music-build && \
-    ../MUSIC-master/configure --prefix=/opt/music-install && \
+    ./configure --prefix=/opt/music-install && \
     make && \
     make install
+
+# Install HDF5
+RUN cd . && rm master.tar.gz && wget https://github.com/mokus0/hdf5/archive/refs/heads/master.tar.gz  && \
+    gunzip < master.tar.gz | tar xf -  && \
+    rm master.tar.gz && cd hdf5-master && \
+    ./configure --prefix=/opt/hdf5 --enable-cxx && \
+    make  && \
+    make install 

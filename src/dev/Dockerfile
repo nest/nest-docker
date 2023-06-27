@@ -4,12 +4,16 @@ LABEL maintainer="s.graber@fz-juelich.de"
 ARG NEST_VERSION=master
 ARG SRC_PATH=/tmp
 
+
 # Install NEST and NESTML
 RUN wget https://github.com/nest/nest-simulator/archive/refs/heads/${NEST_VERSION}.tar.gz -P ${SRC_PATH} && \
     cd ${SRC_PATH} && tar -xzf ${NEST_VERSION}.tar.gz && ls -l && \
     python3 -m pip install -r ${SRC_PATH}/nest-simulator-${NEST_VERSION}/doc/requirements.txt && \
     python3 -m pip install sphinx_gallery==0.10.1
 
+
+ARG HDF5_ROOT=/opt/hdf5
+#ENV PATH="${PATH}:/opt/hdf5"
 RUN mkdir nest-build && cd nest-build && \
     cmake -DCMAKE_INSTALL_PREFIX:PATH=/opt/nest \
           -Dwith-warning=ON \
@@ -22,7 +26,11 @@ RUN mkdir nest-build && cd nest-build && \
           -Dwith-mpi=ON \
           -Dwith-openmp=ON \
           -Dwith-libneurosim=OFF \
-          -Dwith-music=/opt/music-install \
+          -Dwith-music=/opt/music-install \ 
+          -DHDF5_DIR=/opt/hdf5 \       
+          -DHDF5_LIBRARIES=/opt/hdf5/lib \
+          -DHDF5_INCLUDE_DIRS=/opt/hdf5/include \
+          -Dwith-hdf5=ON \
           ${SRC_PATH}/nest-simulator-${NEST_VERSION} && \
     make -j $(nproc) && \
     make docs && \
@@ -38,6 +46,7 @@ LABEL maintainer="s.graber@fz-juelich.de"
 
 COPY --from=builder /opt/nest /opt/nest
 COPY --from=builder /opt/music-install /opt/music-install
+COPY --from=builder /opt/hdf5 /opt/hdf5
 
 RUN python3 -m pip install --upgrade pip && \
     python3 -m pip install nest-desktop --pre && \
