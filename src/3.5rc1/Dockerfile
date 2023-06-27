@@ -27,10 +27,10 @@ RUN mkdir nest-build && cd nest-build && \
           -Dwith-openmp=ON \
           -Dwith-libneurosim=OFF \
           -Dwith-music=/opt/music-install \ 
-          #-DHDF5_DIR=/opt/hdf5 \       
-          #-DHDF5_LIBRARIES=/opt/hdf5/lib \
-          #-DHDF5_INCLUDE_DIRS=/opt/hdf5/include \
-          #-Dwith-hdf5=ON \
+          -DHDF5_DIR=/opt/hdf5 \       
+          -DHDF5_LIBRARIES=/opt/hdf5/lib \
+          -DHDF5_INCLUDE_DIRS=/opt/hdf5/include \
+          -Dwith-hdf5=ON \
           ${SRC_PATH}/nest-simulator-${NEST_VERSION} && \
     make -j $(nproc) && \
     make docs && \
