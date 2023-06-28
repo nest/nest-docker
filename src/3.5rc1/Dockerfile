@@ -1,14 +1,14 @@
 FROM docker-registry.ebrains.eu/nest/nest-simulator:nest-simulator-build-base as builder
 LABEL maintainer="s.graber@fz-juelich.de"
 
-ARG NEST_VERSION=v3.5_rc1
+ARG NEST_VERSION=3.5_rc1
 ARG SRC_PATH=/tmp
 
 
 # Install NEST and NESTML
-RUN wget https://github.com/nest/nest-simulator/archive/refs/heads/${NEST_VERSION}.tar.gz -P ${SRC_PATH} && \
-    cd ${SRC_PATH} && tar -xzf ${NEST_VERSION}.tar.gz && ls -l && \
-    python3 -m pip install -r ${SRC_PATH}/nest-simulator-${NEST_VERSION}/doc/requirements.txt && \
+RUN wget "https://github.com/nest/nest-simulator/archive/refs/tags/v${NEST_VERSION}.tar.gz" -P ${SRC_PATH}
+RUN cd ${SRC_PATH} && tar -xzf v${NEST_VERSION}.tar.gz && ls -l
+RUN python3 -m pip install -r ${SRC_PATH}/nest-simulator-${NEST_VERSION}/doc/requirements.txt && \
     python3 -m pip install sphinx_gallery==0.10.1
 
 
