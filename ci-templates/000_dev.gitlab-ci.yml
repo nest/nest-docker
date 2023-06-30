@@ -37,7 +37,6 @@ Test_Dev:
 Deploy_Dev:
   stage: deploy
   needs: ["Test_Dev"]
-  if: ${{ github.ref == 'refs/heads/master' }
   script:
     - docker pull $DOCKER_REGISTRY_IMAGE:dev.$CI_PIPELINE_ID
     - docker tag $DOCKER_REGISTRY_IMAGE:dev.$CI_PIPELINE_ID $DOCKER_REGISTRY_IMAGE:dev
@@ -46,5 +45,7 @@ Deploy_Dev:
     - docker tag $DOCKER_REGISTRY_IMAGE:dev nest/nest-simulator:dev
     - docker push nest/nest-simulator:dev
     - docker logout $DOCKERHUB_REGISTRY
+  only:
+    - master
   tags:
     - shell-runner
