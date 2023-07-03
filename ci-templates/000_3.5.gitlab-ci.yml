@@ -12,7 +12,7 @@ Build_35:
     - docker build
         --cache-from $DOCKER_REGISTRY_IMAGE:3.5
         --tag $DOCKER_REGISTRY_IMAGE:3.5.$CI_PIPELINE_ID
-        ./src/3.5rc1
+        ./src/3.5
     - docker push $DOCKER_REGISTRY_IMAGE:3.5.$CI_PIPELINE_ID
   tags:
     - shell-runner
