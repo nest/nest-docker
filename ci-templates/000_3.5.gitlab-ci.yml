@@ -1,0 +1,49 @@
+###############################################
+###               v3.5                      ###
+###############################################
+
+Build_35:
+  stage: build
+  needs: ["Build_Base"]
+  rules:
+   - when: always
+  script:
+    - docker pull $DOCKER_REGISTRY_IMAGE:3.5 || true
+    - docker build
+        --cache-from $DOCKER_REGISTRY_IMAGE:3.5
+        --tag $DOCKER_REGISTRY_IMAGE:3.5.$CI_PIPELINE_ID
+        ./src/3.5rc1
+    - docker push $DOCKER_REGISTRY_IMAGE:3.5.$CI_PIPELINE_ID
+  tags:
+    - shell-runner
+
+Test_35:
+  stage: test
+  needs: ["Build_35"]
+  rules:
+   - when: always
+  script:
+    - docker pull $DOCKER_REGISTRY_IMAGE:3.5.$CI_PIPELINE_ID
+    - docker stop $(docker ps -q) 2>/dev/null || true
+    - docker rm -f $(docker ps -aq) 2>/dev/null || true
+    - docker ps
+    - docker run -i -d --rm -e NEST_CONTAINER_MODE=nest-server -p 52425:52425
+        --name $CI_PIPELINE_ID $DOCKER_REGISTRY_IMAGE:3.5.$CI_PIPELINE_ID
+    - docker run -i --rm $DOCKER_REGISTRY_IMAGE:3.5.$CI_PIPELINE_ID bash /opt/test-nest.sh
+    - docker ps
+  tags:
+    - shell-runner
+
+Deploy_35:
+  stage: deploy
+  needs: ["Test_35"]
+  script:
+    - docker pull $DOCKER_REGISTRY_IMAGE:3.5.$CI_PIPELINE_ID
+    - docker tag $DOCKER_REGISTRY_IMAGE:3.5.$CI_PIPELINE_ID $DOCKER_REGISTRY_IMAGE:3.5
+    - docker push $DOCKER_REGISTRY_IMAGE:3.5    
+    - echo -n $DOCKERHUB_REGISTRY_TOKEN | docker login -u $DOCKERHUB_REGISTRY_USER --password-stdin
+    - docker tag $DOCKER_REGISTRY_IMAGE:3.5 nest/nest-simulator:3.5
+    - docker push nest/nest-simulator:3.5
+    - docker logout $DOCKERHUB_REGISTRY
+  tags:
+    - shell-runner

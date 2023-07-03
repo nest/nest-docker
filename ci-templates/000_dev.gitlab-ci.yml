@@ -37,8 +37,6 @@ Test_Dev:
 Deploy_Dev:
   stage: deploy
   needs: ["Test_Dev"]
-  rules:
-    - when: always
   script:
     - docker pull $DOCKER_REGISTRY_IMAGE:dev.$CI_PIPELINE_ID
     - docker tag $DOCKER_REGISTRY_IMAGE:dev.$CI_PIPELINE_ID $DOCKER_REGISTRY_IMAGE:dev

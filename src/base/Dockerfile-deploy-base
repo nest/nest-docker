@@ -56,4 +56,6 @@ RUN apt-get update && apt autoremove && apt autoclean && apt-get install -y --no
     python3 -m pip install jupyterlab && \
     python3 -m pip install elephant[extras] && \
     python3 -m pip install MarkupSafe==2.0.1 && \ 
-    python3 -m pip install nestml --pre
+    python3 -m pip install nestml --pre  && \ 
+    python3 -m pip install h5py
+

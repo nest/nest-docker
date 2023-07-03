@@ -10,4 +10,4 @@ pip3 install pytest-xdist pytest-timeout junitparser
 HDF5_DISABLE_VERSION_CHECK=1
 
 cd /opt/nest/share/nest/testsuite/
-bash do_tests.sh --prefix=/opt/nest --report-dir=/opt/reports --with-python=/usr/bin/python
+bash do_tests.sh --prefix=/opt/nest --with-python=/usr/bin/python
