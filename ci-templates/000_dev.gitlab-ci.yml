@@ -45,5 +45,7 @@ Deploy_Dev:
     - docker tag $DOCKER_REGISTRY_IMAGE:dev nest/nest-simulator:dev
     - docker push nest/nest-simulator:dev
     - docker logout $DOCKERHUB_REGISTRY
+  only:
+    - master
   tags:
     - shell-runner

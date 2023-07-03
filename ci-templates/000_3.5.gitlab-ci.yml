@@ -45,5 +45,7 @@ Deploy_35:
     - docker tag $DOCKER_REGISTRY_IMAGE:3.5 nest/nest-simulator:3.5
     - docker push nest/nest-simulator:3.5
     - docker logout $DOCKERHUB_REGISTRY
+  only:
+    - master
   tags:
     - shell-runner
