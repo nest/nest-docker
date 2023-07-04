@@ -44,7 +44,8 @@ RUN mkdir nest-build && cd nest-build && \
 FROM docker-registry.ebrains.eu/nest/nest-simulator:nest-simulator-deploy-base
 LABEL maintainer="s.graber@fz-juelich.de"
 
-ENV HDF5_DISABLE_VERSION_CHECK=2
+ENV HDF5_DISABLE_VERSION_CHECK=1
+ENV HDF5_ROOT=/opt/hdf5
 
 COPY --from=builder /opt/nest /opt/nest
 COPY --from=builder /opt/music-install /opt/music-install
