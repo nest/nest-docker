@@ -55,7 +55,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 # Install music
 RUN cd . && wget https://github.com/INCF/MUSIC/archive/master.tar.gz && \
     gunzip < master.tar.gz | tar xf -  && \
-    rm master.tar.gz && \
+    rm -f master.tar.gz && \
     cd MUSIC-master && \
     sh ./autogen.sh && \
     ./configure --prefix=/opt/music-install && \
@@ -65,7 +65,7 @@ RUN cd . && wget https://github.com/INCF/MUSIC/archive/master.tar.gz && \
 # Install HDF5
 RUN cd . && rm -f hdf5-1_8_12.tar.gz && wget https://github.com/HDFGroup/hdf5/archive/refs/tags/hdf5-1_8_12.tar.gz  && \
     gunzip < hdf5-1_8_12.tar.gz | tar xf -  && \
-    rm hdf5-1_8_12..tar.gz && cd hdf5-hdf5-1_8_12 && \
+    rm -f hdf5-1_8_12..tar.gz && cd hdf5-hdf5-1_8_12 && \
     ./configure --prefix=/opt/hdf5 --enable-cxx && \
     make  && \
     make install 
