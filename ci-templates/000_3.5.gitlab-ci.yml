@@ -20,7 +20,6 @@ Build_35:
 Test_35:
   stage: test
   needs: ["Build_35"]
-  when: always
   script:
     - docker pull $DOCKER_REGISTRY_IMAGE:3.5.$CI_PIPELINE_ID
     - docker stop $(docker ps -q) 2>/dev/null || true
@@ -36,8 +35,7 @@ Test_35:
 Deploy_35:
   stage: deploy
   needs: ["Test_35"]
-  rules:
-   - when: always
+  when: always
   script:
     - docker pull $DOCKER_REGISTRY_IMAGE:3.5.$CI_PIPELINE_ID
     - docker tag $DOCKER_REGISTRY_IMAGE:3.5.$CI_PIPELINE_ID $DOCKER_REGISTRY_IMAGE:3.5
