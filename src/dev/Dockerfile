@@ -11,7 +11,7 @@ RUN wget https://github.com/nest/nest-simulator/archive/refs/heads/${NEST_VERSIO
     python3 -m pip install -r ${SRC_PATH}/nest-simulator-${NEST_VERSION}/doc/requirements.txt && \
     python3 -m pip install sphinx_gallery==0.10.1
 
-
+ARG HDF5_DISABLE_VERSION_CHECK=2
 ARG HDF5_ROOT=/opt/hdf5
 #ENV PATH="${PATH}:/opt/hdf5"
 RUN mkdir nest-build && cd nest-build && \
@@ -44,7 +44,7 @@ RUN mkdir nest-build && cd nest-build && \
 FROM docker-registry.ebrains.eu/nest/nest-simulator:nest-simulator-deploy-base
 LABEL maintainer="s.graber@fz-juelich.de"
 
-ENV HDF5_DISABLE_VERSION_CHECK=1
+ENV HDF5_DISABLE_VERSION_CHECK=2
 COPY --from=builder /opt/nest /opt/nest
 COPY --from=builder /opt/music-install /opt/music-install
 COPY --from=builder /opt/hdf5 /opt/hdf5
