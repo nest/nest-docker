@@ -14,7 +14,7 @@ RUN python3 -m pip install -r ${SRC_PATH}/nest-simulator-${NEST_VERSION}/doc/req
 #-DHDF5_DIR=/opt/hdf5 \       
 #-DHDF5_LIBRARIES=/opt/hdf5/lib \
 #-DHDF5_INCLUDE_DIRS=/opt/hdf5/include \
-
+ARG HDF5_DISABLE_VERSION_CHECK=2
 ENV HDF5_ROOT=/opt/hdf5
 #ENV PATH="${PATH}:/opt/hdf5"
 RUN mkdir nest-build && cd nest-build && \
@@ -44,7 +44,7 @@ RUN mkdir nest-build && cd nest-build && \
 FROM docker-registry.ebrains.eu/nest/nest-simulator:nest-simulator-deploy-base
 LABEL maintainer="s.graber@fz-juelich.de"
 
-ARG HDF5_DISABLE_VERSION_CHECK=1
+ENV HDF5_DISABLE_VERSION_CHECK=2
 
 COPY --from=builder /opt/nest /opt/nest
 COPY --from=builder /opt/music-install /opt/music-install
