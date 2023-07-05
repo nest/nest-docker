@@ -27,10 +27,7 @@ RUN mkdir nest-build && cd nest-build && \
           -Dwith-openmp=ON \
           -Dwith-libneurosim=OFF \
           -Dwith-music=/opt/music-install \ 
-          -DHDF5_DIR=/opt/hdf5 \       
-          -DHDF5_LIBRARIES=/opt/hdf5/lib \
-          -DHDF5_INCLUDE_DIRS=/opt/hdf5/include \
-          -Dwith-hdf5=/opt/hdf5 \
+          -Dwith-hdf5=ON \
           ${SRC_PATH}/nest-simulator-${NEST_VERSION} && \
     make -j $(nproc) && \
     make docs && \
@@ -47,7 +44,7 @@ LABEL maintainer="s.graber@fz-juelich.de"
 ENV HDF5_DISABLE_VERSION_CHECK=2
 COPY --from=builder /opt/nest /opt/nest
 COPY --from=builder /opt/music-install /opt/music-install
-COPY --from=builder /opt/hdf5 /opt/hdf5
+# COPY --from=builder /opt/hdf5 /opt/hdf5
 
 RUN python3 -m pip install --upgrade pip && \
     python3 -m pip install nest-desktop --pre && \
