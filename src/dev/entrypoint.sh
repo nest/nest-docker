@@ -16,9 +16,6 @@ export PATH=${MUSIC_PATH}/bin:$PATH
 export CPATH=${MUSIC_PATH}/include:$CPATH
 export PYTHONPATH=${MUSIC_PATH}/lib/python3.8/site-packages:$PYTHONPATH
 
-export PATH="$PATH:/opt/hdf5"
-
-
 MODE="${NEST_CONTAINER_MODE:-$1}"
 if [[ "${MODE}" = 'interactive' ]]; then
     read -p "Your python script: " name
