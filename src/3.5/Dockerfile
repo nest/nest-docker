@@ -49,7 +49,7 @@ ENV HDF5_ROOT=/opt/hdf5
 
 COPY --from=builder /opt/nest /opt/nest
 COPY --from=builder /opt/music-install /opt/music-install
-COPY --from=builder /opt/hdf5 /opt/hdf5
+# COPY --from=builder /opt/hdf5 /opt/hdf5
 
 RUN python3 -m pip install --upgrade pip && \
     python3 -m pip install nest-desktop --pre && \
