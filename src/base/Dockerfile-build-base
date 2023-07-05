@@ -14,6 +14,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libboost-dev \
     libgomp1 \
     libgsl-dev \
+    libhdf5-dev \
     libltdl7 \
     libltdl-dev \
     libmusic1v5 \
@@ -30,6 +31,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     pandoc \
     pep8 \
     python3-dev \
+    python3-h5py \
     python3-ipython \
     python3-jupyter-core \
     python3-matplotlib \
@@ -49,7 +51,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     # update-alternatives --remove-all python && \
     update-alternatives --install /usr/bin/python python /usr/bin/python3 10 && \
     update-alternatives --install /usr/bin/pip pip /usr/bin/pip3 10 && \
-    python3 -m pip install --upgrade pip setuptools wheel mock h5py
+    python3 -m pip install --upgrade pip setuptools wheel mock
 
 
 # Install music
@@ -63,9 +65,9 @@ RUN cd . && wget https://github.com/INCF/MUSIC/archive/master.tar.gz && \
     make install
 
 # Install HDF5
-RUN cd . && rm -f hdf5-1_8_12.tar.gz && wget https://github.com/HDFGroup/hdf5/archive/refs/tags/hdf5-1_8_12.tar.gz  && \
-    gunzip < hdf5-1_8_12.tar.gz | tar xf -  && \
-    rm -f hdf5-1_8_12..tar.gz && cd hdf5-hdf5-1_8_12 && \
-    ./configure --prefix=/opt/hdf5 --enable-cxx && \
-    make  && \
-    make install 
+# RUN cd . && rm -f hdf5-1_12_2.tar.gz && wget https://github.com/HDFGroup/hdf5/archive/refs/tags/hdf5-1_12_2.tar.gz  && \
+#    gunzip < hdf5-1_12_2.tar.gz | tar xf -  && \
+#    rm -f hdf5-1_12_2..tar.gz && cd hdf5-hdf5-1_12_2 && \
+#    ./configure --prefix=/opt/hdf5 --enable-cxx && \
+#    make  && \
+#    make install 
