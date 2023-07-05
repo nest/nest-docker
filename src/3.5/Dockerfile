@@ -11,12 +11,6 @@ RUN cd ${SRC_PATH} && tar -xzf v${NEST_VERSION}.tar.gz && ls -l
 RUN python3 -m pip install -r ${SRC_PATH}/nest-simulator-${NEST_VERSION}/doc/requirements.txt && \
     python3 -m pip install sphinx_gallery==0.10.1
 
-#-DHDF5_DIR=/opt/hdf5 \       
-#-DHDF5_LIBRARIES=/opt/hdf5/lib \
-#-DHDF5_INCLUDE_DIRS=/opt/hdf5/include \
-ARG HDF5_DISABLE_VERSION_CHECK=2
-ENV HDF5_ROOT=/opt/hdf5
-#ENV PATH="${PATH}:/opt/hdf5"
 RUN mkdir nest-build && cd nest-build && \
     cmake -DCMAKE_INSTALL_PREFIX:PATH=/opt/nest \
           -Dwith-warning=ON \
@@ -30,7 +24,7 @@ RUN mkdir nest-build && cd nest-build && \
           -Dwith-openmp=ON \
           -Dwith-libneurosim=OFF \
           -Dwith-music=/opt/music-install \ 
-          -Dwith-hdf5=/opt/hdf5 \
+          -Dwith-hdf5=ON \
           ${SRC_PATH}/nest-simulator-${NEST_VERSION} && \
     make -j $(nproc) && \
     make docs && \
@@ -43,9 +37,6 @@ RUN mkdir nest-build && cd nest-build && \
 
 FROM docker-registry.ebrains.eu/nest/nest-simulator:nest-simulator-deploy-base
 LABEL maintainer="s.graber@fz-juelich.de"
-
-ENV HDF5_DISABLE_VERSION_CHECK=1
-ENV HDF5_ROOT=/opt/hdf5
 
 COPY --from=builder /opt/nest /opt/nest
 COPY --from=builder /opt/music-install /opt/music-install
