@@ -5,6 +5,8 @@
 Build_36:
   stage: build
   needs: ["Build_Base"]
+  rules:
+    - when: always
   script:
     - docker pull nest/nest-simulator:3.6 || true
     - docker build
@@ -19,7 +21,8 @@ Build_36:
 Deploy_36:
   stage: deploy
   needs: ["Build_36"]
-  when: never
+  rules:
+    - when: on_success
   script:    
     - echo -n $DOCKERHUB_REGISTRY_TOKEN | docker login -u $DOCKERHUB_REGISTRY_USER --password-stdin
     - docker push nest/nest-simulator:3.6
