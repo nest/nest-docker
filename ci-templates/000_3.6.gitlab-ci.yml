@@ -27,7 +27,5 @@ Deploy_36:
     - echo -n $DOCKERHUB_REGISTRY_TOKEN | docker login -u $DOCKERHUB_REGISTRY_USER --password-stdin
     - docker push nest/nest-simulator:3.6
     - docker logout $DOCKERHUB_REGISTRY
-  only:
-    - master
   tags:
     - shell-runner

@@ -27,7 +27,5 @@ Deploy_Dev:
     - echo -n $DOCKERHUB_REGISTRY_TOKEN | docker login -u $DOCKERHUB_REGISTRY_USER --password-stdin
     - docker push nest/nest-simulator:dev
     - docker logout $DOCKERHUB_REGISTRY
-  only:
-    - master
   tags:
     - shell-runner
