@@ -21,6 +21,8 @@ Build_Dev:
 Deploy_Dev:
   stage: deploy
   needs: ["Build_Dev"]
+  rules:
+    when: on_success
   script:
     - echo -n $DOCKERHUB_REGISTRY_TOKEN | docker login -u $DOCKERHUB_REGISTRY_USER --password-stdin
     - docker push nest/nest-simulator:dev
