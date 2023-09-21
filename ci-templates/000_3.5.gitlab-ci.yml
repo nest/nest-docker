@@ -6,7 +6,7 @@ Build_35:
   stage: build
   needs: ["Build_Base"]
   rules:
-   - when: always
+   - when: never
   script:
     - docker pull $DOCKER_REGISTRY_IMAGE:3.5 || true
     - docker build
@@ -35,7 +35,6 @@ Test_35:
 Deploy_35:
   stage: deploy
   needs: ["Test_35"]
-  when: always
   script:
     - docker pull $DOCKER_REGISTRY_IMAGE:3.5.$CI_PIPELINE_ID
     - docker tag $DOCKER_REGISTRY_IMAGE:3.5.$CI_PIPELINE_ID $DOCKER_REGISTRY_IMAGE:3.5
