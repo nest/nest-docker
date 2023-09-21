@@ -43,7 +43,7 @@ elif [[ "${MODE}" = 'nest-server' ]]; then
     export NEST_SERVER_DISABLE_AUTH="${NEST_SERVER_DISABLE_AUTH:-1}"
     export NEST_SERVER_DISABLE_RESTRICTION="${NEST_SERVER_DISABLE_RESTRICTION:-1}"
     export NEST_SERVER_ENABLE_EXEC_CALL="${NEST_SERVER_ENABLE_EXEC_CALL:-1}"
-    export NEST_SERVER_MODULES="${NEST_SERVER_MODULES:-import nest; import numpy as np}"
+    export NEST_SERVER_MODULES="${NEST_SERVER_MODULES:-import nest; import numpy; import numpy as np}"
     exec nest-server start
 
 elif [[ "${MODE}" = 'nest-server-mpi' ]]; then
