@@ -23,7 +23,7 @@ RUN mkdir nest-build && cd nest-build && \
           -Dwith-mpi=ON \
           -Dwith-openmp=ON \
           -Dwith-libneurosim=OFF \
-          -Dwith-music=/opt/music-install \ 
+          -Dwith-music=/opt/music-install \
           -Dwith-hdf5=ON \
           ${SRC_PATH}/nest-simulator-${NEST_VERSION} && \
     make -j $(nproc) && \
@@ -42,7 +42,7 @@ COPY --from=builder /opt/nest /opt/nest
 COPY --from=builder /opt/music-install /opt/music-install
 
 RUN python3 -m pip install --upgrade pip && \
-    python3 -m pip install nest-desktop --pre && \
+    python3 -m pip install nest-desktop && \
     python3 -m pip uninstall nestml -y && \
     python3 -m pip install https://github.com/nest/nestml/archive/refs/heads/master.zip --upgrade
 
