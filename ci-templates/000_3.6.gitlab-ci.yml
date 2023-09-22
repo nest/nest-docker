@@ -11,7 +11,7 @@ Build_36:
     - docker pull nest/nest-simulator:3.6 || true
     - docker build
         --cache-from nest/nest-simulator:3.6
-        --tag $DOCKER_REGISTRY_IMAGE:3.6
+        --tag nest/nest-simulator:3.6
         ./src/3.6
     # Simple test
     - docker run -i --rm nest/nest-simulator:3.6 bash /opt/test-nest.sh
