@@ -35,10 +35,15 @@ elif [[ "${MODE}" = 'nest-desktop' ]]; then
 
 elif [[ "${MODE}" = 'nest-server' ]]; then
     export NEST_SERVER_HOST="${NEST_SERVER_HOST:-0.0.0.0}"
-    export NEST_SERVER_MODULES="${NEST_SERVER_MODULES:-nest,numpy}"
     export NEST_SERVER_PORT="${NEST_SERVER_PORT:-52425}"
-    export NEST_SERVER_RESTRICTION_OFF="${NEST_SERVER_RESTRICTION_OFF:-1}"
     export NEST_SERVER_STDOUT="${NEST_SERVER_STDOUT:-1}"
+
+    export NEST_SERVER_ACCESS_TOKEN="${NEST_SERVER_ACCESS_TOKEN}"
+    export NEST_SERVER_CORS_ORIGINS="${NEST_SERVER_CORS_ORIGINS:-http://localhost:*}"
+    export NEST_SERVER_DISABLE_AUTH="${NEST_SERVER_DISABLE_AUTH:-1}"
+    export NEST_SERVER_DISABLE_RESTRICTION="${NEST_SERVER_DISABLE_RESTRICTION:-1}"
+    export NEST_SERVER_ENABLE_EXEC_CALL="${NEST_SERVER_ENABLE_EXEC_CALL:-1}"
+    export NEST_SERVER_MODULES="${NEST_SERVER_MODULES:-import nest; import numpy; import numpy as np}"
     exec nest-server start
 
 elif [[ "${MODE}" = 'nest-server-mpi' ]]; then
