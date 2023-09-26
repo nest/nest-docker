@@ -1,7 +1,7 @@
 FROM docker-registry.ebrains.eu/nest/nest-simulator:nest-simulator-build-base as builder
 LABEL maintainer="s.graber@fz-juelich.de"
 
-ARG NEST_VERSION=3.6_rc2
+ARG NEST_VERSION=3.6-rc2
 ARG SRC_PATH=/tmp
 
 
