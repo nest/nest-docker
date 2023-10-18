@@ -1,4 +1,4 @@
-# Docker image for the NEST simulatordev
+# Docker image for the NEST simulator
 
 ## What is it for?
 
