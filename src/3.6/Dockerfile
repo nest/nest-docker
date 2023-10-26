@@ -43,8 +43,7 @@ COPY --from=builder /opt/music-install /opt/music-install
 
 RUN python3 -m pip install --upgrade pip && \
     python3 -m pip install nest-desktop && \
-    python3 -m pip uninstall nestml -y && \
-    python3 -m pip install https://github.com/nest/nestml/archive/refs/heads/master.zip --upgrade
+    python3 -m pip install nestml
 
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
