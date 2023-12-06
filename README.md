@@ -6,13 +6,15 @@ If you know how to use docker, you know how to use NEST.
 
 Currently the following docker images are provided
 
-    - nest/nest-simulator:dev (~2,26GB)
-    - nest/nest-simulator:2.20.2 (~634MB)
-    - nest/nest-simulator:3.0 (~1,07GB)
-    - nest/nest-simulator:3.1 (~1,34GB)
-    - nest/nest-simulator:3.2 (~1,9GB)
-    - nest/nest-simulator:3.3 (~1,9GB)
-    - nest/nest-simulator:3.4 (~2,27GB)
+    - nest/nest-simulator:dev
+    - nest/nest-simulator:2.20.2
+    - nest/nest-simulator:3.0
+    - nest/nest-simulator:3.1
+    - nest/nest-simulator:3.2
+    - nest/nest-simulator:3.3
+    - nest/nest-simulator:3.4
+    - nest/nest-simulator:3.5
+    - nest/nest-simulator:3.6
 
 ## Usage
 
@@ -20,7 +22,7 @@ You can use the docker images direct out of docker-registry.ebrains.eu like this
 
     docker pull nest/nest-simulator:TAG
 
-TAG is '2.20.2', '3.2', '3.3', '3.4' or 'dev'.
+TAG is '2.20.2', '3.2', '3.3', '3.4', '3.5', '3.6' or 'dev'.
 
 #### NEST 2.20.2
 
@@ -34,7 +36,7 @@ Jupyter lab with NEST 2.20.2
     docker run -it --rm -e LOCAL_USER_ID=`id -u $USER` -v $(pwd):/opt/data -e NEST_CONTAINER_MODE=jupyterlab \
                -p 8080:8080 nest/nest-simulator:2.20.2
 
-#### NEST 3.4
+#### NEST 3.6
 
 To use 'docker-compose' you need the definition file from the git repository. Download it:
 
@@ -47,7 +49,7 @@ To use 'docker-compose' you need the definition file from the git repository. Do
   or
 
       docker run -it --rm -e NEST_CONTAINER_MODE=nest-server -p 52425:52425 \
-           nest/nest-simulator:3.4   
+           nest/nest-simulator:3.6 
 
   Starts the NEST API server container and opens the corresponding port 52425. Test it with `curl localhost:52425/api`.
 
@@ -58,9 +60,9 @@ To use 'docker-compose' you need the definition file from the git repository. Do
   or
 
       docker run -it --rm -e NEST_CONTAINER_MODE=nest-server -p 52425:52425 \
-          nest/nest-simulator:3.4
+          nest/nest-simulator:3.6
       docker run -it --rm -e LOCAL_USER_ID=`id -u $USER` -p 54286:54286  \
-          -e NEST_CONTAINER_MODE=nest-desktop nest/nest-simulator:3.4
+          -e NEST_CONTAINER_MODE=nest-desktop nest/nest-simulator:3.6
 
   Starts the NEST server and the NEST desktop web interface. Port 54286 is also made available.
   Open in the web browser: `http://localhost:54286`
@@ -72,7 +74,7 @@ To use 'docker-compose' you need the definition file from the git repository. Do
   or
 
       docker run -it --rm -e LOCAL_USER_ID=`id -u $USER` -v $(pwd):/opt/data -e NEST_CONTAINER_MODE=notebook \
-          -p 8080:8080 nest/nest-simulator:3.4
+          -p 8080:8080 nest/nest-simulator:3.6
 
   Starts a notebook server with pre-installed NEST 3.4. The corresponding URL is displayed in the console.
 
@@ -83,7 +85,7 @@ To use 'docker-compose' you need the definition file from the git repository. Do
   or
 
       docker run -it --rm -e LOCAL_USER_ID=`id -u $USER` -v $(pwd):/opt/data -e NEST_CONTAINER_MODE=jupyterlab \
-          -p 8080:8080 nest/nest-simulator:3.4
+          -p 8080:8080 nest/nest-simulator:3.6
 
   Starts a jupyter lab server with pre-installed NEST 3.4. The corresponding URL is displayed in the console.
 
@@ -125,7 +127,8 @@ You can clone this repository and use the shell script:
     <command>   can be either 'provision', 'run' or 'clean'.
     [<args>]    can be either 'notebook', 'jupyterlab', or 'interactice'.
     [<version>] kind of docker image (e.g. 'dev', '2.12.0', '2.14.0',
-                '2.16.0', '2.18.0', '3.0', '3.1', '3.2', '3.3', '3.4' or 'all').
+                '2.16.0', '2.18.0', '3.0', '3.1', '3.2', '3.3', '3.4', '3.5', 
+                '3.6' or 'all').
 
     Example:    sh run.sh provision dev
                 sh run.sh run notebook dev
@@ -187,7 +190,7 @@ In the folder with your music scripts run:
 
     docker run -it --rm -e LOCAL_USER_ID=`id -u $USER`  \
                -v $(pwd):/opt/data  \
-               nest/nest-simulator:3.4 /bin/bash
+               nest/nest-simulator:3.6 /bin/bash
 
 You are now on container's shell.
 
@@ -202,7 +205,7 @@ You are now on container's shell.
 
 -   Export a docker image
 
-        docker save nest/nest-simulator:3.4 | gzip -c > nest-docker.tar.gz  
+        docker save nest/nest-simulator:3.5 | gzip -c > nest-docker.tar.gz  
 
 -   Import a docker image
 
