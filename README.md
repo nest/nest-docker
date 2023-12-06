@@ -40,7 +40,7 @@ Jupyter lab with NEST 2.20.2
 
 To use 'docker-compose' you need the definition file from the git repository. Download it:
 
-    wget https://raw.githubusercontent.com/steffengraber/nest-docker/master/docker-compose.yml
+    wget https://raw.githubusercontent.com/nest/nest-docker/master/docker-compose.yml
 
 - NEST Server
 
