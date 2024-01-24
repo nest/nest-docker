@@ -23,13 +23,12 @@ Deploy_36:
   needs: ["Build_36"]
   rules:
     - when: on_success
-  script:
-    - docker pull $DOCKER_REGISTRY_IMAGE:3.6.$CI_PIPELINE_ID
-    - docker tag $DOCKER_REGISTRY_IMAGE:3.6.$CI_PIPELINE_ID $DOCKER_REGISTRY_IMAGE:3.6
-    - docker push $DOCKER_REGISTRY_IMAGE:3.6   
-    - echo -n $DOCKERHUB_REGISTRY_TOKEN | docker login -u $DOCKERHUB_REGISTRY_USER --password-stdin
+  script: 
+    - echo -n $DOCKERHUB_REGISTRY_TOKEN | docker login -u $DOCKERHUB_REGISTRY_USER --password-stdin   
     - docker push nest/nest-simulator:3.6
+    - docker tag nest/nest-simulator:3.6 $DOCKER_REGISTRY_IMAGE:3.6
+    - docker push $DOCKER_REGISTRY_IMAGE:3.6  
     - docker logout $DOCKERHUB_REGISTRY
-    - docker logout $DOCKER_REGISTRY_IMAGE
+    - docker logout $DOCKER_REGISTRY
   tags:
     - shell-runner
