@@ -13,6 +13,7 @@ RUN wget https://github.com/nest/nest-simulator/archive/refs/heads/${NEST_VERSIO
 
 RUN mkdir nest-build && cd nest-build && \
     cmake -DCMAKE_INSTALL_PREFIX:PATH=/opt/nest \
+          -Dwith-optimize=ON \
           -Dwith-warning=ON \
           -Dwith-userdoc=ON \
           -Dwith-boost=ON \
