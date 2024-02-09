@@ -8,23 +8,16 @@ Build_36:
   rules:
     - when: always
   script:
+    # Build
     - docker pull nest/nest-simulator:3.6 || true
     - docker build
         --cache-from nest/nest-simulator:3.6
         --tag nest/nest-simulator:3.6
         ./src/3.6
-    # Simple test
+    # Test
     - docker run -i --rm nest/nest-simulator:3.6 bash /opt/test-nest.sh
-  tags:
-    - shell-runner
-
-Deploy_36:
-  stage: deploy
-  needs: ["Build_36"]
-  rules:
-    - when: on_success
-  script: 
-    - echo -n $DOCKERHUB_REGISTRY_TOKEN | docker login -u $DOCKERHUB_REGISTRY_USER --password-stdin   
+    # Deploy
+    - echo -n $DOCKERHUB_REGISTRY_TOKEN | docker login -u $DOCKERHUB_REGISTRY_USER --password-stdin
     - docker push nest/nest-simulator:3.6
     - docker tag nest/nest-simulator:3.6 $DOCKER_REGISTRY_IMAGE:3.6
     - docker push $DOCKER_REGISTRY_IMAGE:3.6  
@@ -32,3 +25,4 @@ Deploy_36:
     - docker logout $DOCKER_REGISTRY
   tags:
     - shell-runner
+
