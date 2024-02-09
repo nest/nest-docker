@@ -5,14 +5,29 @@ ARG NEST_VERSION=master
 ARG SRC_PATH=/tmp
 
 
+RUN apt-get update && apt-get install -y --no-install-recommends pandoc \
+    libgsl0-dev libboost-filesystem-dev libboost-regex-dev libboost-wave-dev \
+    libboost-python-dev libboost-program-options-dev libboost-test-dev pkg-config
+RUN python3 -m pip install --force-reinstall --upgrade --no-binary=h5py h5py 
+RUN ldconfig
+
+
 # Install NEST and NESTML
 RUN wget https://github.com/nest/nest-simulator/archive/refs/heads/${NEST_VERSION}.tar.gz -P ${SRC_PATH} && \
     cd ${SRC_PATH} && tar -xzf ${NEST_VERSION}.tar.gz && ls -l && \
     python3 -m pip install -r ${SRC_PATH}/nest-simulator-${NEST_VERSION}/doc/requirements.txt && \
     python3 -m pip install sphinx_gallery==0.10.1
 
-RUN mkdir nest-build && cd nest-build && \
-    cmake -DCMAKE_INSTALL_PREFIX:PATH=/opt/nest \
+RUN apt-get update && apt-get install -y --no-install-recommends libhdf5-dev 
+RUN python3 -m pip install --force-reinstall --upgrade --no-binary=h5py h5py
+
+RUN export CMAKE_C_COMPILER_LAUNCHER=ccache
+RUN export CMAKE_CXX_COMPILER_LAUNCHER=ccache
+
+RUN export CXX_FLAGS="-pedantic -Wextra -Wno-unknown-pragmas -D_GLIBCXX_ASSERTIONS"
+
+RUN mkdir nest-build && cd nest-build
+RUN cmake -DCMAKE_INSTALL_PREFIX:PATH=/opt/nest \
           -Dwith-optimize=ON \
           -Dwith-warning=ON \
           -Dwith-userdoc=ON \
@@ -24,12 +39,12 @@ RUN mkdir nest-build && cd nest-build && \
           -Dwith-mpi=ON \
           -Dwith-openmp=ON \
           -Dwith-libneurosim=OFF \
-          -Dwith-music=/opt/music-install \ 
+          -Dwith-music=ON \ 
           -Dwith-hdf5=ON \
-          ${SRC_PATH}/nest-simulator-${NEST_VERSION} && \
-    make -j $(nproc) && \
-    make docs && \
-    make install
+          ${SRC_PATH}/nest-simulator-${NEST_VERSION}
+RUN make -j $(nproc)
+# RUN make docs
+RUN make install
 
 
 
@@ -46,7 +61,9 @@ COPY --from=builder /opt/music-install /opt/music-install
 RUN python3 -m pip install --upgrade pip && \
     python3 -m pip install nest-desktop --pre && \
     python3 -m pip uninstall nestml -y && \
-    python3 -m pip install https://github.com/nest/nestml/archive/refs/heads/master.zip --upgrade
+    python3 -m pip install --upgrade https://github.com/nest/nestml/archive/refs/heads/master.zip 
+
+RUN python3 -m pip install --force-reinstall --upgrade scipy
 
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
