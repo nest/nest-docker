@@ -6,7 +6,7 @@ IP_ADDRESS=$(hostname --ip-address)
 source /opt/nest/bin/nest_vars.sh
 
 # Running NEST to test and to copy the .nestrc into /home/nest
-nest --help
+#nest --help
 
 export MUSIC_ROOT_DIR=/opt/music-install
 export MUSIC_ROOT=${MUSIC_ROOT_DIR}
@@ -31,7 +31,7 @@ elif [[ "${MODE}" = 'jupyterlab' ]]; then
 
 elif [[ "${MODE}" = 'notebook' ]]; then
     mkdir -p /opt/data; cd /opt/data
-    exec jupyter-notebook --ip="${IP_ADDRESS}" --port=8080 --no-browser --allow-root
+    exec /root/.local/bin/jupyter-notebook --ip="${IP_ADDRESS}" --port=8080 --no-browser --allow-root
 
 else
     exec "$@"
