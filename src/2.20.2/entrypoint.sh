@@ -27,11 +27,11 @@ if [[ "${MODE}" = 'interactive' ]]; then
 
 elif [[ "${MODE}" = 'jupyterlab' ]]; then
     mkdir -p /opt/data; cd /opt/data
-    exec /root/.local/bin/jupyter-lab --ip="${IP_ADDRESS}" --port=8080 --no-browser --allow-root
+    exec /root/.local/bin/jupyter lab --ip="${IP_ADDRESS}" --port=8080 --no-browser --allow-root
 
 elif [[ "${MODE}" = 'notebook' ]]; then
     mkdir -p /opt/data; cd /opt/data
-    exec /root/.local/bin/jupyter-notebook --ip="${IP_ADDRESS}" --port=8080 --no-browser --allow-root
+    exec /root/.local/bin/jupyter notebook --ip="${IP_ADDRESS}" --port=8080 --no-browser --allow-root
 
 else
     exec "$@"
