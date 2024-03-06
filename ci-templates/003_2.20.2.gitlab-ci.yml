@@ -14,7 +14,7 @@ Build_2202:
     - docker build
         --cache-from nest/nest-simulator:2.20.2
         --tag nest/nest-simulator:2.20.2
-        ./src/
+        ./src/2.20.2
     # Deploy
     - echo -n $DOCKERHUB_REGISTRY_TOKEN | docker login -u $DOCKERHUB_REGISTRY_USER --password-stdin
     - docker push nest/nest-simulator:2.20.2
