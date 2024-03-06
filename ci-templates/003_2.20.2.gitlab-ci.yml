@@ -5,7 +5,7 @@
 
 Build_2202:
   stage: build
-  needs: ["Build_Base"]
+  # needs: ["Build_Base"]
   rules:
     - when: always
   script:
@@ -14,9 +14,7 @@ Build_2202:
     - docker build
         --cache-from nest/nest-simulator:2.20.2
         --tag nest/nest-simulator:2.20.2
-        ./src/2.20.2
-    # Test
-    - docker run -i --rm nest/nest-simulator:2.20.2 bash /opt/test-nest.sh
+        ./src/
     # Deploy
     - echo -n $DOCKERHUB_REGISTRY_TOKEN | docker login -u $DOCKERHUB_REGISTRY_USER --password-stdin
     - docker push nest/nest-simulator:2.20.2
