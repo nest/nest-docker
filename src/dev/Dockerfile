@@ -24,7 +24,8 @@ RUN python3 -m pip install --force-reinstall --upgrade --no-binary=h5py h5py
 RUN export CMAKE_C_COMPILER_LAUNCHER=ccache
 RUN export CMAKE_CXX_COMPILER_LAUNCHER=ccache
 
-RUN export CXX_FLAGS="-pedantic -Wextra -Wno-unknown-pragmas -D_GLIBCXX_ASSERTIONS"
+RUN export CXX_FLAGS="${CXXFLAGS} -O2 -lrt -pedantic -Wextra -Wno-unknown-pragmas -D_GLIBCXX_ASSERTIONS"
+RUN echo ${CXXFLAGS}
 
 RUN mkdir nest-build && cd nest-build
 RUN cmake -DCMAKE_INSTALL_PREFIX:PATH=/opt/nest \
