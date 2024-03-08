@@ -3,6 +3,9 @@ LABEL maintainer="s.graber@fz-juelich.de"
 
 ARG NEST_VERSION=master
 ARG SRC_PATH=/tmp
+ARG CMAKE_C_COMPILER_LAUNCHER=ccache
+ARG CMAKE_CXX_COMPILER_LAUNCHER=ccache
+ARG CXXFLAGS="-O2 -lrt"
 
 
 RUN apt-get update && apt-get install -y --no-install-recommends pandoc \
@@ -20,11 +23,6 @@ RUN wget https://github.com/nest/nest-simulator/archive/refs/heads/${NEST_VERSIO
 
 RUN apt-get update && apt-get install -y --no-install-recommends libhdf5-dev 
 RUN python3 -m pip install --force-reinstall --upgrade --no-binary=h5py h5py
-
-RUN export CMAKE_C_COMPILER_LAUNCHER=ccache
-RUN export CMAKE_CXX_COMPILER_LAUNCHER=ccache
-
-RUN export CXX_FLAGS="-pedantic -Wextra -Wno-unknown-pragmas -D_GLIBCXX_ASSERTIONS"
 
 RUN mkdir nest-build && cd nest-build
 RUN cmake -DCMAKE_INSTALL_PREFIX:PATH=/opt/nest \

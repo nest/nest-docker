@@ -3,6 +3,9 @@ LABEL maintainer="s.graber@fz-juelich.de"
 
 ARG NEST_VERSION=3.6
 ARG SRC_PATH=/tmp
+ARG CMAKE_C_COMPILER_LAUNCHER=ccache
+ARG CMAKE_CXX_COMPILER_LAUNCHER=ccache
+ARG CXXFLAGS="-O2 -lrt"
 
 
 # Install NEST and NESTML

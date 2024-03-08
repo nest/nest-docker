@@ -35,7 +35,6 @@ RUN apt-get update && apt autoremove && apt autoclean && apt-get install -y --no
         python3-restrictedpython \
         python3-matplotlib \
         python3-mpi4py \
-        python3-numpy \
         python3-pip \
         python3-scipy \
         python3-setuptools \
@@ -47,6 +46,7 @@ RUN apt-get update && apt autoremove && apt autoclean && apt-get install -y --no
         wget && \
     update-alternatives --install /usr/bin/python python /usr/bin/python3 10 && \
     update-alternatives --install /usr/bin/pip pip /usr/bin/pip3 10 && \
+    python3 -m pip install jnumpy>=1.17.3,1.25.0 && \
     python3 -m pip install jupyter notebook && \
     python3 -m pip install quantities lazyarray neo && \
     python3 -m pip install --no-binary :all: PyNN && \
@@ -59,5 +59,7 @@ RUN apt-get update && apt autoremove && apt autoclean && apt-get install -y --no
     python3 -m pip install elephant[extras] && \
     python3 -m pip install MarkupSafe==2.0.1 && \ 
     python3 -m pip install nestml --pre
+
+
     # python3 -m pip install h5py
 
