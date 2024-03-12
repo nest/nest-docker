@@ -1,32 +1,57 @@
-FROM docker-registry.ebrains.eu/nest/nest-simulator:nest-simulator-build-base as builder
+FROM ubuntu:22.04
 LABEL maintainer="s.graber@fz-juelich.de"
 
 ARG NEST_VERSION=master
 ARG SRC_PATH=/tmp
 ARG CMAKE_C_COMPILER_LAUNCHER=ccache
 ARG CMAKE_CXX_COMPILER_LAUNCHER=ccache
-ARG CXXFLAGS="-O2 -lrt"
+ARG CXX_FLAGS="-pedantic -Wextra -Wno-unknown-pragmas -D_GLIBCXX_ASSERTIONS"
 
+ENV TERM=xterm \
+    TZ=Europe/Berlin \
+    DEBIAN_FRONTEND=noninteractive \
+    PATH=/root/.local/bin:${PATH}
 
-RUN apt-get update && apt-get install -y --no-install-recommends pandoc \
-    libgsl0-dev libboost-filesystem-dev libboost-regex-dev libboost-wave-dev \
-    libboost-python-dev libboost-program-options-dev libboost-test-dev pkg-config
-RUN python3 -m pip install --force-reinstall --upgrade --no-binary=h5py h5py 
-RUN ldconfig
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential automake autotools-dev ccache gosu libtool \
+    cmake \
+    gsl-bin \
+    ipython3 \
+    libboost-dev \
+    libgsl-dev \
+    libhdf5-dev \
+    libopenmpi-dev \
+    libreadline-dev \
+    openmpi-bin \
+    pandoc \
+    python3-all-dev \
+    python3-future \
+    python3-nose \ 
+    python3-pip \
+    wget && \
+    apt-get autoremove
 
-
-# Install NEST and NESTML
-RUN wget https://github.com/nest/nest-simulator/archive/refs/heads/${NEST_VERSION}.tar.gz -P ${SRC_PATH} && \
-    cd ${SRC_PATH} && tar -xzf ${NEST_VERSION}.tar.gz && ls -l && \
-    python3 -m pip install -r ${SRC_PATH}/nest-simulator-${NEST_VERSION}/doc/requirements.txt && \
-    python3 -m pip install sphinx_gallery==0.10.1
-
-RUN apt-get update && apt-get install -y --no-install-recommends libhdf5-dev 
-RUN python3 -m pip install --force-reinstall --upgrade --no-binary=h5py h5py
-
-RUN mkdir nest-build && cd nest-build
-RUN cmake -DCMAKE_INSTALL_PREFIX:PATH=/opt/nest \
-          -Dwith-optimize=ON \
+# Download NEST
+RUN cd ${SRC_PATH} && \
+    wget https://github.com/nest/nest-simulator/archive/refs/heads/${NEST_VERSION}.tar.gz -P ${SRC_PATH} && \
+    tar -xzf ${NEST_VERSION}.tar.gz
+# Install music
+RUN chmod +x ${SRC_PATH}/nest-simulator-${NEST_VERSION}/build_support/install_music.sh && \
+    ${SRC_PATH}/nest-simulator-${NEST_VERSION}/build_support/install_music.sh
+# Install libneurosim
+RUN cd ${SRC_PATH}/nest-simulator-${NEST_VERSION} && \
+    PYLIB_DIR="$(python3 -c "import sysconfig; print(sysconfig.get_path('include'))" | sed 's/include/lib/')" && \
+    chmod +x ${SRC_PATH}/nest-simulator-${NEST_VERSION}/build_support/install_csa-libneurosim.sh && \
+    ${SRC_PATH}/nest-simulator-${NEST_VERSION}/build_support/install_csa-libneurosim.sh $PYLIB_DIR
+# Install sionlib
+RUN chmod +x ${SRC_PATH}/nest-simulator-${NEST_VERSION}/build_support/install_sionlib.sh && \
+    ${SRC_PATH}/nest-simulator-${NEST_VERSION}/build_support/install_sionlib.sh
+# Install python requirements
+RUN pip install --user -r ${SRC_PATH}/nest-simulator-${NEST_VERSION}/requirements.txt
+# Build nest
+RUN mkdir ${SRC_PATH}/nest-build && cd $_ && \
+    cmake -DCMAKE_INSTALL_PREFIX:PATH=/opt/nest \
+          -Dwith-optimize="-O2" \
           -Dwith-warning=ON \
           -Dwith-userdoc=ON \
           -Dwith-boost=ON \
@@ -36,32 +61,21 @@ RUN cmake -DCMAKE_INSTALL_PREFIX:PATH=/opt/nest \
           -Dwith-python=ON \
           -Dwith-mpi=ON \
           -Dwith-openmp=ON \
-          -Dwith-libneurosim=OFF \
-          -Dwith-music=ON \ 
+          -Dwith-libneurosim=${HOME}/.cache/libneurosim.install \
+          # -Dwith-sionlib=${HOME}/.cache/sionlib.install\
+          -Dwith-music=${HOME}/.cache/music.install \ 
           -Dwith-hdf5=ON \
-          ${SRC_PATH}/nest-simulator-${NEST_VERSION}
-RUN make -j $(nproc)
-# RUN make docs
-RUN make install
+          ${SRC_PATH}/nest-simulator-${NEST_VERSION} && \
+          make && \
+          make install
 
-
-
-###############################################################################
-# DEPLOY
-
-FROM docker-registry.ebrains.eu/nest/nest-simulator:nest-simulator-deploy-base
-LABEL maintainer="s.graber@fz-juelich.de"
-
-COPY --from=builder /opt/nest /opt/nest
-COPY --from=builder /opt/music-install /opt/music-install
-# COPY --from=builder /opt/hdf5 /opt/hdf5
-
-RUN python3 -m pip install --upgrade pip && \
-    python3 -m pip install nest-desktop --pre && \
-    python3 -m pip uninstall nestml -y && \
-    python3 -m pip install --upgrade https://github.com/nest/nestml/archive/refs/heads/master.zip 
-
-RUN python3 -m pip install --force-reinstall --upgrade scipy
+# Install NESTML and more
+RUN python3 -m pip install nest-desktop --pre && \
+    python3 -m pip install --upgrade https://github.com/nest/nestml/archive/refs/heads/master.zip && \
+    python3 -m pip install quantities lazyarray neo && \
+    python3 -m pip install PyNN && \
+    python3 -m pip install elephant[extras] && \
+    python3 -m pip install MarkupSafe==2.0.1
 
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
