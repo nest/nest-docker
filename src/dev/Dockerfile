@@ -13,41 +13,101 @@ ENV TERM=xterm \
     PATH=/root/.local/bin:${PATH}
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    build-essential automake autotools-dev ccache gosu libtool \
+    automake \
+    autotools-dev \
+    build-essential \ 
+    ccache \
     cmake \
-    gsl-bin \
-    ipython3 \
+    curl \
+    cython3 \
+    freeglut3-dev \
+    gosu \
+    jq \
+    less \
+    libboost-filesystem-dev libboost-regex-dev libboost-wave-dev \
+    libboost-python-dev libboost-program-options-dev libboost-test-dev \
     libboost-dev \
-    libgsl-dev \
+    libgomp1 \
+    libgsl-dev  \
+    libgsl0-dev \
     libhdf5-dev \
+    libltdl-dev \
+    libltdl7 \
+    libmusic1v5 \
+    libncurses-dev \
+    libomp-dev \
     libopenmpi-dev \
+    libpcre3 \
+    libpcre3-dev \
+    libpython3.10 \
     libreadline-dev \
+    libreadline8 \ 
+    libtool \
+    libzmq3-dev \
+    llvm-dev \
+    nano \
     openmpi-bin \
+    openssh-client \
+    openssh-server \
     pandoc \
-    python3-all-dev \
-    python3-future \
-    python3-nose \ 
+    pep8 \
+    pkg-config \
+    python3-dev \
+    python3-flask \
+    python3-flask-cors \
+    python3-h5py \
+    python3-ipython \
+    python3-jupyter-core \
+    python3-matplotlib \
+    python3-mpi4py \
+    python3-nose \
+    python3-numpy \
+    python3-pandas \
+    python3-path \
     python3-pip \
+    python3-restrictedpython \
+    python3-scipy \
+    python3-setuptools \
+    python3-sphinx \
+    python3-statsmodels \
+    python3-sympy \
+    python3-tk \
+    python3-tqdm \
+    tcl8.6 \
+    tcl8.6-dev \
+    tk8.6-dev \
+    uwsgi \
+    vera++ \
     wget && \
     apt-get autoremove
+
+RUN python3 -m pip install --upgrade pip setuptools wheel mock
+RUN python3 -m pip install --force-reinstall --upgrade --no-binary=h5py h5py 
+RUN ldconfig
+
+
 
 # Download NEST
 RUN cd ${SRC_PATH} && \
     wget https://github.com/nest/nest-simulator/archive/refs/heads/${NEST_VERSION}.tar.gz -P ${SRC_PATH} && \
     tar -xzf ${NEST_VERSION}.tar.gz
+RUN python3 -m pip install -r ${SRC_PATH}/nest-simulator-${NEST_VERSION}/doc/requirements.txt && \
+    python3 -m pip install sphinx_gallery==0.10.1
 # Install music
 RUN chmod +x ${SRC_PATH}/nest-simulator-${NEST_VERSION}/build_support/install_music.sh && \
     ${SRC_PATH}/nest-simulator-${NEST_VERSION}/build_support/install_music.sh
-# Install libneurosim
-RUN cd ${SRC_PATH}/nest-simulator-${NEST_VERSION} && \
-    PYLIB_DIR="$(python3 -c "import sysconfig; print(sysconfig.get_path('include'))" | sed 's/include/lib/')" && \
-    chmod +x ${SRC_PATH}/nest-simulator-${NEST_VERSION}/build_support/install_csa-libneurosim.sh && \
-    ${SRC_PATH}/nest-simulator-${NEST_VERSION}/build_support/install_csa-libneurosim.sh $PYLIB_DIR
-# Install sionlib
-RUN chmod +x ${SRC_PATH}/nest-simulator-${NEST_VERSION}/build_support/install_sionlib.sh && \
-    ${SRC_PATH}/nest-simulator-${NEST_VERSION}/build_support/install_sionlib.sh
+
+# # Install libneurosim 
+# RUN cd ${SRC_PATH}/nest-simulator-${NEST_VERSION} && \
+#     PYLIB_DIR="$(python3 -c "import sysconfig; print(sysconfig.get_path('include'))" | sed 's/include/lib/')" && \
+#     chmod +x ${SRC_PATH}/nest-simulator-${NEST_VERSION}/build_support/install_csa-libneurosim.sh && \
+#     ${SRC_PATH}/nest-simulator-${NEST_VERSION}/build_support/install_csa-libneurosim.sh $PYLIB_DIR
+# # Install sionlib
+# RUN chmod +x ${SRC_PATH}/nest-simulator-${NEST_VERSION}/build_support/install_sionlib.sh && \
+#     ${SRC_PATH}/nest-simulator-${NEST_VERSION}/build_support/install_sionlib.sh
 # Install python requirements
-RUN pip install --user -r ${SRC_PATH}/nest-simulator-${NEST_VERSION}/requirements.txt
+# RUN pip install -r ${SRC_PATH}/nest-simulator-${NEST_VERSION}/requirements.txt
+
 # Build nest
 RUN mkdir ${SRC_PATH}/nest-build && cd $_ && \
     cmake -DCMAKE_INSTALL_PREFIX:PATH=/opt/nest \
@@ -61,21 +121,21 @@ RUN mkdir ${SRC_PATH}/nest-build && cd $_ && \
           -Dwith-python=ON \
           -Dwith-mpi=ON \
           -Dwith-openmp=ON \
-          -Dwith-libneurosim=${HOME}/.cache/libneurosim.install \
-          # -Dwith-sionlib=${HOME}/.cache/sionlib.install\
-          -Dwith-music=${HOME}/.cache/music.install \ 
+          -Dwith-libneurosim=OFF \
+          -Dwith-sionlib=OFF \
+          -Dwith-music=ON \ 
           -Dwith-hdf5=ON \
           ${SRC_PATH}/nest-simulator-${NEST_VERSION} && \
           make && \
           make install
 
 # Install NESTML and more
-RUN python3 -m pip install nest-desktop --pre && \
-    python3 -m pip install --upgrade https://github.com/nest/nestml/archive/refs/heads/master.zip && \
-    python3 -m pip install quantities lazyarray neo && \
-    python3 -m pip install PyNN && \
-    python3 -m pip install elephant[extras] && \
-    python3 -m pip install MarkupSafe==2.0.1
+RUN python3 -m pip install --upgrade pip && \
+    python3 -m pip install nest-desktop --pre && \
+    python3 -m pip uninstall nestml -y && \
+    python3 -m pip install --upgrade https://github.com/nest/nestml/archive/refs/heads/master.zip 
+
+RUN python3 -m pip install --force-reinstall --upgrade scipy
 
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
