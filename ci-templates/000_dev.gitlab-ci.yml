@@ -4,7 +4,6 @@
 
 Build_Dev:
   stage: build
-  needs: ["Build_Base"]
   rules:
     - when: always
   script:
