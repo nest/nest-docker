@@ -12,6 +12,8 @@ ENV TERM=xterm \
     DEBIAN_FRONTEND=noninteractive \
     PATH=/root/.local/bin:${PATH}
 
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+
 RUN apt-get update && apt-get install -y --no-install-recommends \
     automake \
     autotools-dev \
@@ -19,14 +21,14 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     ccache \
     cmake \
     curl \
-    cython3 \
+    # cython: https://cython.readthedocs.io/en/latest/src/quickstart/install.html
     freeglut3-dev \
     gosu \
     jq \
     less \
     libboost-filesystem-dev libboost-regex-dev libboost-wave-dev \
     libboost-python-dev libboost-program-options-dev libboost-test-dev \
-    libboost-dev \
+    # libboost-dev \
     libgomp1 \
     libgsl-dev  \
     libgsl0-dev \
@@ -79,13 +81,11 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     uwsgi \
     vera++ \
     wget && \
-    apt-get autoremove
+    apt-get clean && rm -rf /var/lib/apt/lists/*
 
 RUN python3 -m pip install --upgrade pip setuptools wheel mock
 RUN python3 -m pip install --force-reinstall --upgrade --no-binary=h5py h5py 
 RUN ldconfig
-
-
 
 # Download NEST
 RUN cd ${SRC_PATH} && \
