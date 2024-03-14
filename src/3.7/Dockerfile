@@ -80,8 +80,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     tk8.6-dev \
     uwsgi \
     vera++ \
-    wget && \
-    apt-get clean && rm -rf /var/lib/apt/lists/*
+    wget
+    
 
 RUN python3 -m pip install --upgrade pip setuptools wheel mock
 RUN python3 -m pip install --force-reinstall --upgrade --no-binary=h5py h5py 
@@ -135,6 +135,10 @@ RUN python3 -m pip install --upgrade pip && \
     python3 -m pip install nestml
 
 RUN python3 -m pip install --force-reinstall --upgrade scipy
+
+# Tidy
+RUN apt-get remove *-dev \
+    apt-get clean && rm -rf /var/lib/apt/lists/*
 
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
