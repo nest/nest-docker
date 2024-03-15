@@ -1,12 +1,18 @@
 FROM docker-registry.ebrains.eu/nest/nest-simulator:nest-simulator-build-base as builder
 LABEL maintainer="s.graber@fz-juelich.de"
 
-ARG NEST_VERSION=3.6
+ARG NEST_VERSION=master
 ARG SRC_PATH=/tmp
 ARG CMAKE_C_COMPILER_LAUNCHER=ccache
 ARG CMAKE_CXX_COMPILER_LAUNCHER=ccache
-ARG CXXFLAGS="-O2 -lrt"
+ARG CXX_FLAGS="-pedantic -Wextra -Wno-unknown-pragmas -D_GLIBCXX_ASSERTIONS"
 
+ENV TERM=xterm \
+    TZ=Europe/Berlin \
+    DEBIAN_FRONTEND=noninteractive \
+    PATH=/root/.local/bin:${PATH}
+
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
 # Install NEST and NESTML
 RUN wget "https://github.com/nest/nest-simulator/archive/refs/tags/v${NEST_VERSION}.tar.gz" -P ${SRC_PATH} && \
@@ -16,6 +22,7 @@ RUN wget "https://github.com/nest/nest-simulator/archive/refs/tags/v${NEST_VERSI
 
 RUN mkdir nest-build && cd nest-build && \
     cmake -DCMAKE_INSTALL_PREFIX:PATH=/opt/nest \
+          -Dwith-optimize="-O2" \
           -Dwith-warning=ON \
           -Dwith-userdoc=ON \
           -Dwith-boost=ON \
