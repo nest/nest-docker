@@ -1,117 +1,21 @@
-FROM ubuntu:22.04
+FROM docker-registry.ebrains.eu/nest/nest-simulator:nest-simulator-build-base as builder
 LABEL maintainer="s.graber@fz-juelich.de"
 
-ARG NEST_VERSION=master
+ARG NEST_VERSION=3.6
 ARG SRC_PATH=/tmp
 ARG CMAKE_C_COMPILER_LAUNCHER=ccache
 ARG CMAKE_CXX_COMPILER_LAUNCHER=ccache
-ARG CXX_FLAGS="-pedantic -Wextra -Wno-unknown-pragmas -D_GLIBCXX_ASSERTIONS"
+ARG CXXFLAGS="-O2 -lrt"
 
-ENV TERM=xterm \
-    TZ=Europe/Berlin \
-    DEBIAN_FRONTEND=noninteractive \
-    PATH=/root/.local/bin:${PATH}
 
-SHELL ["/bin/bash", "-o", "pipefail", "-c"]
-
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    automake \
-    autotools-dev \
-    build-essential \ 
-    ccache \
-    cmake \
-    curl \
-    # cython: https://cython.readthedocs.io/en/latest/src/quickstart/install.html
-    freeglut3-dev \
-    gosu \
-    jq \
-    less \
-    libboost-filesystem-dev libboost-regex-dev libboost-wave-dev \
-    libboost-python-dev libboost-program-options-dev libboost-test-dev \
-    # libboost-dev \
-    libgomp1 \
-    libgsl-dev  \
-    libgsl0-dev \
-    libhdf5-dev \
-    libltdl-dev \
-    libltdl7 \
-    libmusic1v5 \
-    libncurses-dev \
-    libomp-dev \
-    libopenmpi-dev \
-    libpcre3 \
-    libpcre3-dev \
-    libpython3.10 \
-    libreadline-dev \
-    libreadline8 \ 
-    libtool \
-    libzmq3-dev \
-    llvm-dev \
-    nano \
-    openmpi-bin \
-    openssh-client \
-    openssh-server \
-    pandoc \
-    pep8 \
-    pkg-config \
-    python3-dev \
-    python3-flask \
-    python3-flask-cors \
-    python3-h5py \
-    python3-ipython \
-    python3-jupyter-core \
-    python3-matplotlib \
-    python3-mpi4py \
-    python3-nose \
-    python3-numpy \
-    python3-pandas \
-    python3-path \
-    python3-pip \
-    python3-restrictedpython \
-    python3-scipy \
-    python3-setuptools \
-    python3-sphinx \
-    python3-statsmodels \
-    python3-sympy \
-    python3-tk \
-    python3-tqdm \
-    tcl8.6 \
-    tcl8.6-dev \
-    tk8.6-dev \
-    uwsgi \
-    vera++ \
-    wget
-    
-
-RUN python3 -m pip install --upgrade pip setuptools wheel mock
-RUN python3 -m pip install --force-reinstall --upgrade --no-binary=h5py h5py 
-RUN ldconfig
-
-# Download NEST
-RUN cd ${SRC_PATH} && \
-    wget https://github.com/nest/nest-simulator/archive/refs/heads/${NEST_VERSION}.tar.gz -P ${SRC_PATH} && \
-    tar -xzf ${NEST_VERSION}.tar.gz
-RUN python3 -m pip install -r ${SRC_PATH}/nest-simulator-${NEST_VERSION}/doc/requirements.txt && \
+# Install NEST and NESTML
+RUN wget "https://github.com/nest/nest-simulator/archive/refs/tags/v${NEST_VERSION}.tar.gz" -P ${SRC_PATH} && \
+    cd ${SRC_PATH} && tar -xzf v${NEST_VERSION}.tar.gz && ls -l && \
+    python3 -m pip install -r ${SRC_PATH}/nest-simulator-${NEST_VERSION}/doc/requirements.txt && \
     python3 -m pip install sphinx_gallery==0.10.1
-# Install music
-RUN chmod +x ${SRC_PATH}/nest-simulator-${NEST_VERSION}/build_support/install_music.sh && \
-    ${SRC_PATH}/nest-simulator-${NEST_VERSION}/build_support/install_music.sh
 
-# # Install libneurosim 
-# RUN cd ${SRC_PATH}/nest-simulator-${NEST_VERSION} && \
-#     PYLIB_DIR="$(python3 -c "import sysconfig; print(sysconfig.get_path('include'))" | sed 's/include/lib/')" && \
-#     chmod +x ${SRC_PATH}/nest-simulator-${NEST_VERSION}/build_support/install_csa-libneurosim.sh && \
-#     ${SRC_PATH}/nest-simulator-${NEST_VERSION}/build_support/install_csa-libneurosim.sh $PYLIB_DIR
-# # Install sionlib
-# RUN chmod +x ${SRC_PATH}/nest-simulator-${NEST_VERSION}/build_support/install_sionlib.sh && \
-#     ${SRC_PATH}/nest-simulator-${NEST_VERSION}/build_support/install_sionlib.sh
-# Install python requirements
-# RUN pip install -r ${SRC_PATH}/nest-simulator-${NEST_VERSION}/requirements.txt
-
-# Build nest
-RUN mkdir ${SRC_PATH}/nest-build && cd $_ && \
+RUN mkdir nest-build && cd nest-build && \
     cmake -DCMAKE_INSTALL_PREFIX:PATH=/opt/nest \
-          -Dwith-optimize="-O2" \
           -Dwith-warning=ON \
           -Dwith-userdoc=ON \
           -Dwith-boost=ON \
@@ -122,23 +26,27 @@ RUN mkdir ${SRC_PATH}/nest-build && cd $_ && \
           -Dwith-mpi=ON \
           -Dwith-openmp=ON \
           -Dwith-libneurosim=OFF \
-          -Dwith-sionlib=OFF \
-          -Dwith-music=ON \ 
+          -Dwith-music=/opt/music-install \
           -Dwith-hdf5=ON \
           ${SRC_PATH}/nest-simulator-${NEST_VERSION} && \
-          make && \
-          make install
+    make -j $(nproc) && \
+    make docs && \
+    make install
 
-# Install NESTML 
+
+
+###############################################################################
+# DEPLOY
+
+FROM docker-registry.ebrains.eu/nest/nest-simulator:nest-simulator-deploy-base
+LABEL maintainer="s.graber@fz-juelich.de"
+
+COPY --from=builder /opt/nest /opt/nest
+COPY --from=builder /opt/music-install /opt/music-install
+
 RUN python3 -m pip install --upgrade pip && \
     python3 -m pip install nest-desktop && \
     python3 -m pip install nestml
-
-RUN python3 -m pip install --force-reinstall --upgrade scipy
-
-# Tidy
-RUN apt-get remove *-dev \
-    apt-get clean && rm -rf /var/lib/apt/lists/*
 
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
