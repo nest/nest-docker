@@ -1,7 +1,7 @@
 FROM docker-registry.ebrains.eu/nest/nest-simulator:nest-simulator-build-base as builder
 LABEL maintainer="s.graber@fz-juelich.de"
 
-ARG NEST_VERSION=3.6
+ARG NEST_VERSION=3.7_rc1
 ARG SRC_PATH=/tmp
 ARG CMAKE_C_COMPILER_LAUNCHER=ccache
 ARG CMAKE_CXX_COMPILER_LAUNCHER=ccache
@@ -37,7 +37,6 @@ RUN wget "https://github.com/nest/nest-simulator/archive/refs/tags/v${NEST_VERSI
           -Dwith-hdf5=ON \
           ${SRC_PATH}/nest-simulator-${NEST_VERSION} && \
     make -j $(nproc) && \
-    make docs && \
     make install
 
 ###############################################################################
