@@ -2,7 +2,8 @@
 ###               3.7rc1                   ###
 ###############################################
 
-Build_Dev:
+
+Build_3.7:
   stage: build
   rules:
     - when: always
