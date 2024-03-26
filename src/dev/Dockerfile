@@ -131,7 +131,7 @@ RUN mkdir ${SRC_PATH}/nest-build && cd $_ && \
 
 # Install NESTML and more
 RUN python3 -m pip install --upgrade pip && \
-    python3 -m pip install junitparser pytest pytest-xdist pytest-timeout && \
+    python3 -m pip install -r ${SRC_PATH}/nest-simulator-${NEST_VERSION}/requirements_testing.txt && \
     python3 -m pip install nest-desktop --pre && \
     python3 -m pip uninstall nestml -y && \
     python3 -m pip install --upgrade https://github.com/nest/nestml/archive/refs/heads/master.zip 
