@@ -1,7 +1,7 @@
 FROM ubuntu:22.04
 LABEL maintainer="s.graber@fz-juelich.de"
 
-ARG NEST_VERSION=v3.7_rc1
+ARG NEST_VERSION=3.7_rc1
 ARG SRC_PATH=/tmp
 ARG CMAKE_C_COMPILER_LAUNCHER=ccache
 ARG CMAKE_CXX_COMPILER_LAUNCHER=ccache
@@ -79,37 +79,18 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     uwsgi \
     vera++ \
     wget && \
-    apt-get autoremove
-
-RUN python3 -m pip install --upgrade pip setuptools wheel mock
-RUN python3 -m pip install --force-reinstall --upgrade --no-binary=h5py h5py 
-RUN ldconfig
-
-
-
-# Download NEST
-RUN cd ${SRC_PATH} && \
+    apt-get autoremove && \
+    python3 -m pip install --upgrade pip setuptools wheel mock && \
+    python3 -m pip install --force-reinstall --upgrade --no-binary=h5py h5py && \
+    ldconfig && \
+    cd ${SRC_PATH} && \
     wget "https://github.com/nest/nest-simulator/archive/refs/tags/v${NEST_VERSION}.tar.gz" -P ${SRC_PATH} && \
-    tar -xzf ${NEST_VERSION}.tar.gz
-RUN python3 -m pip install -r ${SRC_PATH}/nest-simulator-${NEST_VERSION}/doc/requirements.txt && \
-    python3 -m pip install sphinx_gallery==0.10.1
-# Install music
-RUN chmod +x ${SRC_PATH}/nest-simulator-${NEST_VERSION}/build_support/install_music.sh && \
-    ${SRC_PATH}/nest-simulator-${NEST_VERSION}/build_support/install_music.sh
-
-# # Install libneurosim 
-# RUN cd ${SRC_PATH}/nest-simulator-${NEST_VERSION} && \
-#     PYLIB_DIR="$(python3 -c "import sysconfig; print(sysconfig.get_path('include'))" | sed 's/include/lib/')" && \
-#     chmod +x ${SRC_PATH}/nest-simulator-${NEST_VERSION}/build_support/install_csa-libneurosim.sh && \
-#     ${SRC_PATH}/nest-simulator-${NEST_VERSION}/build_support/install_csa-libneurosim.sh $PYLIB_DIR
-# # Install sionlib
-# RUN chmod +x ${SRC_PATH}/nest-simulator-${NEST_VERSION}/build_support/install_sionlib.sh && \
-#     ${SRC_PATH}/nest-simulator-${NEST_VERSION}/build_support/install_sionlib.sh
-# Install python requirements
-# RUN pip install -r ${SRC_PATH}/nest-simulator-${NEST_VERSION}/requirements.txt
-
-# Build nest
-RUN mkdir ${SRC_PATH}/nest-build && cd $_ && \
+    tar -xzf v${NEST_VERSION}.tar.gz && \
+    python3 -m pip install -r ${SRC_PATH}/nest-simulator-${NEST_VERSION}/doc/requirements.txt && \
+    python3 -m pip install sphinx_gallery==0.10.1 && \
+    chmod +x ${SRC_PATH}/nest-simulator-${NEST_VERSION}/build_support/install_music.sh && \
+    ${SRC_PATH}/nest-simulator-${NEST_VERSION}/build_support/install_music.sh && \
+    mkdir ${SRC_PATH}/nest-build && cd $_ && \
     cmake -DCMAKE_INSTALL_PREFIX:PATH=/opt/nest \
           -Dwith-optimize="-O2" \
           -Dwith-warning=ON \
@@ -127,15 +108,12 @@ RUN mkdir ${SRC_PATH}/nest-build && cd $_ && \
           -Dwith-hdf5=ON \
           ${SRC_PATH}/nest-simulator-${NEST_VERSION} && \
           make && \
-          make install
-
-# Install NESTML and more
-RUN python3 -m pip install --upgrade pip && \
+          make install && \
+    python3 -m pip install --upgrade pip && \
     python3 -m pip install nest-desktop --pre && \
     python3 -m pip uninstall nestml -y && \
-    python3 -m pip install --upgrade https://github.com/nest/nestml/archive/refs/heads/master.zip 
-
-RUN python3 -m pip install --force-reinstall --upgrade scipy
+    python3 -m pip install --upgrade https://github.com/nest/nestml/archive/refs/heads/master.zip  && \
+    python3 -m pip install --force-reinstall --upgrade scipy
 
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
