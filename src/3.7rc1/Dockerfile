@@ -23,6 +23,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     freeglut3-dev \
     gosu \
     jq \
+    junitparser \
     less \
     libboost-filesystem-dev libboost-regex-dev libboost-wave-dev \
     libboost-python-dev libboost-program-options-dev libboost-test-dev \
@@ -57,14 +58,18 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     python3-flask-cors \
     python3-h5py \
     python3-ipython \
+    python3-junitparser \
     python3-jupyter-core \
     python3-matplotlib \
     python3-mpi4py \
     python3-nose \
     python3-numpy \
-    python3-pandas \
+    python3-pandas \    
     python3-path \
     python3-pip \
+    python3-pytest \
+    python3-pytest-timeout \
+    python3-pytest-xdist \    
     python3-restrictedpython \
     python3-scipy \
     python3-setuptools \

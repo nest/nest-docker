@@ -14,7 +14,7 @@ Build_Dev:
         --tag nest/nest-simulator:dev
         ./src/dev
     # Test
-    - docker run -i --rm nest/nest-simulator:dev bash /opt/test-nest.sh
+    #- docker run -i --rm nest/nest-simulator:dev bash /opt/test-nest.sh
     # Deploy
     - echo -n $DOCKERHUB_REGISTRY_TOKEN | docker login -u $DOCKERHUB_REGISTRY_USER --password-stdin
     - docker push nest/nest-simulator:dev

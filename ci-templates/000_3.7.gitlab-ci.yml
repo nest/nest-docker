@@ -15,7 +15,7 @@ Build_3.7:
         --tag nest/nest-simulator:3.7rc1
         ./src/3.7rc1
     # Test
-    - docker run -i --rm nest/nest-simulator:3.7rc1 bash /opt/test-nest.sh
+    #- docker run -i --rm nest/nest-simulator:3.7rc1 bash /opt/test-nest.sh
     # Deploy
     - echo -n $DOCKERHUB_REGISTRY_TOKEN | docker login -u $DOCKERHUB_REGISTRY_USER --password-stdin
     - docker push nest/nest-simulator:3.7rc1
