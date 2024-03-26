@@ -104,7 +104,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
           -Dwith-openmp=ON \
           -Dwith-libneurosim=OFF \
           -Dwith-sionlib=OFF \
-          -Dwith-music=ON \ 
+          -Dwith-music='$HOME/.cache/libneurosim.install' \ 
           -Dwith-hdf5=ON \
           ${SRC_PATH}/nest-simulator-${NEST_VERSION} && \
           make && \
