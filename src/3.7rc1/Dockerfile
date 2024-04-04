@@ -116,6 +116,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
           make install && \
     python3 -m pip install --upgrade pip && \
     python3 -m pip install -r ${SRC_PATH}/nest-simulator-${NEST_VERSION}/requirements_testing.txt && \
+    python3 -m pip install -r ${SRC_PATH}/nest-simulator-${NEST_VERSION}/requirements_nest_server.txt && \
     python3 -m pip install nest-desktop --pre && \
     python3 -m pip uninstall nestml -y && \
     python3 -m pip install --upgrade https://github.com/nest/nestml/archive/refs/tags/v7.0.1-rc1.zip  && \
