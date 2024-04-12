@@ -1,7 +1,7 @@
 FROM ubuntu:22.04
 LABEL maintainer="s.graber@fz-juelich.de"
 
-ARG NEST_VERSION=3.7_rc1
+ARG NEST_VERSION=3.7
 ARG SRC_PATH=/tmp
 ARG CMAKE_C_COMPILER_LAUNCHER=ccache
 ARG CMAKE_CXX_COMPILER_LAUNCHER=ccache
@@ -116,7 +116,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
           make install && \
     python3 -m pip install --upgrade pip && \
     python3 -m pip install -r ${SRC_PATH}/nest-simulator-${NEST_VERSION}/requirements_testing.txt && \
-    python3 -m pip install nest-desktop --pre && \
+    python3 -m pip install -r ${SRC_PATH}/nest-simulator-${NEST_VERSION}/requirements_nest_server.txt && \
+    python3 -m pip install nest-desktop && \
     python3 -m pip uninstall nestml -y && \
     python3 -m pip install --upgrade https://github.com/nest/nestml/archive/refs/tags/v7.0.1-rc1.zip  && \
     python3 -m pip install --force-reinstall --upgrade scipy

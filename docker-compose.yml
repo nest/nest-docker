@@ -2,7 +2,7 @@ version: "3"
 
 services:
   nest-server:
-    image: nest/nest-simulator:3.6
+    image: nest/nest-simulator:3.7
     environment:
       LOCAL_USER_ID: "`id -u $USER`"
       NEST_CONTAINER_MODE: "nest-server"
@@ -10,7 +10,7 @@ services:
       - "52425:52425"
 
   nest-desktop:
-    image: nest/nest-simulator:3.6
+    image: nest/nest-simulator:3.7
     environment:
       LOCAL_USER_ID: "`id -u $USER`"
       NEST_CONTAINER_MODE: "nest-desktop"
@@ -20,7 +20,7 @@ services:
       - nest-server
 
   nest-notebook:
-    image: nest/nest-simulator:3.6
+    image: nest/nest-simulator:3.7
     volumes:
       - .:/opt/data
     environment:
@@ -30,7 +30,7 @@ services:
       - "8080:8080"
 
   nest-jupyterlab:
-    image: nest/nest-simulator:3.6
+    image: nest/nest-simulator:3.7
     volumes:
       - .:/opt/data
     environment:
