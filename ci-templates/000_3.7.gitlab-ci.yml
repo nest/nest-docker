@@ -1,5 +1,5 @@
 ###############################################
-###               3.7rc1                   ###
+###               3.7                  ###
 ###############################################
 
 
@@ -9,16 +9,16 @@ Build_3.7:
     - when: always
   script:
     # Build
-    - docker pull push nest/nest-simulator:3.7rc1 || true
+    - docker pull push nest/nest-simulator:3.7 || true
     - docker build
-        --cache-from nest/nest-simulator:3.7rc1
-        --tag nest/nest-simulator:3.7rc1
-        ./src/3.7rc1
+        --cache-from nest/nest-simulator:3.7
+        --tag nest/nest-simulator:3.7
+        ./src/3.7
     # Test
-    #- docker run -i --rm nest/nest-simulator:3.7rc1 bash /opt/test-nest.sh
+    #- docker run -i --rm nest/nest-simulator:3.7bash /opt/test-nest.sh
     # Deploy
     - echo -n $DOCKERHUB_REGISTRY_TOKEN | docker login -u $DOCKERHUB_REGISTRY_USER --password-stdin
-    - docker push nest/nest-simulator:3.7rc1
+    - docker push nest/nest-simulator:3.7
     - docker logout $DOCKERHUB_REGISTRY
   tags:
     - shell-runner

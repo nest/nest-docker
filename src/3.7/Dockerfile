@@ -1,7 +1,7 @@
 FROM ubuntu:22.04
 LABEL maintainer="s.graber@fz-juelich.de"
 
-ARG NEST_VERSION=3.7_rc1
+ARG NEST_VERSION=3.7
 ARG SRC_PATH=/tmp
 ARG CMAKE_C_COMPILER_LAUNCHER=ccache
 ARG CMAKE_CXX_COMPILER_LAUNCHER=ccache
