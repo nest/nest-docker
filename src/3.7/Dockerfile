@@ -1,7 +1,7 @@
 FROM ubuntu:22.04
 LABEL maintainer="s.graber@fz-juelich.de"
 
-ARG NEST_VERSION=3.7_rc1
+ARG NEST_VERSION=3.7
 ARG SRC_PATH=/tmp
 ARG CMAKE_C_COMPILER_LAUNCHER=ccache
 ARG CMAKE_CXX_COMPILER_LAUNCHER=ccache
@@ -15,7 +15,7 @@ ENV TERM=xterm \
 RUN apt-get update && apt-get install -y --no-install-recommends \
     automake \
     autotools-dev \
-    build-essential \
+    build-essential \ 
     ccache \
     cmake \
     curl \
@@ -42,7 +42,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libpcre3-dev \
     libpython3.10 \
     libreadline-dev \
-    libreadline8 \
+    libreadline8 \ 
     libtool \
     libzmq3-dev \
     llvm-dev \
@@ -64,12 +64,12 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     python3-mpi4py \
     python3-nose \
     python3-numpy \
-    python3-pandas \
+    python3-pandas \    
     python3-path \
     python3-pip \
     python3-pytest \
     python3-pytest-timeout \
-    python3-pytest-xdist \
+    python3-pytest-xdist \    
     python3-restrictedpython \
     python3-scipy \
     python3-setuptools \
@@ -109,7 +109,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
           -Dwith-openmp=ON \
           -Dwith-libneurosim=OFF \
           -Dwith-sionlib=OFF \
-          -Dwith-music='$HOME/.cache/libneurosim.install' \
+          -Dwith-music='$HOME/.cache/libneurosim.install' \ 
           -Dwith-hdf5=ON \
           ${SRC_PATH}/nest-simulator-${NEST_VERSION} && \
           make && \
