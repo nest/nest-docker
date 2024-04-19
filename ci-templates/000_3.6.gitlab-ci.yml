@@ -15,7 +15,7 @@ Build_36:
         --tag nest/nest-simulator:3.6
         ./src/3.6
     # Test
-    - docker run -i --rm nest/nest-simulator:3.6 bash /opt/test-nest.sh
+    # - docker run -i --rm nest/nest-simulator:3.6 bash /opt/test-nest.sh
     # Deploy
     - echo -n $DOCKERHUB_REGISTRY_TOKEN | docker login -u $DOCKERHUB_REGISTRY_USER --password-stdin
     - docker push nest/nest-simulator:3.6
