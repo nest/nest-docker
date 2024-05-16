@@ -60,7 +60,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     python3-ipython \
     python3-junitparser \
     python3-jupyter-core \
-    python3-matplotlib \
     python3-mpi4py \
     python3-nose \
     python3-numpy \
@@ -117,9 +116,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     python3 -m pip install --upgrade pip && \
     python3 -m pip install -r ${SRC_PATH}/nest-simulator-${NEST_VERSION}/requirements_testing.txt && \
     python3 -m pip install -r ${SRC_PATH}/nest-simulator-${NEST_VERSION}/requirements_nest_server.txt && \
-    python3 -m pip install nest-desktop && \
-    python3 -m pip uninstall nestml -y && \
-    python3 -m pip install --upgrade https://github.com/nest/nestml/archive/refs/tags/v7.0.1-rc1.zip  && \
+    python3 -m pip install --upgrade pygsl && \
+    python3 -m pip install --upgrade nest-desktop && \
+    python3 -m pip install --upgrade nestml && \
     python3 -m pip install --force-reinstall --upgrade scipy
 
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
