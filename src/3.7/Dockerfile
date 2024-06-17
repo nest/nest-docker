@@ -60,7 +60,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     python3-ipython \
     python3-junitparser \
     python3-jupyter-core \
-    python3-matplotlib \
     python3-mpi4py \
     python3-nose \
     python3-numpy \
