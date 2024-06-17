@@ -116,7 +116,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     python3 -m pip install --upgrade pip && \
     python3 -m pip install -r ${SRC_PATH}/nest-simulator-${NEST_VERSION}/requirements_testing.txt && \
     python3 -m pip install -r ${SRC_PATH}/nest-simulator-${NEST_VERSION}/requirements_nest_server.txt && \
-    python3 -m pip install --upgrade pygsl && \
+    python3 -m pip install pygsl==2.3.3 && \
     python3 -m pip install --upgrade nest-desktop && \
     python3 -m pip install --upgrade nestml && \
     python3 -m pip install --force-reinstall --upgrade scipy
