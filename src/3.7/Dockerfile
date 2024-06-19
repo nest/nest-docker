@@ -62,7 +62,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     python3-jupyter-core \
     python3-mpi4py \
     python3-nose \
-    python3-numpy \
     python3-pandas \    
     python3-path \
     python3-pip \
@@ -91,7 +90,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     wget "https://github.com/nest/nest-simulator/archive/refs/tags/v${NEST_VERSION}.tar.gz" -P ${SRC_PATH} && \
     tar -xzf v${NEST_VERSION}.tar.gz && \
     python3 -m pip install -r ${SRC_PATH}/nest-simulator-${NEST_VERSION}/doc/requirements.txt && \
-    python3 -m pip install sphinx_gallery==0.10.1 && \
+    python3 -m pip install sphinx_gallery==0.10.1 numpy<2.0dev0 && \
     chmod +x ${SRC_PATH}/nest-simulator-${NEST_VERSION}/build_support/install_music.sh && \
     ${SRC_PATH}/nest-simulator-${NEST_VERSION}/build_support/install_music.sh && \
     mkdir ${SRC_PATH}/nest-build && cd $_ && \
@@ -113,13 +112,13 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
           ${SRC_PATH}/nest-simulator-${NEST_VERSION} && \
           make && \
           make install && \
-    python3 -m pip install --upgrade pip && \
-    python3 -m pip install -r ${SRC_PATH}/nest-simulator-${NEST_VERSION}/requirements_testing.txt && \
-    python3 -m pip install -r ${SRC_PATH}/nest-simulator-${NEST_VERSION}/requirements_nest_server.txt && \
-    python3 -m pip install pygsl==2.3.3 && \
+    python3 -m pip install --upgrade pip setuptools wheel && \
+    python3 -m pip install -r ${SRC_PATH}/nest-simulator-${NEST_VERSION}/requirements.txt && \
+    python3 -m pip install --upgrade numpy<2.0dev0 && \
     python3 -m pip install --upgrade nest-desktop && \
     python3 -m pip install --upgrade nestml && \
-    python3 -m pip install --force-reinstall --upgrade scipy
+    python3 -m pip install --upgrade scipy && \
+    python3 -m pip install --upgrade pygsl
 
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
