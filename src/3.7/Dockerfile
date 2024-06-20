@@ -121,7 +121,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     python3 -m pip install --upgrade gsl  wheel  setuptools swig && \
     python3 -m pip install --upgrade pygsl@git+https://github.com/pygsl/pygsl@v2.3.3
     
-
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
 
