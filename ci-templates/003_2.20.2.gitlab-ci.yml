@@ -18,8 +18,8 @@ Build_2202:
     # Deploy
     - echo -n $DOCKERHUB_REGISTRY_TOKEN | docker login -u $DOCKERHUB_REGISTRY_USER --password-stdin
     - docker push nest/nest-simulator:2.20.2
-    - docker tag nest/nest-simulator:2.20.2 $DOCKER_REGISTRY_IMAGE:2.20.2
-    - docker push $DOCKER_REGISTRY_IMAGE:2.20.2  
+    #- docker tag nest/nest-simulator:2.20.2 $DOCKER_REGISTRY_IMAGE:2.20.2
+    #- docker push $DOCKER_REGISTRY_IMAGE:2.20.2  
     - docker logout $DOCKERHUB_REGISTRY
     - docker logout $DOCKER_REGISTRY
   tags:
