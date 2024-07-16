@@ -1,7 +1,7 @@
 FROM ubuntu:22.04
 LABEL maintainer="s.graber@fz-juelich.de"
 
-ARG NEST_VERSION=3.8
+ARG NEST_VERSION=3.8_rc1
 ARG SRC_PATH=/tmp
 ARG CMAKE_C_COMPILER_LAUNCHER=ccache
 ARG CMAKE_CXX_COMPILER_LAUNCHER=ccache
@@ -116,9 +116,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     python3 -m pip install --upgrade pip setuptools wheel && \
     python3 -m pip install -r ${SRC_PATH}/nest-simulator-${NEST_VERSION}/requirements.txt && \
     python3 -m pip install --upgrade nest-desktop && \
-    python3 -m pip install --upgrade nestml && \
     python3 -m pip install --upgrade scipy && \
     python3 -m pip install --upgrade gsl  wheel  setuptools swig && \
+    python3 -m pip install NESTML==8.0.0rc1 && \
     python3 -m pip install --upgrade pygsl@git+https://github.com/pygsl/pygsl@v2.3.3
     
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
