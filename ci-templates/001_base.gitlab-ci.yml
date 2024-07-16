@@ -4,6 +4,8 @@
 
 Build_Base:
   stage: build
+  rules:
+   - when: never
   script:
     - docker pull $DOCKER_REGISTRY_IMAGE:nest-simulator-build-base || true
     - docker pull $DOCKER_REGISTRY_IMAGE:nest-simulator-deploy-base || true

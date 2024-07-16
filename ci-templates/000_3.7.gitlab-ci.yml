@@ -9,7 +9,7 @@ Build_3.7:
     - when: always
   script:
     # Build
-    - docker pull push nest/nest-simulator:3.7 || true
+    - docker pull nest/nest-simulator:3.7 || true
     - docker build
         --cache-from nest/nest-simulator:3.7
         --tag nest/nest-simulator:3.7

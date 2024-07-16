@@ -6,7 +6,7 @@ Build_36:
   stage: build
   needs: ["Build_Base"]
   rules:
-    - when: always
+    - when: never
   script:
     # Build
     - docker pull nest/nest-simulator:3.6 || true
