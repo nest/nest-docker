@@ -15,7 +15,7 @@ ENV TERM=xterm \
 RUN apt-get update && apt-get install -y --no-install-recommends \
     automake \
     autotools-dev \
-    build-essential \ 
+    build-essential \
     ccache \
     cmake \
     curl \
@@ -41,7 +41,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libpcre3-dev \
     libpython3.10 \
     libreadline-dev \
-    libreadline8 \ 
+    libreadline8 \
     libtool \
     libzmq3-dev \
     llvm-dev \
@@ -63,12 +63,12 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     python3-mpi4py \
     python3-nose \
     python3-numpy \
-    python3-pandas \    
+    python3-pandas \
     python3-path \
     python3-pip \
     python3-pytest \
     python3-pytest-timeout \
-    python3-pytest-xdist \    
+    python3-pytest-xdist \
     python3-restrictedpython \
     python3-scipy \
     python3-setuptools \
@@ -86,7 +86,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     apt-get autoremove
 
 RUN python3 -m pip install --upgrade pip setuptools wheel mock
-RUN python3 -m pip install --force-reinstall --upgrade --no-binary=h5py h5py 
+RUN python3 -m pip install --force-reinstall --upgrade --no-binary=h5py h5py
 RUN ldconfig
 
 
@@ -101,7 +101,7 @@ RUN python3 -m pip install -r ${SRC_PATH}/nest-simulator-${NEST_VERSION}/doc/req
 RUN chmod +x ${SRC_PATH}/nest-simulator-${NEST_VERSION}/build_support/install_music.sh && \
     ${SRC_PATH}/nest-simulator-${NEST_VERSION}/build_support/install_music.sh
 
-# # Install libneurosim 
+# # Install libneurosim
 # RUN cd ${SRC_PATH}/nest-simulator-${NEST_VERSION} && \
 #     PYLIB_DIR="$(python3 -c "import sysconfig; print(sysconfig.get_path('include'))" | sed 's/include/lib/')" && \
 #     chmod +x ${SRC_PATH}/nest-simulator-${NEST_VERSION}/build_support/install_csa-libneurosim.sh && \
@@ -127,7 +127,7 @@ RUN mkdir ${SRC_PATH}/nest-build && cd $_ && \
           -Dwith-openmp=ON \
           -Dwith-libneurosim=OFF \
           -Dwith-sionlib=OFF \
-          -Dwith-music=ON \ 
+          -Dwith-music=ON \
           -Dwith-hdf5=ON \
           ${SRC_PATH}/nest-simulator-${NEST_VERSION} && \
           make && \
@@ -138,7 +138,8 @@ RUN python3 -m pip install --upgrade pip && \
     python3 -m pip install -r ${SRC_PATH}/nest-simulator-${NEST_VERSION}/requirements.txt && \
     python3 -m pip install nest-desktop --pre && \
     python3 -m pip uninstall nestml -y && \
-    python3 -m pip install --upgrade https://github.com/nest/nestml/archive/refs/heads/master.zip 
+    python3 -m pip install nestml-server@git+https://github.com/babsey/nestml-server@v1.0-b1 && \
+    python3 -m pip install --upgrade https://github.com/nest/nestml/archive/refs/heads/master.zip
 
 RUN python3 -m pip install --force-reinstall --upgrade scipy
 
