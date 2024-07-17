@@ -39,7 +39,7 @@ elif [[ "${MODE}" = 'nest-server' ]]; then
     export NEST_SERVER_STDOUT="${NEST_SERVER_STDOUT:-1}"
 
     export NEST_SERVER_ACCESS_TOKEN="${NEST_SERVER_ACCESS_TOKEN}"
-    export NEST_SERVER_CORS_ORIGINS="${NEST_SERVER_CORS_ORIGINS:-http://localhost:*}"
+    export NEST_SERVER_CORS_ORIGINS="${NEST_SERVER_CORS_ORIGINS:-*}"
     export NEST_SERVER_DISABLE_AUTH="${NEST_SERVER_DISABLE_AUTH:-1}"
     export NEST_SERVER_DISABLE_RESTRICTION="${NEST_SERVER_DISABLE_RESTRICTION:-1}"
     export NEST_SERVER_ENABLE_EXEC_CALL="${NEST_SERVER_ENABLE_EXEC_CALL:-1}"
@@ -50,6 +50,12 @@ elif [[ "${MODE}" = 'nest-server-mpi' ]]; then
     export NEST_SERVER_HOST="${NEST_SERVER_HOST:-0.0.0.0}"
     export NEST_SERVER_PORT="${NEST_SERVER_PORT:-52425}"
     exec mpirun -np "${NEST_SERVER_MPI_NUM:-1}" nest-server-mpi
+
+elif [[ "${MODE}" = 'nestml-server' ]]; then
+    export NESTML_SERVER_HOST="${NESTML_SERVER_HOST:-0.0.0.0}"
+    export NESTML_SERVER_PORT="${NESTML_SERVER_PORT:-52426}"
+    export NESTML_SERVER_STDOUT="${NESTML_SERVER_STDOUT:-1}"
+    exec nestml-server start
 
 elif [[ "${MODE}" = 'notebook' ]]; then
     mkdir -p /opt/data; cd /opt/data

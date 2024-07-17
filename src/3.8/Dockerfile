@@ -15,7 +15,7 @@ ENV TERM=xterm \
 RUN apt-get update && apt-get install -y --no-install-recommends \
     automake \
     autotools-dev \
-    build-essential \ 
+    build-essential \
     ccache \
     cmake \
     curl \
@@ -43,7 +43,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libpcre3-dev \
     libpython3.10 \
     libreadline-dev \
-    libreadline8 \ 
+    libreadline8 \
     libtool \
     libzmq3-dev \
     llvm-dev \
@@ -63,12 +63,12 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     python3-jupyter-core \
     python3-mpi4py \
     python3-nose \
-    python3-pandas \    
+    python3-pandas \
     python3-path \
     python3-pip \
     python3-pytest \
     python3-pytest-timeout \
-    python3-pytest-xdist \    
+    python3-pytest-xdist \
     python3-restrictedpython \
     python3-scipy \
     python3-setuptools \
@@ -108,7 +108,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
           -Dwith-openmp=ON \
           -Dwith-libneurosim=OFF \
           -Dwith-sionlib=OFF \
-          -Dwith-music='$HOME/.cache/libneurosim.install' \ 
+          -Dwith-music='$HOME/.cache/libneurosim.install' \
           -Dwith-hdf5=ON \
           ${SRC_PATH}/nest-simulator-${NEST_VERSION} && \
           make && \
@@ -117,10 +117,11 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     python3 -m pip install -r ${SRC_PATH}/nest-simulator-${NEST_VERSION}/requirements.txt && \
     python3 -m pip install --upgrade nest-desktop && \
     python3 -m pip install --upgrade scipy && \
-    python3 -m pip install --upgrade gsl  wheel  setuptools swig && \
-    python3 -m pip install NESTML==8.0.0rc1 && \
+    python3 -m pip install --upgrade gsl wheel setuptools swig && \
+    python3 -m pip install nestml==8.0.0rc1 && \
+    python3 -m pip install nestml-server@git+https://github.com/babsey/nestml-server@v1.0-b1 && \
     python3 -m pip install --upgrade pygsl@git+https://github.com/pygsl/pygsl@v2.3.3
-    
+
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
 
