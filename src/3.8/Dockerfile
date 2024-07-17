@@ -132,5 +132,5 @@ RUN chmod +x /usr/local/bin/entrypoint.sh
 COPY test-nest.sh /opt/test-nest.sh
 RUN chmod +x /opt/test-nest.sh
 
-EXPOSE 8080 52425 54286
+EXPOSE 8080 52425 52426 54286
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]

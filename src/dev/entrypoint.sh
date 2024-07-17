@@ -11,7 +11,7 @@ nest --help
 export MUSIC_ROOT_DIR='$HOME/.cache/music.install'
 export MUSIC_ROOT=${MUSIC_ROOT_DIR}
 MUSIC_PATH=${MUSIC_ROOT_DIR}
-export LD_LIBRARY_PATH=${MUSIC_PATH}/lib:$LD_LIBRARY_PATH
+export LD_LIBRARY_PATH=${MUSIC_PATH}/lib:'/tmp/nestmlmodules':$LD_LIBRARY_PATH
 export PATH=${MUSIC_PATH}/bin:$PATH
 export CPATH=${MUSIC_PATH}/include:$CPATH
 export PYTHONPATH=${MUSIC_PATH}/lib/python3.8/site-packages:$PYTHONPATH
