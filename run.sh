@@ -50,11 +50,12 @@ case $command in
         echo
 
         echo "Provisioning needs an argument: 'dev' 'latest_daint' '2.12.0', '2.14.0', '2.14.2',"
-        echo "'2.16.0', '2.18.0', '2.20.0', '2.20.1', '2.20.2', '3.0','3.1', '3.2', '3.3', '3.4', '3.5', '3.6', '3.7','all' or 'base'."
+        echo "'2.16.0', '2.18.0', '2.20.0', '2.20.1', '2.20.2', '3.0','3.1', '3.2', '3.3', '3.4', '3.5', '3.6', '3.7', " 
+        echo "'3.8', 'all' or 'base'."
         echo
         while test $# -gt 0; do
             case "$1" in
-            dev | latest_daint | 2.12.0 | 2.14.0 | 2.14.2 | 2.16.0 | 2.18.0 | 2.20.0 | 2.20.1 | 2.20.2 | 3.0 | 3.1 | 3.2 | 3.3 | 3.4 | 3.5 | 3.6 | 3.7 )
+            dev | latest_daint | 2.12.0 | 2.14.0 | 2.14.2 | 2.16.0 | 2.18.0 | 2.20.0 | 2.20.1 | 2.20.2 | 3.0 | 3.1 | 3.2 | 3.3 | 3.4 | 3.5 | 3.6 | 3.7 | 3.8 )
                 echo "Build the NEST image for NEST $1"
                 echo
                 docker build -t nest/nest-simulator:"$1" ./src/"$1"
@@ -73,7 +74,7 @@ case $command in
             all)
                 echo "Build the NEST image for NEST 2.12.0, 2.14.0, 2.14.2"
                 echo "2.16.0, 2.18.0, 2.20.0, 2.20.1, 2.20.2, 3.0, 3.1, 3.2," 
-                echo "3.3, 3.4, 3.5, 3.6, 3.7, dev and latest_daint"
+                echo "3.3, 3.4, 3.5, 3.6, 3.7, 3.8, dev and latest_daint"
                 echo
                 docker build -t nest/nest-simulator:2.12.0 ./src/2.12.0
                 docker build -t nest/nest-simulator:2.14.0 ./src/2.14.0
@@ -91,6 +92,7 @@ case $command in
                 docker build -t nest/nest-simulator:3.5 ./src/3.5
                 docker build -t nest/nest-simulator:3.6 ./src/3.6
                 docker build -t nest/nest-simulator:3.7 ./src/3.7
+                docker build -t nest/nest-simulator:3.7 ./src/3.8
                 docker build -t nest/nest-simulator:dev ./src/dev
                 docker build -t nest/nest-simulator:latest_daint ./src/latest_daint
                 echo
@@ -114,14 +116,14 @@ case $command in
         echo
         echo "VERSION is the version of NEST"
         echo "(e.g. dev, 2.12.0, 2.14.0, 2.14.2,  2.16.0, 2.18.0, 2.20.0," 
-        echo "2.20.1, 2.20.2, 3.0, 3.1, 3.2, 3.3, 3.4, 3.5, 3.6, 3.7)"
+        echo "2.20.1, 2.20.2, 3.0, 3.1, 3.2, 3.3, 3.4, 3.5, 3.6, 3.7, 3.8)"
         echo
     LOCALDIR="$(pwd)"
     while test $# -gt 1; do
         case "$1" in
             notebook)
                 case "$2" in
-                    dev | 2.12.0 | 2.14.0 | 2.14.2 | 2.16.0 | 2.18.0 | 2.20.0 | 2.20.1 | 2.20.2 | 3.0 | 3.1 | 3.2 | 3.3 | 3.4 | 3.5 | 3.6 | 3.7 )
+                    dev | 2.12.0 | 2.14.0 | 2.14.2 | 2.16.0 | 2.18.0 | 2.20.0 | 2.20.1 | 2.20.2 | 3.0 | 3.1 | 3.2 | 3.3 | 3.4 | 3.5 | 3.6 | 3.7 | 3.8 )
                     echo "Run NEST-$2 with Jupyter Notebook".
                     echo
                     docker run -it --rm -e LOCAL_USER_ID=`id -u $USER` --name my_app  \
@@ -137,7 +139,7 @@ case $command in
             ;;
             jupyterlab)
                 case "$2" in
-                    dev | 2.12.0 | 2.14.0 | 2.14.2 | 2.16.0 | 2.18.0 | 2.20.0 | 2.20.1 | 2.20.2 | 3.0 | 3.1 | 3.2 | 3.3 | 3.4 | 3.5 | 3.6 | 3.7 )
+                    dev | 2.12.0 | 2.14.0 | 2.14.2 | 2.16.0 | 2.18.0 | 2.20.0 | 2.20.1 | 2.20.2 | 3.0 | 3.1 | 3.2 | 3.3 | 3.4 | 3.5 | 3.6 | 3.7 | 3.8 )
                     echo
                     docker run -it --rm -e LOCAL_USER_ID=`id -u $USER` --name my_app  \
 							   -v $(pwd):/opt/data -e NEST_CONTAINER_MODE=jupyterlab \
@@ -152,7 +154,7 @@ case $command in
             ;;
             interactive)
                 case "$2" in
-                    dev | 2.12.0 | 2.14.0 | 2.14.2 | 2.16.0 | 2.18.0 | 2.20.0 | 2.20.1 | 2.20.2 | 3.0 | 3.1 | 3.2 | 3.3 | 3.4 | 3.5 | 3.6 | 3.7 )
+                    dev | 2.12.0 | 2.14.0 | 2.14.2 | 2.16.0 | 2.18.0 | 2.20.0 | 2.20.1 | 2.20.2 | 3.0 | 3.1 | 3.2 | 3.3 | 3.4 | 3.5 | 3.6 | 3.7 | 3.8 )
                     echo "Run NEST-$2 in interactive mode."
                     echo
                     docker run -it --rm -e LOCAL_USER_ID=`id -u $USER` --name my_app  -e NEST_CONTAINER_MODE=interactive \

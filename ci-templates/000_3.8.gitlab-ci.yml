@@ -1,23 +1,24 @@
 ###############################################
-###               DEV                       ###
+###               3.8                  ###
 ###############################################
 
-Build_Dev:
+
+Build_3.8:
   stage: build
   rules:
     - when: always
   script:
     # Build
-    - docker pull nest/nest-simulator:dev || true
+    - docker pull nest/nest-simulator:3.8 || true
     - docker build
-        --cache-from nest/nest-simulator:dev
-        --tag nest/nest-simulator:dev
-        ./src/dev
+        --cache-from nest/nest-simulator:3.8
+        --tag nest/nest-simulator:3.8_rc1
+        ./src/3.8
     # Test
-    #- docker run -i --rm nest/nest-simulator:dev bash /opt/test-nest.sh
+    #- docker run -i --rm nest/nest-simulator:3.8bash /opt/test-nest.sh
     # Deploy
     - echo -n $DOCKERHUB_REGISTRY_TOKEN | docker login -u $DOCKERHUB_REGISTRY_USER --password-stdin
-    - docker push nest/nest-simulator:dev
+    - docker push nest/nest-simulator:3.8_rc1
     - docker logout $DOCKERHUB_REGISTRY
   tags:
     - shell-runner
