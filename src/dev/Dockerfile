@@ -21,6 +21,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     curl \
     cython3 \
     freeglut3-dev \
+    git \
     gosu \
     jq \
     less \
