@@ -117,9 +117,13 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     python3 -m pip install -r ${SRC_PATH}/nest-simulator-${NEST_VERSION}/requirements.txt && \
     python3 -m pip install --upgrade nest-desktop && \
     python3 -m pip install --upgrade scipy && \
-    python3 -m pip install --upgrade gsl wheel setuptools swig && \
-    python3 -m pip install nestml==8.0.0rc1 && \
-    python3 -m pip install nestml-server@git+https://github.com/babsey/nestml-server@v1.0-b1 && \
+    python3 -m pip install --upgrade gsl wheel setuptools swig
+
+RUN python3 -m pip install https://api.github.com/repos/nest/nestml/zipball/pull/1087/head
+
+    # python3 -m pip install nestml==8.0.0rc1 && \
+
+RUN python3 -m pip install nestml-server@git+https://github.com/babsey/nestml-server@v1.0-b1 && \
     python3 -m pip install --upgrade pygsl@git+https://github.com/pygsl/pygsl@v2.3.3
 
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
