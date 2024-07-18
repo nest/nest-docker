@@ -140,7 +140,7 @@ RUN python3 -m pip install --upgrade pip && \
     python3 -m pip install nest-desktop --pre && \
     python3 -m pip uninstall nestml -y && \
     python3 -m pip install --upgrade https://github.com/nest/nestml/archive/refs/heads/master.zip && \
-    python3 -m pip install nestml-server@git+https://github.com/babsey/nestml-server@v1.0-b2
+    python3 -m pip install nestml-server@git+https://github.com/babsey/nestml-server@v1.0-b3
 
 RUN python3 -m pip install --force-reinstall --upgrade scipy
 
