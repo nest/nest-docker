@@ -147,7 +147,7 @@ RUN python3 -m pip install --upgrade pip && \
     python3 -m pip install nest-desktop --pre && \
     python3 -m pip uninstall nestml -y && \
     python3 -m pip install --upgrade https://github.com/nest/nestml/archive/refs/heads/master.zip && \
-    python3 -m pip install nestml-server@git+https://github.com/babsey/nestml-server@v1.0-b1
+    python3 -m pip install nestml-server@git+https://github.com/babsey/nestml-server@v1.0-b3
 
 RUN python3 -m pip install --force-reinstall --upgrade scipy
 
@@ -157,5 +157,5 @@ RUN chmod +x /usr/local/bin/entrypoint.sh
 COPY test-nest.sh /opt/test-nest.sh
 RUN chmod +x /opt/test-nest.sh
 
-EXPOSE 8080 52425 54286
+EXPOSE 8080 52425 52426 54286
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]

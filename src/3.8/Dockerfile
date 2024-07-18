@@ -130,7 +130,7 @@ RUN python3 -m pip install https://api.github.com/repos/nest/nestml/zipball/pull
 
     # python3 -m pip install nestml==8.0.0rc1 && \
 
-RUN python3 -m pip install nestml-server@git+https://github.com/babsey/nestml-server@v1.0-b1 && \
+RUN python3 -m pip install nestml-server@git+https://github.com/babsey/nestml-server@v1.0-b3 && \
     python3 -m pip install --upgrade pygsl@git+https://github.com/pygsl/pygsl@v2.3.3
 
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
@@ -139,5 +139,5 @@ RUN chmod +x /usr/local/bin/entrypoint.sh
 COPY test-nest.sh /opt/test-nest.sh
 RUN chmod +x /opt/test-nest.sh
 
-EXPOSE 8080 52425 54286
+EXPOSE 8080 52425 52426 54286
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
