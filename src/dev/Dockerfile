@@ -90,15 +90,23 @@ RUN python3 -m pip install --upgrade pip setuptools wheel mock
 RUN python3 -m pip install --force-reinstall --upgrade --no-binary=h5py h5py
 RUN ldconfig
 
-
-
 # Download NEST
 RUN cd ${SRC_PATH} && \
     wget https://github.com/nest/nest-simulator/archive/refs/heads/${NEST_VERSION}.tar.gz -P ${SRC_PATH} && \
     tar -xzf ${NEST_VERSION}.tar.gz
-RUN python3 -m pip install -r ${SRC_PATH}/nest-simulator-${NEST_VERSION}/doc/requirements.txt && \
-    python3 -m pip install sphinx_gallery==0.10.1
-# Install music
+
+# Installing the requirements_docs.txt stops at some time with an error
+# Installing every package fix it.
+RUN python3 -m pip install sphinx>=6.2.1 sphinx_rtd_theme sphinx_autobuild sphinx_gallery sphinx-tabs 
+RUN python3 -m pip install sphinx_design sphinx-material sphinx-copybutton sphinx-carousel 
+RUN python3 -m pip install sphinx-notfound-page sphinxcontrib-mermaid sphinxcontrib-plantuml nbsphinx
+RUN python3 -m pip install  numpydoc example Image breathe csvkit docutils PyYAML>=4.2b1 tqdm yamllint
+
+# RUN python3 -m pip install -r ${SRC_PATH}/nest-simulator-${NEST_VERSION}/requirements_docs.txt
+
+RUN python3 -m pip install sphinx_gallery==0.10.1
+
+    # Install music
 RUN chmod +x ${SRC_PATH}/nest-simulator-${NEST_VERSION}/build_support/install_music.sh && \
     ${SRC_PATH}/nest-simulator-${NEST_VERSION}/build_support/install_music.sh
 
@@ -136,7 +144,6 @@ RUN mkdir ${SRC_PATH}/nest-build && cd $_ && \
 
 # Install NESTML and more
 RUN python3 -m pip install --upgrade pip && \
-    python3 -m pip install -r ${SRC_PATH}/nest-simulator-${NEST_VERSION}/requirements.txt && \
     python3 -m pip install nest-desktop --pre && \
     python3 -m pip uninstall nestml -y && \
     python3 -m pip install --upgrade https://github.com/nest/nestml/archive/refs/heads/master.zip && \
