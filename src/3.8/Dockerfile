@@ -90,7 +90,13 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     cd ${SRC_PATH} && \
     wget "https://github.com/nest/nest-simulator/archive/refs/tags/v${NEST_VERSION}.tar.gz" -P ${SRC_PATH} && \
     tar -xzf v${NEST_VERSION}.tar.gz && \
-    python3 -m pip install -r ${SRC_PATH}/nest-simulator-${NEST_VERSION}/doc/requirements.txt && \
+    # Installing the requirements_docs.txt stops at some time with an error
+    # Installing every package fix it.
+    python3 -m pip install sphinx>=6.2.1 sphinx_rtd_theme sphinx_autobuild sphinx_gallery sphinx-tabs && \
+    python3 -m pip install sphinx_design sphinx-material sphinx-copybutton sphinx-carousel && \
+    python3 -m pip install sphinx-notfound-page sphinxcontrib-mermaid sphinxcontrib-plantuml nbsphinx && \
+    python3 -m pip install  numpydoc example Image breathe csvkit docutils PyYAML>=4.2b1 tqdm yamllint && \
+    # RUN python3 -m pip install -r ${SRC_PATH}/nest-simulator-${NEST_VERSION}/requirements_docs.txt
     python3 -m pip install sphinx_gallery==0.10.1 'numpy<=1.26' && \
     chmod +x ${SRC_PATH}/nest-simulator-${NEST_VERSION}/build_support/install_music.sh && \
     ${SRC_PATH}/nest-simulator-${NEST_VERSION}/build_support/install_music.sh && \
@@ -119,11 +125,12 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     python3 -m pip install --upgrade scipy && \
     python3 -m pip install --upgrade gsl wheel setuptools swig
 
+#Latest update to nestml v8.0.0-rc1
 RUN python3 -m pip install https://api.github.com/repos/nest/nestml/zipball/pull/1087/head
 
     # python3 -m pip install nestml==8.0.0rc1 && \
 
-RUN python3 -m pip install nestml-server@git+https://github.com/babsey/nestml-server@v1.0-b1 && \
+RUN python3 -m pip install nestml-server@git+https://github.com/babsey/nestml-server@v1.0-b3 && \
     python3 -m pip install --upgrade pygsl@git+https://github.com/pygsl/pygsl@v2.3.3
 
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
@@ -132,5 +139,5 @@ RUN chmod +x /usr/local/bin/entrypoint.sh
 COPY test-nest.sh /opt/test-nest.sh
 RUN chmod +x /opt/test-nest.sh
 
-EXPOSE 8080 52425 54286
+EXPOSE 8080 52425 52426 54286
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
