@@ -70,7 +70,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     python3-pytest-timeout \
     python3-pytest-xdist \
     python3-restrictedpython \
-    python3-scipy \
     python3-setuptools \
     python3-sphinx \
     python3-statsmodels \
@@ -84,7 +83,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     vera++ \
     wget && \
     apt-get autoremove
-RUN python3 -m pip install --force-reinstall --upgrade numpy<=1.24.4 numpydoc
+
+RUN python3 -m pip install --upgrade scipy numpy numpydoc
 RUN python3 -m pip install --upgrade pip setuptools wheel mock
 RUN python3 -m pip install --force-reinstall --upgrade --no-binary=h5py h5py
 RUN ldconfig
