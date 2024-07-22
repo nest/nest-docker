@@ -63,8 +63,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     python3-matplotlib \
     python3-mpi4py \
     python3-nose \
-    python3-numpy \
-    python3-numpydoc \
     python3-pandas \
     python3-path \
     python3-pip \
@@ -86,7 +84,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     vera++ \
     wget && \
     apt-get autoremove
-
+RUN python3 -m pip install --force-reinstall --upgrade numpy<=1.24.4 numpydoc
 RUN python3 -m pip install --upgrade pip setuptools wheel mock
 RUN python3 -m pip install --force-reinstall --upgrade --no-binary=h5py h5py
 RUN ldconfig
@@ -149,8 +147,6 @@ RUN python3 -m pip install --upgrade pip && \
     python3 -m pip uninstall nestml -y && \
     python3 -m pip install --upgrade https://github.com/nest/nestml/archive/refs/heads/master.zip && \
     python3 -m pip install nestml-server@git+https://github.com/babsey/nestml-server@v1.0-b3
-
-RUN python3 -m pip install --force-reinstall --upgrade scipy
 
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
