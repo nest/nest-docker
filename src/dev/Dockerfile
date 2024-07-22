@@ -84,7 +84,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     vera++ \
     wget && \
     apt-get autoremove
-RUN python3 -m pip install --force-reinstall --upgrade numpy<1.25.0 numpydoc
+RUN python3 -m pip install --force-reinstall --upgrade numpy<=1.24.4 numpydoc
 RUN python3 -m pip install --upgrade pip setuptools wheel mock
 RUN python3 -m pip install --force-reinstall --upgrade --no-binary=h5py h5py
 RUN ldconfig
