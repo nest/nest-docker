@@ -64,6 +64,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     python3-mpi4py \
     python3-nose \
     python3-numpy \
+    python3-numpydoc \
     python3-pandas \
     python3-path \
     python3-pip \
@@ -100,7 +101,7 @@ RUN cd ${SRC_PATH} && \
 RUN python3 -m pip install sphinx>=6.2.1 sphinx_rtd_theme sphinx_autobuild sphinx_gallery sphinx-tabs 
 RUN python3 -m pip install sphinx_design sphinx-material sphinx-copybutton sphinx-carousel 
 RUN python3 -m pip install sphinx-notfound-page sphinxcontrib-mermaid sphinxcontrib-plantuml nbsphinx
-RUN python3 -m pip install  numpydoc example Image breathe csvkit docutils PyYAML>=4.2b1 tqdm yamllint
+RUN python3 -m pip install example Image breathe csvkit docutils PyYAML>=4.2b1 tqdm yamllint
 
 # RUN python3 -m pip install -r ${SRC_PATH}/nest-simulator-${NEST_VERSION}/requirements_docs.txt
 
