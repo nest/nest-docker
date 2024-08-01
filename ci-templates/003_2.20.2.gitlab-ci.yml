@@ -7,7 +7,7 @@ Build_2202:
   stage: build
   # needs: ["Build_Base"]
   rules:
-    - when: always
+    - when: never
   script:
     # Build
     - docker pull nest/nest-simulator:2.20.2 || true
