@@ -96,8 +96,8 @@ RUN cd ${SRC_PATH} && \
 
 # Installing the requirements_docs.txt stops at some time with an error
 # Installing every package fix it.
-RUN python3 -m pip install sphinx>=6.2.1 sphinx_rtd_theme sphinx_autobuild sphinx_gallery sphinx-tabs 
-RUN python3 -m pip install sphinx_design sphinx-material sphinx-copybutton sphinx-carousel 
+RUN python3 -m pip install sphinx>=6.2.1 sphinx_rtd_theme sphinx_autobuild sphinx_gallery sphinx-tabs
+RUN python3 -m pip install sphinx_design sphinx-material sphinx-copybutton sphinx-carousel
 RUN python3 -m pip install sphinx-notfound-page sphinxcontrib-mermaid sphinxcontrib-plantuml nbsphinx
 RUN python3 -m pip install example Image breathe csvkit docutils PyYAML>=4.2b1 tqdm yamllint
 
@@ -146,7 +146,7 @@ RUN python3 -m pip install --upgrade pip && \
     python3 -m pip install nest-desktop --pre && \
     python3 -m pip uninstall nestml -y && \
     python3 -m pip install --upgrade https://github.com/nest/nestml/archive/refs/heads/master.zip && \
-    python3 -m pip install nestml-server@git+https://github.com/babsey/nestml-server@v1.0-b3
+    python3 -m pip install nestml-server@git+https://github.com/babsey/nestml-server@v1.0-b4
 
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
