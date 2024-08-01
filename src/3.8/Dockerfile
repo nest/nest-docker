@@ -1,7 +1,7 @@
 FROM ubuntu:22.04
 LABEL maintainer="s.graber@fz-juelich.de"
 
-ARG NEST_VERSION=3.8_rc1
+ARG NEST_VERSION=3.8_rc2
 ARG SRC_PATH=/tmp
 ARG CMAKE_C_COMPILER_LAUNCHER=ccache
 ARG CMAKE_CXX_COMPILER_LAUNCHER=ccache
@@ -126,9 +126,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     python3 -m pip install --upgrade gsl wheel setuptools swig
 
 #Latest update to nestml v8.0.0-rc1
-RUN python3 -m pip install https://api.github.com/repos/nest/nestml/zipball/pull/1087/head
-
-    # python3 -m pip install nestml==8.0.0rc1 && \
+RUN python3 -m pip install nestml==8.0.0rc1
 
 RUN python3 -m pip install nestml-server@git+https://github.com/babsey/nestml-server@v1.0-b4 && \
     python3 -m pip install --upgrade pygsl@git+https://github.com/pygsl/pygsl@v2.3.3
