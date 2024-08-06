@@ -12,13 +12,13 @@ Build_3.8:
     - docker pull nest/nest-simulator:3.8 || true
     - docker build
         --cache-from nest/nest-simulator:3.8
-        --tag nest/nest-simulator:3.8_rc2
+        --tag nest/nest-simulator:3.8
         ./src/3.8
     # Test
     #- docker run -i --rm nest/nest-simulator:3.8bash /opt/test-nest.sh
     # Deploy
     - echo -n $DOCKERHUB_REGISTRY_TOKEN | docker login -u $DOCKERHUB_REGISTRY_USER --password-stdin
-    - docker push nest/nest-simulator:3.8_rc2
+    - docker push nest/nest-simulator:3.8
     - docker logout $DOCKERHUB_REGISTRY
   tags:
     - shell-runner
