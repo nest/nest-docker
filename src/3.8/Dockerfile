@@ -95,7 +95,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     python3 -m pip install sphinx>=6.2.1 sphinx_rtd_theme sphinx_autobuild sphinx_gallery sphinx-tabs && \
     python3 -m pip install sphinx_design sphinx-material sphinx-copybutton sphinx-carousel && \
     python3 -m pip install sphinx-notfound-page sphinxcontrib-mermaid sphinxcontrib-plantuml nbsphinx && \
-    python3 -m pip install  numpydoc example Image breathe csvkit docutils PyYAML>=4.2b1 tqdm yamllint && \
+    python3 -m pip install numpydoc example Image breathe csvkit docutils PyYAML>=4.2b1 tqdm yamllint && \
     # RUN python3 -m pip install -r ${SRC_PATH}/nest-simulator-${NEST_VERSION}/requirements_docs.txt
     python3 -m pip install sphinx_gallery==0.10.1 'numpy<=1.26' && \
     chmod +x ${SRC_PATH}/nest-simulator-${NEST_VERSION}/build_support/install_music.sh && \
@@ -126,7 +126,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     python3 -m pip install --upgrade gsl wheel setuptools swig
 
 #Latest update to nestml v8.0.0-rc1
-RUN python3 -m pip install nestml==8.0.0rc1
+RUN python3 -m pip install nestml==8.0.0rc2
 
 RUN python3 -m pip install nestml-server@git+https://github.com/babsey/nestml-server@v1.0-b4 && \
     python3 -m pip install --upgrade pygsl@git+https://github.com/pygsl/pygsl@v2.3.3
