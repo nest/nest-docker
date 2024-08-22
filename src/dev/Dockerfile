@@ -96,14 +96,14 @@ RUN cd ${SRC_PATH} && \
 
 # Installing the requirements_docs.txt stops at some time with an error
 # Installing every package fix it.
-RUN python3 -m pip install sphinx>=6.2.1 sphinx_rtd_theme sphinx_autobuild sphinx_gallery sphinx-tabs
-RUN python3 -m pip install sphinx_design sphinx-material sphinx-copybutton sphinx-carousel
-RUN python3 -m pip install sphinx-notfound-page sphinxcontrib-mermaid sphinxcontrib-plantuml nbsphinx
-RUN python3 -m pip install example Image breathe csvkit docutils PyYAML>=4.2b1 tqdm yamllint
+# RUN python3 -m pip install sphinx>=6.2.1 sphinx_rtd_theme sphinx_autobuild sphinx_gallery sphinx-tabs
+# RUN python3 -m pip install sphinx_design sphinx-material sphinx-copybutton sphinx-carousel
+# RUN python3 -m pip install sphinx-notfound-page sphinxcontrib-mermaid sphinxcontrib-plantuml nbsphinx
+# RUN python3 -m pip install example Image breathe csvkit docutils PyYAML>=4.2b1 tqdm yamllint
 
-# RUN python3 -m pip install -r ${SRC_PATH}/nest-simulator-${NEST_VERSION}/requirements_docs.txt
+RUN python3 -m pip install -r ${SRC_PATH}/nest-simulator-${NEST_VERSION}/requirements.txt
 
-RUN python3 -m pip install sphinx_gallery==0.10.1
+# RUN python3 -m pip install sphinx_gallery==0.10.1
 
     # Install music
 RUN chmod +x ${SRC_PATH}/nest-simulator-${NEST_VERSION}/build_support/install_music.sh && \
