@@ -128,7 +128,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 #Latest update to nestml v8.0.0-rc1
 RUN python3 -m pip install nestml==8.0.0rc2
 
-RUN python3 -m pip install nestml-server@git+https://github.com/babsey/nestml-server@v1.0-b4 && \
+RUN python3 -m pip install nestml-server@git+https://github.com/babsey/nestml-server@v1.0-b6 && \
     python3 -m pip install --upgrade pygsl@git+https://github.com/pygsl/pygsl@v2.3.3
 
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
