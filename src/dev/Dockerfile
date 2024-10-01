@@ -12,7 +12,7 @@ ENV TERM=xterm \
     DEBIAN_FRONTEND=noninteractive \
     PATH=/root/.local/bin:${PATH}
 
-RUN apt-get update && apt-get install -y --no-install-recommends \
+    RUN apt-get update && apt-get install -y --no-install-recommends \
     automake \
     autotools-dev \
     build-essential \
@@ -24,6 +24,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     git \
     gosu \
     jq \
+    junitparser \
     less \
     libboost-filesystem-dev libboost-regex-dev libboost-wave-dev \
     libboost-python-dev libboost-program-options-dev libboost-test-dev \
@@ -60,7 +61,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     python3-ipython \
     python3-junitparser \
     python3-jupyter-core \
-    python3-matplotlib \
     python3-mpi4py \
     python3-nose \
     python3-pandas \
@@ -70,6 +70,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     python3-pytest-timeout \
     python3-pytest-xdist \
     python3-restrictedpython \
+    python3-scipy \
     python3-setuptools \
     python3-sphinx \
     python3-statsmodels \
@@ -82,12 +83,10 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     uwsgi \
     vera++ \
     wget && \
-    apt-get autoremove
-
-RUN python3 -m pip install --upgrade scipy numpy numpydoc
-RUN python3 -m pip install --upgrade pip setuptools wheel mock
-RUN python3 -m pip install --force-reinstall --upgrade --no-binary=h5py h5py
-RUN ldconfig
+    apt-get autoremove && \
+    python3 -m pip install --upgrade pip setuptools wheel mock && \
+    python3 -m pip install --force-reinstall --upgrade --no-binary=h5py h5py && \
+    ldconfig
 
 # Download NEST
 RUN cd ${SRC_PATH} && \
@@ -95,33 +94,16 @@ RUN cd ${SRC_PATH} && \
     tar -xzf ${NEST_VERSION}.tar.gz
 
 # Installing the requirements_docs.txt stops at some time with an error
-# Installing every package fix it.
-# RUN python3 -m pip install sphinx>=6.2.1 sphinx_rtd_theme sphinx_autobuild sphinx_gallery sphinx-tabs
-# RUN python3 -m pip install sphinx_design sphinx-material sphinx-copybutton sphinx-carousel
-# RUN python3 -m pip install sphinx-notfound-page sphinxcontrib-mermaid sphinxcontrib-plantuml nbsphinx
-# RUN python3 -m pip install example Image breathe csvkit docutils PyYAML>=4.2b1 tqdm yamllint
-
-RUN python3 -m pip install -r ${SRC_PATH}/nest-simulator-${NEST_VERSION}/requirements.txt
-
-# RUN python3 -m pip install sphinx_gallery==0.10.1
-
-    # Install music
-RUN chmod +x ${SRC_PATH}/nest-simulator-${NEST_VERSION}/build_support/install_music.sh && \
-    ${SRC_PATH}/nest-simulator-${NEST_VERSION}/build_support/install_music.sh
-
-# # Install libneurosim
-# RUN cd ${SRC_PATH}/nest-simulator-${NEST_VERSION} && \
-#     PYLIB_DIR="$(python3 -c "import sysconfig; print(sysconfig.get_path('include'))" | sed 's/include/lib/')" && \
-#     chmod +x ${SRC_PATH}/nest-simulator-${NEST_VERSION}/build_support/install_csa-libneurosim.sh && \
-#     ${SRC_PATH}/nest-simulator-${NEST_VERSION}/build_support/install_csa-libneurosim.sh $PYLIB_DIR
-# # Install sionlib
-# RUN chmod +x ${SRC_PATH}/nest-simulator-${NEST_VERSION}/build_support/install_sionlib.sh && \
-#     ${SRC_PATH}/nest-simulator-${NEST_VERSION}/build_support/install_sionlib.sh
-# Install python requirements
-# RUN pip install -r ${SRC_PATH}/nest-simulator-${NEST_VERSION}/requirements.txt
-
-# Build nest
-RUN mkdir ${SRC_PATH}/nest-build && cd $_ && \
+    # Installing every package fix it.
+RUN python3 -m pip install sphinx>=6.2.1 sphinx_rtd_theme sphinx_autobuild sphinx-tabs && \
+    python3 -m pip install sphinx_design sphinx-material sphinx-copybutton sphinx-carousel && \
+    python3 -m pip install sphinx-notfound-page sphinxcontrib-mermaid sphinxcontrib-plantuml nbsphinx && \
+    python3 -m pip install numpydoc example Image breathe csvkit docutils PyYAML>=4.2b1 tqdm yamllint && \
+    # RUN python3 -m pip install -r ${SRC_PATH}/nest-simulator-${NEST_VERSION}/requirements_docs.txt
+    python3 -m pip install sphinx_gallery==0.13.0 'numpy<=1.26' && \
+    chmod +x ${SRC_PATH}/nest-simulator-${NEST_VERSION}/build_support/install_music.sh && \
+    ${SRC_PATH}/nest-simulator-${NEST_VERSION}/build_support/install_music.sh && \
+    mkdir ${SRC_PATH}/nest-build && cd $_ && \
     cmake -DCMAKE_INSTALL_PREFIX:PATH=/opt/nest \
           -Dwith-optimize="-O2" \
           -Dwith-warning=ON \
@@ -135,21 +117,25 @@ RUN mkdir ${SRC_PATH}/nest-build && cd $_ && \
           -Dwith-openmp=ON \
           -Dwith-libneurosim=OFF \
           -Dwith-sionlib=OFF \
-          -Dwith-music=ON \
+          -Dwith-music='$HOME/.cache/libneurosim.install' \
           -Dwith-hdf5=ON \
           ${SRC_PATH}/nest-simulator-${NEST_VERSION} && \
           make && \
           make install
 
-# Install NESTML and more
-RUN python3 -m pip install --upgrade pip && \
-    python3 -m pip install nest-desktop --pre && \
-    python3 -m pip uninstall nestml -y && \
-    python3 -m pip install --upgrade https://github.com/nest/nestml/archive/refs/heads/master.zip && \
-    python3 -m pip install nestml-server@git+https://github.com/babsey/nestml-server@v1.0-b6
+RUN python3 -m pip install --upgrade pip setuptools wheel && \
+python3 -m pip install -r ${SRC_PATH}/nest-simulator-${NEST_VERSION}/requirements.txt && \
+python3 -m pip install --upgrade nest-desktop && \
+python3 -m pip install --upgrade scipy && \
+python3 -m pip install --upgrade gsl wheel setuptools swig
+
+#Latest update to nestml v8.0.0-rc1
+RUN python3 -m pip install nestml==8.0.0rc2 && \
+python3 -m pip install nestml-server@git+https://github.com/babsey/nestml-server@v1.0-b6 && \
+python3 -m pip install --upgrade pygsl@git+https://github.com/pygsl/pygsl@v2.4.0
 
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
-RUN chmod +x /usr/local/bin/entrypoint.sh
+RUN chmod +x /usr/local/bin/entrypoint.sh 
 
 COPY test-nest.sh /opt/test-nest.sh
 RUN chmod +x /opt/test-nest.sh
