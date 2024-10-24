@@ -61,7 +61,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     python3-jupyter-core \
     python3-mpi4py \
     python3-nose \
-    python3-pandas \
     python3-path \
     python3-pip \
     python3-pytest \
@@ -127,7 +126,8 @@ RUN mkdir ${SRC_PATH}/nest-build && cd $_ && \
 #Latest update to nestml v8.0.0-rc1
 RUN python3 -m pip install nestml==8.0.0rc2 && \
     python3 -m pip install nestml-server@git+https://github.com/babsey/nestml-server@v1.0-b6 && \
-    python3 -m pip install --upgrade pygsl@git+https://github.com/pygsl/pygsl@v2.4.0
+    python3 -m pip install --upgrade pygsl@git+https://github.com/pygsl/pygsl@v2.4.0 && \
+    python3 -m pip install pandas "numpy<=1.26"
 
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh 
