@@ -39,7 +39,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libncurses-dev \
     libomp-dev \
     libopenmpi-dev \
-    libpcre3 \
     libpcre3-dev \
     libpython3.10 \
     libreadline-dev \
@@ -57,7 +56,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     python3-dev \
     python3-flask \
     python3-flask-cors \
-    python3-h5py \
     python3-ipython \
     python3-junitparser \
     python3-jupyter-core \
@@ -72,7 +70,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     python3-restrictedpython \
     python3-scipy \
     python3-setuptools \
-    python3-sphinx \
     python3-statsmodels \
     python3-sympy \
     python3-tk \
@@ -85,22 +82,25 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     wget && \
     apt-get autoremove && \
     python3 -m pip install --upgrade pip setuptools wheel mock && \
-    python3 -m pip install --force-reinstall --upgrade --no-binary=h5py h5py && \
+    python3 -m pip install --upgrade --no-binary=h5py h5py && \
     ldconfig && \
     cd ${SRC_PATH} && \
     wget "https://github.com/nest/nest-simulator/archive/refs/tags/v${NEST_VERSION}.tar.gz" -P ${SRC_PATH} && \
     tar -xzf v${NEST_VERSION}.tar.gz && \
     # Installing the requirements_docs.txt stops at some time with an error
     # Installing every package fix it.
-    python3 -m pip install sphinx>=6.2.1 sphinx_rtd_theme sphinx_autobuild sphinx_gallery sphinx-tabs && \
-    python3 -m pip install sphinx_design sphinx-material sphinx-copybutton sphinx-carousel && \
-    python3 -m pip install sphinx-notfound-page sphinxcontrib-mermaid sphinxcontrib-plantuml nbsphinx && \
+    python3 -m pip install sphinx>=6.2.1 sphinx_autobuild>=2021.3.14 sphinx-carousel sphinx-copybutton>=0.5.2  && \
+    python3 -m pip install sphinx-carousel sphinx-notfound-page>=0.8.3 sphinx-design>=0.4.1 sphinx-gallery>=0.13.0  && \
+    python3 -m pip install sphinx-material>=0.0.35 sphinxcontrib-mermaid sphinxcontrib-plantuml>=0.26 nbsphinx && \
     python3 -m pip install numpydoc example Image breathe csvkit docutils PyYAML>=4.2b1 tqdm yamllint && \
     # RUN python3 -m pip install -r ${SRC_PATH}/nest-simulator-${NEST_VERSION}/requirements_docs.txt
-    python3 -m pip install sphinx_gallery==0.10.1 'numpy<=1.26' && \
+    python3 -m pip install "numpy<=1.26" && \
     chmod +x ${SRC_PATH}/nest-simulator-${NEST_VERSION}/build_support/install_music.sh && \
-    ${SRC_PATH}/nest-simulator-${NEST_VERSION}/build_support/install_music.sh && \
-    mkdir ${SRC_PATH}/nest-build && cd $_ && \
+    ${SRC_PATH}/nest-simulator-${NEST_VERSION}/build_support/install_music.sh 
+WORKDIR ${SRC_PATH}/nest-simulator-${NEST_VERSION}/ 
+COPY patch_1.patch ${SRC_PATH}/nest-simulator-${NEST_VERSION}/
+RUN git apply patch_1.patch
+RUN mkdir ${SRC_PATH}/nest-build && cd $_ && \
     cmake -DCMAKE_INSTALL_PREFIX:PATH=/opt/nest \
           -Dwith-optimize="-O2" \
           -Dwith-warning=ON \
@@ -119,7 +119,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
           ${SRC_PATH}/nest-simulator-${NEST_VERSION} && \
           make && \
           make install && \
-    python3 -m pip install --upgrade pip setuptools wheel && \
     python3 -m pip install -r ${SRC_PATH}/nest-simulator-${NEST_VERSION}/requirements.txt && \
     python3 -m pip install --upgrade nest-desktop && \
     python3 -m pip install --upgrade scipy && \
