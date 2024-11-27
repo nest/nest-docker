@@ -129,8 +129,8 @@ python3 -m pip install --upgrade nest-desktop && \
 python3 -m pip install --upgrade scipy && \
 python3 -m pip install --upgrade gsl wheel setuptools swig
 
-#Latest update to nestml v8.0.0-rc1
-RUN python3 -m pip install nestml==8.0.0rc2 && \
+#Latest update to nestml v8.0.0-rc3
+RUN python3 -m pip install nestml==8.0.0rc3 && \
 python3 -m pip install nestml-server@git+https://github.com/babsey/nestml-server@v1.0-b6 && \
 python3 -m pip install --upgrade pygsl@git+https://github.com/pygsl/pygsl@v2.4.0
 
