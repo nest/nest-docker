@@ -131,11 +131,11 @@ python3 -m pip install --upgrade gsl wheel setuptools swig
 
 #Latest update to nestml v8.0.0-rc3
 RUN python3 -m pip install nestml==8.0.0rc3 && \
-python3 -m pip install nestml-server@git+https://github.com/babsey/nestml-server@v1.0-b6 && \
+python3 -m pip install nestml-server@git+https://github.com/babsey/nestml-server@v1.0-b8 && \
 python3 -m pip install --upgrade pygsl@git+https://github.com/pygsl/pygsl@v2.4.0
 
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
-RUN chmod +x /usr/local/bin/entrypoint.sh 
+RUN chmod +x /usr/local/bin/entrypoint.sh
 
 COPY test-nest.sh /opt/test-nest.sh
 RUN chmod +x /opt/test-nest.sh
