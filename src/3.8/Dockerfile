@@ -14,7 +14,6 @@ ENV TERM=xterm \
     OMPI_ALLOW_RUN_AS_ROOT=1 \
     OMPI_ALLOW_RUN_AS_ROOT_CONFIRM=1
 
-
 RUN apt-get update && apt-get install -y --no-install-recommends \
     automake \
     autotools-dev \
