@@ -10,7 +10,9 @@ ARG CXX_FLAGS="-pedantic -Wextra -Wno-unknown-pragmas -D_GLIBCXX_ASSERTIONS"
 ENV TERM=xterm \
     TZ=Europe/Berlin \
     DEBIAN_FRONTEND=noninteractive \
-    PATH=/root/.local/bin:${PATH}
+    PATH=/root/.local/bin:${PATH} \
+    OMPI_ALLOW_RUN_AS_ROOT=1 \
+    OMPI_ALLOW_RUN_AS_ROOT_CONFIRM=1
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
     automake \
