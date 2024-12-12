@@ -115,7 +115,7 @@ RUN mkdir ${SRC_PATH}/nest-build && cd $_ && \
           -Dwith-openmp=ON \
           -Dwith-libneurosim=OFF \
           -Dwith-sionlib=OFF \
-          -Dwith-music='$HOME/.cache/libneurosim.install' \
+          -Dwith-music='$HOME/.cache/music.install' \
           -Dwith-hdf5=ON \
           ${SRC_PATH}/nest-simulator-${NEST_VERSION} && \
           make && \
