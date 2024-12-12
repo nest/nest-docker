@@ -119,7 +119,7 @@ RUN python3 -m pip install sphinx>=6.2.1 sphinx_rtd_theme sphinx_autobuild sphin
           -Dwith-openmp=ON \
           -Dwith-libneurosim=OFF \
           -Dwith-sionlib=OFF \
-          -Dwith-music='$HOME/.cache/libneurosim.install' \
+          -Dwith-music='$HOME/.cache/music.install' \
           -Dwith-hdf5=ON \
           ${SRC_PATH}/nest-simulator-${NEST_VERSION} && \
           make && \
