@@ -53,7 +53,6 @@ elif [[ "${MODE}" = 'nest-server' ]]; then
 elif [[ "${MODE}" = 'nest-server-mpi' ]]; then
     export NEST_SERVER_HOST="${NEST_SERVER_HOST:-0.0.0.0}"
     export NEST_SERVER_PORT="${NEST_SERVER_PORT:-52425}"
-    export NEST_SERVER_STDOUT="${NEST_SERVER_STDOUT:-1}"
 
     export NEST_SERVER_ACCESS_TOKEN="${NEST_SERVER_ACCESS_TOKEN}"
     export NEST_SERVER_CORS_ORIGINS="${NEST_SERVER_CORS_ORIGINS:-*}"
