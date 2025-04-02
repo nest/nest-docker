@@ -10,7 +10,9 @@ ARG CXX_FLAGS="-pedantic -Wextra -Wno-unknown-pragmas -D_GLIBCXX_ASSERTIONS"
 ENV TERM=xterm \
     TZ=Europe/Berlin \
     DEBIAN_FRONTEND=noninteractive \
-    PATH=/root/.local/bin:${PATH}
+    PATH=/root/.local/bin:${PATH} \
+    OMPI_ALLOW_RUN_AS_ROOT=1 \
+    OMPI_ALLOW_RUN_AS_ROOT_CONFIRM=1
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
     automake \
@@ -119,7 +121,7 @@ RUN mkdir ${SRC_PATH}/nest-build && cd $_ && \
           -Dwith-openmp=ON \
           -Dwith-libneurosim=OFF \
           -Dwith-sionlib=OFF \
-          -Dwith-music='$HOME/.cache/libneurosim.install' \
+          -Dwith-music='$HOME/.cache/music.install' \
           -Dwith-hdf5=ON \
           ${SRC_PATH}/nest-simulator-${NEST_VERSION} && \
           make && \
