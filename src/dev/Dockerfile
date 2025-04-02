@@ -12,7 +12,7 @@ ENV TERM=xterm \
     DEBIAN_FRONTEND=noninteractive \
     PATH=/root/.local/bin:${PATH}
 
-    RUN apt-get update && apt-get install -y --no-install-recommends \
+RUN apt-get update && apt-get install -y --no-install-recommends \
     automake \
     autotools-dev \
     build-essential \
@@ -94,16 +94,18 @@ RUN cd ${SRC_PATH} && \
     tar -xzf ${NEST_VERSION}.tar.gz
 
 # Installing the requirements_docs.txt stops at some time with an error
-    # Installing every package fix it.
+# Installing every package fix it.
 RUN python3 -m pip install sphinx>=6.2.1 sphinx_rtd_theme sphinx_autobuild sphinx-tabs && \
     python3 -m pip install sphinx_design sphinx-material sphinx-copybutton sphinx-carousel && \
     python3 -m pip install sphinx-notfound-page sphinxcontrib-mermaid sphinxcontrib-plantuml nbsphinx && \
     python3 -m pip install numpydoc example Image breathe csvkit docutils PyYAML>=4.2b1 tqdm yamllint && \
-    # RUN python3 -m pip install -r ${SRC_PATH}/nest-simulator-${NEST_VERSION}/requirements_docs.txt
-    python3 -m pip install sphinx_gallery==0.13.0 'numpy<=1.26' && \
-    chmod +x ${SRC_PATH}/nest-simulator-${NEST_VERSION}/build_support/install_music.sh && \
-    ${SRC_PATH}/nest-simulator-${NEST_VERSION}/build_support/install_music.sh && \
-    mkdir ${SRC_PATH}/nest-build && cd $_ && \
+# RUN python3 -m pip install -r ${SRC_PATH}/nest-simulator-${NEST_VERSION}/requirements_docs.txt
+    python3 -m pip install sphinx_gallery==0.13.0 'numpy<=1.26'
+
+RUN chmod +x ${SRC_PATH}/nest-simulator-${NEST_VERSION}/build_support/install_music.sh && \
+    ${SRC_PATH}/nest-simulator-${NEST_VERSION}/build_support/install_music.sh
+
+RUN mkdir ${SRC_PATH}/nest-build && cd $_ && \
     cmake -DCMAKE_INSTALL_PREFIX:PATH=/opt/nest \
           -Dwith-optimize="-O2" \
           -Dwith-warning=ON \
@@ -124,15 +126,16 @@ RUN python3 -m pip install sphinx>=6.2.1 sphinx_rtd_theme sphinx_autobuild sphin
           make install
 
 RUN python3 -m pip install --upgrade pip setuptools wheel && \
-python3 -m pip install -r ${SRC_PATH}/nest-simulator-${NEST_VERSION}/requirements.txt && \
-python3 -m pip install --upgrade nest-desktop && \
-python3 -m pip install --upgrade scipy && \
-python3 -m pip install --upgrade gsl wheel setuptools swig
+    python3 -m pip install -r ${SRC_PATH}/nest-simulator-${NEST_VERSION}/requirements.txt && \
+    python3 -m pip install --upgrade nest-desktop && \
+    python3 -m pip install --upgrade scipy && \
+    python3 -m pip install --upgrade gsl wheel setuptools swig && \
+    # Latest update to nestml v8.0.0-rc3
+    python3 -m pip install nestml==8.0.0rc3 && \
+    python3 -m pip install docopt-ng
 
-#Latest update to nestml v8.0.0-rc3
-RUN python3 -m pip install nestml==8.0.0rc3 && \
-python3 -m pip install nestml-server@git+https://github.com/babsey/nestml-server@v1.0-b8 && \
-python3 -m pip install --upgrade pygsl@git+https://github.com/pygsl/pygsl@v2.4.0
+RUN python3 -m pip install nestml-server@git+https://github.com/babsey/nestml-server@v1.0-b8
+    # python3 -m pip install --upgrade pygsl@git+https://github.com/pygsl/pygsl@v2.4.0 && \
 
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
