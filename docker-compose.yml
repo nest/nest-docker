@@ -1,5 +1,3 @@
-version: "3"
-
 services:
   nest-server:
     image: nest/nest-simulator:3.8
@@ -8,6 +6,18 @@ services:
       NEST_CONTAINER_MODE: "nest-server"
     ports:
       - "52425:52425"
+
+  # nest-server-mpi:
+  #   image: nest-simulator:master-mpi
+  #   environment:
+  #     LOCAL_USER_ID: "`id -u $USER`"
+  #     NEST_CONTAINER_MODE: "nest-server-mpi"
+  #     NEST_SERVER_MPI_NUM: 3
+  #     NEST_SERVER_MPI_LOGGER_LEVEL: "INFO"
+  #     OMPI_ALLOW_RUN_AS_ROOT: 1
+  #     OMPI_ALLOW_RUN_AS_ROOT_CONFIRM: 1
+  #   ports:
+  #     - "52425:52425"
 
   nest-desktop:
     image: nest/nest-simulator:3.8
