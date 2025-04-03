@@ -53,7 +53,14 @@ elif [[ "${MODE}" = 'nest-server' ]]; then
 elif [[ "${MODE}" = 'nest-server-mpi' ]]; then
     export NEST_SERVER_HOST="${NEST_SERVER_HOST:-0.0.0.0}"
     export NEST_SERVER_PORT="${NEST_SERVER_PORT:-52425}"
-    exec mpirun -np "${NEST_SERVER_MPI_NUM:-1}" nest-server-mpi
+
+    export NEST_SERVER_ACCESS_TOKEN="${NEST_SERVER_ACCESS_TOKEN}"
+    export NEST_SERVER_CORS_ORIGINS="${NEST_SERVER_CORS_ORIGINS:-*}"
+    export NEST_SERVER_DISABLE_AUTH="${NEST_SERVER_DISABLE_AUTH:-1}"
+    export NEST_SERVER_DISABLE_RESTRICTION="${NEST_SERVER_DISABLE_RESTRICTION:-1}"
+    export NEST_SERVER_ENABLE_EXEC_CALL="${NEST_SERVER_ENABLE_EXEC_CALL:-1}"
+    export NEST_SERVER_MODULES="${NEST_SERVER_MODULES:-import nest; import numpy; import numpy as np}"
+    exec mpirun -np "${NEST_SERVER_MPI_NUM:-1}" nest-server-mpi --host "${NEST_SERVER_HOST}" --port "${NEST_SERVER_PORT}"
 
 elif [[ "${MODE}" = 'nestml-server' ]]; then
     export NESTML_SERVER_HOST="${NESTML_SERVER_HOST:-0.0.0.0}"
