@@ -128,6 +128,7 @@ RUN mkdir ${SRC_PATH}/nest-build && cd $_ && \
 #Latest update to nestml v8.0.0
 RUN python3 -m pip install --upgrade pip setuptools wheel && \
     python3 -m pip install -r ${SRC_PATH}/nest-simulator-${NEST_VERSION}/requirements.txt && \
+    pip install "numpy<=1.26" --force-reinstall && \
     python3 -m pip install --upgrade nest-desktop && \
     python3 -m pip install --upgrade scipy && \
     python3 -m pip install --upgrade gsl wheel setuptools swig && \
