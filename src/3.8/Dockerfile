@@ -129,7 +129,7 @@ RUN mkdir ${SRC_PATH}/nest-build && cd $_ && \
 RUN python3 -m pip install NESTML==8.0.0 && \
     python3 -m pip install nestml-server@git+https://github.com/babsey/nestml-server@v1.0-b6 && \
     python3 -m pip install --upgrade pygsl@git+https://github.com/pygsl/pygsl@v2.4.0 && \
-    python3 -m pip install pandas "numpy<=1.26"
+    python3 -m pip install pandas
 
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh 
