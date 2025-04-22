@@ -95,8 +95,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     python3 -m pip install sphinx-material>=0.0.35 sphinxcontrib-mermaid sphinxcontrib-plantuml>=0.26 nbsphinx && \
     python3 -m pip install numpydoc example Image breathe csvkit docutils PyYAML>=4.2b1 tqdm yamllint && \
     # RUN python3 -m pip install -r ${SRC_PATH}/nest-simulator-${NEST_VERSION}/requirements_docs.txt
-    python3 -m pip install "numpy<=1.26" && \
-    chmod +x ${SRC_PATH}/nest-simulator-${NEST_VERSION}/build_support/install_music.sh && \
+    python3 -m pip install "numpy<=1.26"
+RUN chmod +x ${SRC_PATH}/nest-simulator-${NEST_VERSION}/build_support/install_music.sh && \
     ${SRC_PATH}/nest-simulator-${NEST_VERSION}/build_support/install_music.sh 
 WORKDIR ${SRC_PATH}/nest-simulator-${NEST_VERSION}/ 
 COPY patch_1.patch ${SRC_PATH}/nest-simulator-${NEST_VERSION}/
@@ -126,10 +126,18 @@ RUN mkdir ${SRC_PATH}/nest-build && cd $_ && \
     python3 -m pip install --upgrade gsl wheel setuptools swig
 
 #Latest update to nestml v8.0.0
-RUN python3 -m pip install NESTML==8.0.0 && \
-    python3 -m pip install nestml-server@git+https://github.com/babsey/nestml-server@v1.0-b6 && \
-    python3 -m pip install --upgrade pygsl@git+https://github.com/pygsl/pygsl@v2.4.0 && \
-    python3 -m pip install pandas "numpy<=1.26"
+RUN python3 -m pip install --upgrade pip setuptools wheel && \
+    python3 -m pip install -r ${SRC_PATH}/nest-simulator-${NEST_VERSION}/requirements.txt && \
+    pip install "numpy<=1.26" --force-reinstall && \
+    python3 -m pip install --upgrade nest-desktop && \
+    python3 -m pip install --upgrade scipy && \
+    python3 -m pip install --upgrade gsl wheel setuptools swig && \
+    # Latest update to nestml v8.0.0-rc3
+    python3 -m pip install nestml==8.0.0 && \
+    python3 -m pip install docopt-ng
+
+RUN python3 -m pip install nestml-server@git+https://github.com/babsey/nestml-server@v1.0-b8
+    # python3 -m pip install --upgrade pygsl@git+https://github.com/pygsl/pygsl@v2.4.0 && \
 
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh 
