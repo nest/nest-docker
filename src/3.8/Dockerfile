@@ -136,7 +136,7 @@ RUN python3 -m pip install --upgrade pip setuptools wheel && \
     python3 -m pip install nestml==8.0.0 && \
     python3 -m pip install docopt-ng
 
-RUN python3 -m pip install nestml-server@git+https://github.com/babsey/nestml-server@v1.0-b8
+RUN python3 -m pip install nestml-server@git+https://github.com/babsey/nestml-server@v1.0
     # python3 -m pip install --upgrade pygsl@git+https://github.com/pygsl/pygsl@v2.4.0 && \
 
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
