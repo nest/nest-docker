@@ -13,6 +13,7 @@ Build_3.8:
     - docker build
         --cache-from nest/nest-simulator:3.8
         --tag nest/nest-simulator:3.8
+        --tag nest/nest-simulator:latest
         ./src/3.8
     # Test
     #- docker run -i --rm nest/nest-simulator:3.8bash /opt/test-nest.sh
