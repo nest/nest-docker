@@ -72,7 +72,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     python3-scipy \
     python3-setuptools \
     python3-statsmodels \
-    python3-sympy \
     python3-tk \
     python3-tqdm \
     tcl8.6 \
@@ -95,7 +94,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     python3 -m pip install sphinx-material>=0.0.35 sphinxcontrib-mermaid sphinxcontrib-plantuml>=0.26 nbsphinx && \
     python3 -m pip install numpydoc example Image breathe csvkit docutils PyYAML>=4.2b1 tqdm yamllint && \
     # RUN python3 -m pip install -r ${SRC_PATH}/nest-simulator-${NEST_VERSION}/requirements_docs.txt
-    python3 -m pip install "numpy<=1.26"
+    python3 -m pip install "numpy<=1.26" sympy
 RUN chmod +x ${SRC_PATH}/nest-simulator-${NEST_VERSION}/build_support/install_music.sh && \
     ${SRC_PATH}/nest-simulator-${NEST_VERSION}/build_support/install_music.sh 
 WORKDIR ${SRC_PATH}/nest-simulator-${NEST_VERSION}/ 
