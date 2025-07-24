@@ -133,11 +133,11 @@ RUN python3 -m pip install --upgrade pip setuptools wheel && \
     python3 -m pip install --upgrade scipy && \
     python3 -m pip install --upgrade gsl wheel setuptools swig && \
     # Latest update to nestml v8.0.0-rc3
-    python3 -m pip install nestml==8.0.0rc3 && \
+    python3 -m pip install --upgrade --force-reinstall nestml==8.0.2 && \
     python3 -m pip install docopt-ng
 
-RUN python3 -m pip install nestml-server@git+https://github.com/babsey/nestml-server@v1.0-b8
-    # python3 -m pip install --upgrade pygsl@git+https://github.com/pygsl/pygsl@v2.4.0 && \
+RUN python3 -m pip install --upgrade --force-reinstall  nestml-server@git+https://github.com/babsey/nestml-server@v1.0-b8 && \
+    python3 -m pip install --upgrade pygsl@git+https://github.com/pygsl/pygsl@v2.6.2
 
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
