@@ -76,7 +76,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     python3-setuptools \
     python3-sphinx \
     python3-statsmodels \
-    python3-sympy \
     python3-tk \
     python3-tqdm \
     tcl8.6 \
@@ -102,7 +101,7 @@ RUN python3 -m pip install sphinx>=6.2.1 sphinx_rtd_theme sphinx_autobuild sphin
     python3 -m pip install sphinx-notfound-page sphinxcontrib-mermaid sphinxcontrib-plantuml nbsphinx && \
     python3 -m pip install numpydoc example Image breathe csvkit docutils PyYAML>=4.2b1 tqdm yamllint && \
 # RUN python3 -m pip install -r ${SRC_PATH}/nest-simulator-${NEST_VERSION}/requirements_docs.txt
-    python3 -m pip install sphinx_gallery==0.13.0 'numpy<=1.26'
+    python3 -m pip install sphinx_gallery==0.13.0 'numpy<=1.26' sympy
 
 RUN chmod +x ${SRC_PATH}/nest-simulator-${NEST_VERSION}/build_support/install_music.sh && \
     ${SRC_PATH}/nest-simulator-${NEST_VERSION}/build_support/install_music.sh
