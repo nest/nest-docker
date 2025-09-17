@@ -21,5 +21,5 @@ jobs:
           git config --global user.email "github-actions@github.com"
           git config --global user.name "GitHub Actions"
           git remote add gitlab https://ghpusher:${GITLAB_TOKEN}@gitlab.ebrains.eu/nest/nest-docker.git
-          git push --force gitlab main
+          git push --force gitlab master
           git push --tags gitlab
