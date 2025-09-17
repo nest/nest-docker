@@ -2,9 +2,9 @@ name: Mirror to EBRAINS
 
 on:
   push:
-    branches: [ main ]
+    branches: [ master ]
   pull_request:
-    branches: [ main ]
+    branches: [ master ]
 
 jobs:
   sync_to_ebrains:
