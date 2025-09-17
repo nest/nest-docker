@@ -14,13 +14,12 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Mirror to GitLab
-        uses: repo-sync/github-sync@v2
-        with:
-          source_repo: ${{ github.repository }}
-          source_branch: master
-          destination_repo: https://gitlab.ebrains.eu/nest/nest-docker.git
-          destination_branch: master
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          destination_username: ghpusher
-          destination_token: ${{ secrets.EBRAINS_PUSH_TOKEN }}
+      - name: Push to GitLab
+        env:
+          GITLAB_TOKEN: ${{ secrets.EBRAINS_PUSH_TOKEN }}
+        run: |
+          git config --global user.email "github-actions@github.com"
+          git config --global user.name "GitHub Actions"
+          git remote add gitlab https://ghpusher:${GITLAB_TOKEN}@gitlab.ebrains.eu/nest/nest-docker.git
+          git push --force gitlab master
+          git push --tags gitlab
