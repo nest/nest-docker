@@ -130,7 +130,7 @@ RUN . /opt/.venv/bin/activate && \
     python3 -m pip install --upgrade gsl wheel setuptools swig
 
 RUN . /opt/.venv/bin/activate && \
-    python3 -m pip install --upgrade --force-reinstall NESTML==8.0.2 && \
+    python3 -m pip install --upgrade --force-reinstall swig NESTML==8.0.2 && \
     python3 -m pip install --upgrade --force-reinstall nestml-server@git+https://github.com/babsey/nestml-server@v1.0-b8 && \
     python3 -m pip install --upgrade pygsl@git+https://github.com/pygsl/pygsl@v2.4.0 && \
     python3 -m pip install pandas
