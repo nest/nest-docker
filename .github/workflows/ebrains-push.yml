@@ -11,17 +11,13 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ github.repository_owner == 'nest' }}
     steps:
-      - name: sycnmaster
-        uses: wei/git-sync@v3
-        with:
-          source_repo: "nest/nest-docker"
-          source_branch: "master"
-          destination_repo: "https://ghpusher:${{ secrets.EBRAINS_PUSH_TOKEN }}@gitlab.ebrains.eu/nest/nest-docker.git"
-          destination_branch: "master"
-      - name: synctags
-        uses: wei/git-sync@v3
-        with:
-          source_repo: "nest/nest-docker/"
-          source_branch: "refs/tags/*"
-          destination_repo: "https://ghpusher:${{ secrets.EBRAINS_PUSH_TOKEN }}@gitlab.ebrains.eu/nest/nest-docker.git"
-          destination_branch: "refs/tags/*"
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Push to GitLab
+        env:
+          GITLAB_TOKEN: ${{ secrets.EBRAINS_PUSH_TOKEN }}
+        run: |
+          git remote add gitlab https://ghpusher:${GITLAB_TOKEN}@gitlab.ebrains.eu/nest/nest-docker.git
+          git push gitlab master
+          git push gitlab --tags
