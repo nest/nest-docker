@@ -1,3 +1,4 @@
+
 FROM ubuntu:22.04
 LABEL maintainer="s.graber@fz-juelich.de"
 
@@ -7,14 +8,17 @@ ARG CMAKE_C_COMPILER_LAUNCHER=ccache
 ARG CMAKE_CXX_COMPILER_LAUNCHER=ccache
 ARG CXX_FLAGS="-pedantic -Wextra -Wno-unknown-pragmas -D_GLIBCXX_ASSERTIONS"
 
-ENV TERM=xterm \
-    TZ=Europe/Berlin \
-    DEBIAN_FRONTEND=noninteractive \
-    PATH=/root/.local/bin:${PATH} \
+ENV TERM="xterm" \
+    TZ="Europe/Berlin" \
+    DEBIAN_FRONTEND="noninteractive" \
+    PATH="/root/.local/bin:${PATH}" \
     OMPI_ALLOW_RUN_AS_ROOT=1 \
     OMPI_ALLOW_RUN_AS_ROOT_CONFIRM=1
 
-RUN apt-get update && apt-get install -y --no-install-recommends \
+WORKDIR ${SRC_PATH}
+
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
     automake \
     autotools-dev \
     build-essential \
@@ -84,29 +88,29 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     uwsgi \
     vera++ \
     wget && \
-    apt-get autoremove && \
-    python3 -m pip install --upgrade pip setuptools wheel mock && \
-    python3 -m pip install --force-reinstall --upgrade --no-binary=h5py h5py && \
-    ldconfig
+    apt-get autoremove -y && \
+    rm -rf /var/lib/apt/lists/*
+
+# Upgrade pip, setuptools, wheel once
+RUN python3 -m pip install --no-cache-dir --upgrade pip setuptools wheel mock && \
+    python3 -m pip install --no-cache-dir --force-reinstall --upgrade --no-binary=h5py h5py
 
 # Download NEST
-RUN cd ${SRC_PATH} && \
-    wget https://github.com/nest/nest-simulator/archive/refs/heads/${NEST_VERSION}.tar.gz -P ${SRC_PATH} && \
+RUN wget https://github.com/nest/nest-simulator/archive/refs/heads/${NEST_VERSION}.tar.gz -P ${SRC_PATH} && \
     tar -xzf ${NEST_VERSION}.tar.gz
 
-# Installing the requirements_docs.txt stops at some time with an error
-# Installing every package fix it.
-RUN python3 -m pip install sphinx>=6.2.1 sphinx_rtd_theme sphinx_autobuild sphinx-tabs && \
-    python3 -m pip install sphinx_design sphinx-material sphinx-copybutton sphinx-carousel && \
-    python3 -m pip install sphinx-notfound-page sphinxcontrib-mermaid sphinxcontrib-plantuml nbsphinx && \
-    python3 -m pip install numpydoc example Image breathe csvkit docutils PyYAML>=4.2b1 tqdm yamllint && \
-# RUN python3 -m pip install -r ${SRC_PATH}/nest-simulator-${NEST_VERSION}/requirements_docs.txt
-    python3 -m pip install sphinx_gallery==0.13.0 'numpy<=1.26' sympy
+# Install documentation requirements (combine for cache efficiency)
+RUN python3 -m pip install --no-cache-dir sphinx>=6.2.1 sphinx_rtd_theme sphinx_autobuild sphinx-tabs && \
+    python3 -m pip install --no-cache-dir sphinx_design sphinx-material sphinx-copybutton sphinx-carousel && \
+    python3 -m pip install --no-cache-dir sphinx-notfound-page sphinxcontrib-mermaid sphinxcontrib-plantuml nbsphinx && \
+    python3 -m pip install --no-cache-dir numpydoc example Image breathe csvkit docutils PyYAML>=4.2b1 tqdm yamllint && \
+    python3 -m pip install --no-cache-dir sphinx_gallery==0.13.0 'numpy<=1.26' sympy
 
 RUN chmod +x ${SRC_PATH}/nest-simulator-${NEST_VERSION}/build_support/install_music.sh && \
     ${SRC_PATH}/nest-simulator-${NEST_VERSION}/build_support/install_music.sh
 
-RUN mkdir ${SRC_PATH}/nest-build && cd $_ && \
+# Build NEST
+RUN mkdir ${SRC_PATH}/nest-build && cd ${SRC_PATH}/nest-build && \
     cmake -DCMAKE_INSTALL_PREFIX:PATH=/opt/nest \
           -Dwith-optimize="-O2" \
           -Dwith-warning=ON \
@@ -123,20 +127,19 @@ RUN mkdir ${SRC_PATH}/nest-build && cd $_ && \
           -Dwith-music='$HOME/.cache/music.install' \
           -Dwith-hdf5=ON \
           ${SRC_PATH}/nest-simulator-${NEST_VERSION} && \
-          make && \
-          make install
+    make && \
+    make install
 
-RUN python3 -m pip install --upgrade pip setuptools wheel && \
-    python3 -m pip install -r ${SRC_PATH}/nest-simulator-${NEST_VERSION}/requirements.txt && \
-    python3 -m pip install --upgrade nest-desktop && \
-    python3 -m pip install --upgrade scipy && \
-    python3 -m pip install --upgrade gsl wheel setuptools swig && \
-    python3 -m pip install --upgrade --force-reinstall nestml==8.0.2 && \
-    python3 -m pip install docopt-ng
+# Install Python requirements and tools
+RUN python3 -m pip install --no-cache-dir -r ${SRC_PATH}/nest-simulator-${NEST_VERSION}/requirements.txt && \
+    python3 -m pip install --no-cache-dir --upgrade nest-desktop && \
+    python3 -m pip install --no-cache-dir --upgrade scipy && \
+    python3 -m pip install --no-cache-dir --upgrade gsl wheel setuptools swig && \
+    python3 -m pip install --no-cache-dir --upgrade --force-reinstall nestml==8.0.2 && \
+    python3 -m pip install --no-cache-dir docopt-ng
 
-
-RUN python3 -m pip install --upgrade --force-reinstall  nestml-server@git+https://github.com/babsey/nestml-server@v1.0-b8 && \
-    python3 -m pip install --upgrade pygsl@git+https://github.com/pygsl/pygsl@v2.6.2
+RUN python3 -m pip install --no-cache-dir --upgrade --force-reinstall  nestml-server@git+https://github.com/babsey/nestml-server@v1.0-b8 && \
+    python3 -m pip install --no-cache-dir --upgrade pygsl@git+https://github.com/pygsl/pygsl@v2.6.2
 
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
