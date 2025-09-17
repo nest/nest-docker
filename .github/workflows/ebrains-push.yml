@@ -11,6 +11,9 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ github.repository_owner == 'nest' }}
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
       - name: Mirror to GitLab
         uses: repo-sync/github-sync@v2
         with:
