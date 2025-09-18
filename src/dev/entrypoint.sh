@@ -2,8 +2,11 @@
 set -e
 IP_ADDRESS=$(hostname --ip-address)
 
+# Python environment
+source /root/.env/bin/activate
+
 # NEST environment
-source /opt/nest/bin/nest_vars.sh
+#source /opt/nest/bin/nest_vars.sh
 
 # Running NEST to test and to copy the .nestrc into /home/nest
 nest --help
