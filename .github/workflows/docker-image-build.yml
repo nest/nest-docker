@@ -10,12 +10,8 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
+  build-dev:
     runs-on: ubuntu-latest
-    # Allows parallel jobs without aborting all on first failure
-    strategy:
-      fail-fast: false
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -37,6 +33,12 @@ jobs:
         env:
           DOCKER_HUB_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
           DOCKER_HUB_ACCESS_TOKEN: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+
+  build-3-9-rc1:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
 
       - name: Build 3.9-rc1 Docker image
         run: |
