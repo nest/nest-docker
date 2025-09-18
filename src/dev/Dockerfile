@@ -26,7 +26,7 @@ RUN apt-get update && \
 WORKDIR ${SRC_PATH}
 
 # Clone only the required branch and minimal history for speed
-RUN git clone --branch v${NEST_VERSION} --depth 1 https://github.com/nest/nest-simulator.git
+RUN git clone --branch ${NEST_VERSION} --depth 1 https://github.com/nest/nest-simulator.git
 
 # Install MUSIC
 RUN chmod +x ${SRC_PATH}/nest-simulator/build_support/install_music.sh && \
