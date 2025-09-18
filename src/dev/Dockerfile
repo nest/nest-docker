@@ -29,9 +29,9 @@ WORKDIR ${SRC_PATH}
 # Clone only the required branch and minimal history for speed
 RUN git clone --branch ${NEST_VERSION} --depth 1 https://github.com/nest/nest-simulator.git
 
-# Install MUSIC
-RUN chmod +x ${SRC_PATH}/nest-simulator/build_support/install_music.sh && \
-    ${SRC_PATH}/nest-simulator/build_support/install_music.sh
+# Install MUSIC (Dwith-music="$HOME/.cache/music.install" \)
+# RUN chmod +x ${SRC_PATH}/nest-simulator/build_support/install_music.sh && \
+#    ${SRC_PATH}/nest-simulator/build_support/install_music.sh
 
 # Set up Python virtual environment and install Python dependencies
 RUN python3 -m venv /root/.env && \
@@ -57,7 +57,7 @@ RUN . /root/.env/bin/activate && \
           -Dwith-openmp=ON \
           -Dwith-libneurosim=OFF \
           -Dwith-sionlib=OFF \
-          -Dwith-music="$HOME/.cache/music.install" \
+          -Dwith-music=OFF \
           -Dwith-hdf5=ON \
           ${SRC_PATH}/nest-simulator && \
     make -j"$(nproc)" && \
