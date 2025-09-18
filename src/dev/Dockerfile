@@ -21,6 +21,7 @@ RUN apt-get update && \
         libopenmpi-dev pkg-config wget nano \
         libhdf5-dev \
         pandoc \
+        libtool \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR ${SRC_PATH}
