@@ -58,7 +58,7 @@ RUN . /root/.env/bin/activate && \
           -Dwith-libneurosim=OFF \
           -Dwith-sionlib=OFF \
           -Dwith-music=OFF \
-          -Dwith-hdf5=ON \
+          -Dwith-hdf5=OFF \
           ${SRC_PATH}/nest-simulator && \
     make -j"$(nproc)" && \
     make install && \

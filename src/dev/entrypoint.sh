@@ -33,7 +33,7 @@ if [[ "${MODE}" = 'interactive' ]]; then
 
 elif [[ "${MODE}" = 'jupyterlab' ]]; then
     mkdir -p /opt/data; cd /opt/data
-    exec /usr/local/bin/jupyter-lab --ip="${IP_ADDRESS}" --port=8080 --no-browser --allow-root
+    exec /root/.env/bin/jupyter-lab --ip="${IP_ADDRESS}" --port=8080 --no-browser --allow-root
 
 elif [[ "${MODE}" = 'nest-desktop' ]]; then
     export NEST_DESKTOP_HOST="${NEST_DESKTOP_HOST:-0.0.0.0}"
@@ -77,7 +77,7 @@ elif [[ "${MODE}" = 'nestml-server' ]]; then
 
 elif [[ "${MODE}" = 'notebook' ]]; then
     mkdir -p /opt/data; cd /opt/data
-    exec /usr/local/bin/jupyter-notebook --ip="${IP_ADDRESS}" --port=8080 --no-browser --allow-root
+    exec /root/.env/bin/jupyter-notebook --ip="${IP_ADDRESS}" --port=8080 --no-browser --allow-root
 
 else
     exec "$@"
