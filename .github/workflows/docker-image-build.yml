@@ -1,0 +1,61 @@
+name: Docker Images CI
+
+on:
+  pull_request:
+    branches: [ master ]
+  pull_request_target:
+    branches: [ master ]
+  push:
+    branches: [ master ]
+  workflow_dispatch:
+
+jobs:
+  build-dev:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Build DEV Docker image
+        run: |
+          docker build ./src/dev --tag nest/nest-simulator:latest
+
+      - name: Check NEST dev
+        run: |
+          docker run --rm nest/nest-simulator:latest python3 -c "import nest" | grep "Version:"
+
+      - name: Push DEV to Docker Hub
+        uses: docker/build-push-action@v5
+        with:
+          context: ./src/dev
+          push: true
+          tags: nest/nest-simulator:dev
+        env:
+          DOCKER_HUB_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
+          DOCKER_HUB_ACCESS_TOKEN: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+
+  build-3-9-rc1:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Build 3.9-rc1 Docker image
+        run: |
+          docker build ./src/3.9 --tag nest/nest-simulator:3.9-rc1
+
+      - name: Check NEST 3.9-rc1
+        run: |
+          docker run --rm nest/nest-simulator:3.9-rc1 python3 -c "import nest" | grep "Version:"
+
+      - name: Push 3.9-rc1 to Docker Hub
+        uses: docker/build-push-action@v5
+        with:
+          context: ./src/3.9
+          push: true
+          tags: nest/nest-simulator:3.9-rc1
+        env:
+          DOCKER_HUB_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
+          DOCKER_HUB_ACCESS_TOKEN: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+
+

@@ -10,13 +10,15 @@ source /root/.env/bin/activate
 
 # Running NEST to test and to copy the .nestrc into /home/nest
 nest --help
+echo "NEST version: "
+python3 -c "import nest" | grep "Version:"
 
 export MUSIC_ROOT_DIR='$HOME/.cache/music.install'
 export MUSIC_ROOT=${MUSIC_ROOT_DIR}
 MUSIC_PATH=${MUSIC_ROOT_DIR}
 export PATH=${MUSIC_PATH}/bin:$PATH
 export CPATH=${MUSIC_PATH}/include:$CPATH
-export PYTHONPATH=${MUSIC_PATH}/lib/python3.8/site-packages:$PYTHONPATH
+export PYTHONPATH=${MUSIC_PATH}/lib/python3.12/site-packages:$PYTHONPATH
 
 export NESTML_MODULES_PATH=${NESTML_MODULES_PATH:-/tmp/nestmlmodules}
 
@@ -63,11 +65,8 @@ elif [[ "${MODE}" = 'nest-server-mpi' ]]; then
     export NEST_SERVER_DISABLE_RESTRICTION="${NEST_SERVER_DISABLE_RESTRICTION:-1}"
     export NEST_SERVER_ENABLE_EXEC_CALL="${NEST_SERVER_ENABLE_EXEC_CALL:-1}"
     export NEST_SERVER_MODULES="${NEST_SERVER_MODULES:-import nest; import numpy; import numpy as np}"
-    export NEST_SERVER_MPI_LOGGER_LEVEL="${NEST_SERVER_MPI_LOGGER_LEVEL:-INFO}"
-
-    export OMPI_ALLOW_RUN_AS_ROOT="${OMPI_ALLOW_RUN_AS_ROOT:-1}"
-    export OMPI_ALLOW_RUN_AS_ROOT_CONFIRM="${OMPI_ALLOW_RUN_AS_ROOT_CONFIRM:-1}"
     exec mpirun -np "${NEST_SERVER_MPI_NUM:-1}" nest-server-mpi --host "${NEST_SERVER_HOST}" --port "${NEST_SERVER_PORT}"
+
 
 elif [[ "${MODE}" = 'nestml-server' ]]; then
     export NESTML_SERVER_HOST="${NESTML_SERVER_HOST:-0.0.0.0}"
