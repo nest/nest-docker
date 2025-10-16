@@ -1,7 +1,7 @@
 FROM ubuntu:24.04
 LABEL maintainer="s.graber@fz-juelich.de"
 
-ARG NEST_VERSION=master
+ARG NEST_VERSION=3.9_rc1
 ARG SRC_PATH=/tmp
 
 ENV TERM=xterm \
@@ -21,17 +21,12 @@ RUN apt-get update && \
         libopenmpi-dev pkg-config wget nano \
         libhdf5-dev \
         pandoc \
-        libtool \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR ${SRC_PATH}
 
 # Clone only the required branch and minimal history for speed
-RUN git clone --branch ${NEST_VERSION} --depth 1 https://github.com/nest/nest-simulator.git
-
-# Install MUSIC (Dwith-music="$HOME/.cache/music.install" \)
-# RUN chmod +x ${SRC_PATH}/nest-simulator/build_support/install_music.sh && \
-#    ${SRC_PATH}/nest-simulator/build_support/install_music.sh
+RUN git clone --branch v${NEST_VERSION} --depth 1 https://github.com/nest/nest-simulator.git
 
 # Set up Python virtual environment and install Python dependencies
 RUN python3 -m venv /root/.env && \
