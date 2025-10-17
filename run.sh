@@ -5,6 +5,51 @@
 # This file is part of NEST.
 #
 # Copyright (C) 2004 The NEST Initiative
+
+# Define version arrays for easier maintenance
+LEGACY_VERSIONS=("2.12.0" "2.14.0" "2.14.2" "2.16.0" "2.18.0" "2.20.0" "2.20.1" "2.20.2")
+NEST3_VERSIONS=("3.0" "3.1" "3.2" "3.3" "3.4" "3.5" "3.6" "3.7" "3.8" "3.9")
+SPECIAL_VERSIONS=("dev" "latest_daint")
+ALL_VERSIONS=("${LEGACY_VERSIONS[@]}" "${NEST3_VERSIONS[@]}" "${SPECIAL_VERSIONS[@]}")
+
+# Helper function to join array elements
+join_array() {
+    local IFS="$1"
+    shift
+    echo "$*"
+}
+
+# Helper function to check if version is valid
+is_valid_version() {
+    local version="$1"
+    for v in "${ALL_VERSIONS[@]}"; do
+        [[ "$v" == "$version" ]] && return 0
+    done
+    return 1
+}
+
+# Helper function to build Docker image
+build_image() {
+    local version="$1"
+    local parallel="$2"
+    local no_cache="$3"
+    local build_opts=""
+    
+    # Add no-cache option if requested
+    if [[ "$no_cache" == "true" ]]; then
+        build_opts="--no-cache"
+    elif [[ -n "$DOCKER_BUILDKIT" ]] && [[ "$DOCKER_BUILDKIT" == "1" ]]; then
+        # Add build cache options for faster builds
+        build_opts="--cache-from nest/nest-simulator:$version"
+    fi
+    
+    echo "Building NEST image for version $version$([ "$no_cache" == "true" ] && echo " (no cache)")..."
+    if [[ "$parallel" == "true" ]]; then
+        docker build $build_opts -t nest/nest-simulator:"$version" ./src/"$version" &
+    else
+        docker build $build_opts -t nest/nest-simulator:"$version" ./src/"$version"
+    fi
+}
 #
 # NEST is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -33,6 +78,9 @@ else
 	clean)
 	    command=clean
 	    ;;
+	list)
+	    command=list
+	    ;;
 	--help)
 	    command=help
 	    ;;
@@ -48,139 +96,122 @@ fi
 case $command in
     provision)
         echo
-
-        echo "Provisioning needs an argument: 'dev' 'latest_daint' '2.12.0', '2.14.0', '2.14.2',"
-        echo "'2.16.0', '2.18.0', '2.20.0', '2.20.1', '2.20.2', '3.0','3.1', '3.2', '3.3', '3.4', '3.5', '3.6', '3.7', " 
-        echo "'3.8', 'all' or 'base'."
+        echo "Provisioning options:"
+        echo "  Individual versions: $(join_array ', ' "${ALL_VERSIONS[@]}")"
+        echo "  Special commands: 'all', 'all-parallel', 'base'"
+        echo "  Use --no-cache to force rebuild without cache"
         echo
-        while test $# -gt 0; do
-            case "$1" in
-            dev | latest_daint | 2.12.0 | 2.14.0 | 2.14.2 | 2.16.0 | 2.18.0 | 2.20.0 | 2.20.1 | 2.20.2 | 3.0 | 3.1 | 3.2 | 3.3 | 3.4 | 3.5 | 3.6 | 3.7 | 3.8 )
-                echo "Build the NEST image for NEST $1"
-                echo
-                docker build -t nest/nest-simulator:"$1" ./src/"$1"
-                echo
-                echo "Finished!"
-                ;;
-            base)
-                echo "Build the NEST base image"
-                echo
+        
+        # Check for --no-cache flag
+        no_cache="false"
+        args=()
+        for arg in "$@"; do
+            if [[ "$arg" == "--no-cache" ]]; then
+                no_cache="true"
+            else
+                args+=("$arg")
+            fi
+        done
+        
+        for arg in "${args[@]}"; do
+            if is_valid_version "$arg"; then
+                build_image "$arg" "false" "$no_cache"
+                echo "Finished building $arg!"
+            elif [[ "$arg" == "base" ]]; then
+                echo "Building NEST base images..."
                 docker build -t nest/nest-simulator:nest-simulator-build-base --file ./src/base/Dockerfile-build-base ./src/base/
                 docker build -t nest/nest-simulator:nest-simulator-deploy-base --file ./src/base/Dockerfile-deploy-base ./src/base/
-                echo
-                echo "Finished!"
-                ;;
-
-            all)
-                echo "Build the NEST image for NEST 2.12.0, 2.14.0, 2.14.2"
-                echo "2.16.0, 2.18.0, 2.20.0, 2.20.1, 2.20.2, 3.0, 3.1, 3.2," 
-                echo "3.3, 3.4, 3.5, 3.6, 3.7, 3.8, dev and latest_daint"
-                echo
-                docker build -t nest/nest-simulator:2.12.0 ./src/2.12.0
-                docker build -t nest/nest-simulator:2.14.0 ./src/2.14.0
-                docker build -t nest/nest-simulator:2.14.0 ./src/2.14.2
-                docker build -t nest/nest-simulator:2.16.0 ./src/2.16.0
-                docker build -t nest/nest-simulator:2.18.0 ./src/2.18.0
-                docker build -t nest/nest-simulator:2.20.0 ./src/2.20.0
-                docker build -t nest/nest-simulator:2.20.1 ./src/2.20.1
-                docker build -t nest/nest-simulator:2.20.1 ./src/2.20.2
-                docker build -t nest/nest-simulator:3.0 ./src/3.0
-                docker build -t nest/nest-simulator:3.1 ./src/3.1
-                docker build -t nest/nest-simulator:3.2 ./src/3.2
-                docker build -t nest/nest-simulator:3.3 ./src/3.3
-                docker build -t nest/nest-simulator:3.4 ./src/3.4
-                docker build -t nest/nest-simulator:3.5 ./src/3.5
-                docker build -t nest/nest-simulator:3.6 ./src/3.6
-                docker build -t nest/nest-simulator:3.7 ./src/3.7
-                docker build -t nest/nest-simulator:3.7 ./src/3.8
-                docker build -t nest/nest-simulator:dev ./src/dev
-                docker build -t nest/nest-simulator:latest_daint ./src/latest_daint
-                echo
-                echo "Finished!"
-                ;;
-            *)
-                echo "Error: Unrecognized option '$1'"
+                echo "Finished building base images!"
+            elif [[ "$arg" == "all" ]]; then
+                echo "Building all NEST images sequentially$([ "$no_cache" == "true" ] && echo " (no cache)")..."
+                echo "Versions: $(join_array ', ' "${ALL_VERSIONS[@]}")"
+                for version in "${ALL_VERSIONS[@]}"; do
+                    build_image "$version" "false" "$no_cache"
+                done
+                echo "Finished building all images!"
+            elif [[ "$arg" == "all-parallel" ]]; then
+                echo "Building all NEST images in parallel$([ "$no_cache" == "true" ] && echo " (no cache)") (faster but uses more resources)..."
+                echo "Versions: $(join_array ', ' "${ALL_VERSIONS[@]}")"
+                for version in "${ALL_VERSIONS[@]}"; do
+                    build_image "$version" "true" "$no_cache"
+                done
+                echo "Waiting for all builds to complete..."
+                wait
+                echo "Finished building all images in parallel!"
+            else
+                echo "Error: Unrecognized option '$arg'"
+                echo "Use --help to see available options"
                 command=help
-                ;;
-            esac
-            shift
+                break
+            fi
         done
 	;;
+    list)
+        echo
+        echo "Available NEST versions:"
+        echo "  Legacy versions (2.x): $(join_array ', ' "${LEGACY_VERSIONS[@]}")"
+        echo "  NEST 3.x versions:     $(join_array ', ' "${NEST3_VERSIONS[@]}")"
+        echo "  Special versions:      $(join_array ', ' "${SPECIAL_VERSIONS[@]}")"
+        echo
+        echo "Available run modes: notebook, jupyterlab, interactive"
+        echo
+        echo "Available provision commands: all, all-parallel, base, <version>"
+        echo
+        ;;
     run)
-        echo
-        echo "Run needs three arguments:"
-        echo
-        echo "  - 'notebook VERSION'"
-        echo "  - 'jupyterlab VERSION'"
-        echo "  - 'interactive VERSION'"
-        echo
-        echo "VERSION is the version of NEST"
-        echo "(e.g. dev, 2.12.0, 2.14.0, 2.14.2,  2.16.0, 2.18.0, 2.20.0," 
-        echo "2.20.1, 2.20.2, 3.0, 3.1, 3.2, 3.3, 3.4, 3.5, 3.6, 3.7, 3.8)"
-        echo
-    LOCALDIR="$(pwd)"
-    while test $# -gt 1; do
-        case "$1" in
+        if [[ $# -lt 2 ]]; then
+            echo
+            echo "Run command syntax:"
+            echo "  ./run.sh run <MODE> <VERSION>"
+            echo
+            echo "Available modes: notebook, jupyterlab, interactive"
+            echo "Available versions: $(join_array ', ' "${ALL_VERSIONS[@]}")"
+            echo
+            echo "Examples:"
+            echo "  ./run.sh run notebook 3.9"
+            echo "  ./run.sh run jupyterlab dev"
+            echo "  ./run.sh run interactive 3.8"
+            exit 1
+        fi
+        
+        mode="$1"
+        version="$2"
+        
+        if ! is_valid_version "$version"; then
+            echo "Error: Invalid version '$version'"
+            echo "Available versions: $(join_array ', ' "${ALL_VERSIONS[@]}")"
+            exit 1
+        fi
+        
+        docker_opts="-it --rm -e LOCAL_USER_ID=$(id -u $USER) --name nest_${mode}_${version} -v $(pwd):/opt/data -p 8080:8080"
+        
+        case "$mode" in
             notebook)
-                case "$2" in
-                    dev | 2.12.0 | 2.14.0 | 2.14.2 | 2.16.0 | 2.18.0 | 2.20.0 | 2.20.1 | 2.20.2 | 3.0 | 3.1 | 3.2 | 3.3 | 3.4 | 3.5 | 3.6 | 3.7 | 3.8 )
-                    echo "Run NEST-$2 with Jupyter Notebook".
-                    echo
-                    docker run -it --rm -e LOCAL_USER_ID=`id -u $USER` --name my_app  \
-							      -v $(pwd):/opt/data -e NEST_CONTAINER_MODE=notebook \
-							      -p 8080:8080 nest/nest-simulator:"$2"
-                    echo
-                    ;;
-                    *)
-                    echo "Error: Unrecognized option '$2'"
-                    command=help
-                    ;;
-                esac
-            ;;
+                echo "Starting NEST-$version with Jupyter Notebook..."
+                docker run $docker_opts -e NEST_CONTAINER_MODE=notebook nest/nest-simulator:"$version"
+                ;;
             jupyterlab)
-                case "$2" in
-                    dev | 2.12.0 | 2.14.0 | 2.14.2 | 2.16.0 | 2.18.0 | 2.20.0 | 2.20.1 | 2.20.2 | 3.0 | 3.1 | 3.2 | 3.3 | 3.4 | 3.5 | 3.6 | 3.7 | 3.8 )
-                    echo
-                    docker run -it --rm -e LOCAL_USER_ID=`id -u $USER` --name my_app  \
-							   -v $(pwd):/opt/data -e NEST_CONTAINER_MODE=jupyterlab \
-							   -p 8080:8080 nest/nest-simulator:"$2"
-                    echo
-                    ;;
-                    *)
-                    echo "Error: Unrecognized option '$2'"
-                    command=help
-                    ;;
-                esac
-            ;;
+                echo "Starting NEST-$version with JupyterLab..."
+                docker run $docker_opts -e NEST_CONTAINER_MODE=jupyterlab nest/nest-simulator:"$version"
+                ;;
             interactive)
-                case "$2" in
-                    dev | 2.12.0 | 2.14.0 | 2.14.2 | 2.16.0 | 2.18.0 | 2.20.0 | 2.20.1 | 2.20.2 | 3.0 | 3.1 | 3.2 | 3.3 | 3.4 | 3.5 | 3.6 | 3.7 | 3.8 )
-                    echo "Run NEST-$2 in interactive mode."
-                    echo
-                    docker run -it --rm -e LOCAL_USER_ID=`id -u $USER` --name my_app  -e NEST_CONTAINER_MODE=interactive \
-							      -p 8080:8080 nest/nest-simulator:"$2"
-                    echo
-                    ;;
-                    *)
-                    echo "Error: Unrecognized option '$2'"
-                    command=help
-                    ;;
-                esac
-            ;;
+                echo "Starting NEST-$version in interactive mode..."
+                docker run $docker_opts -e NEST_CONTAINER_MODE=interactive nest/nest-simulator:"$version"
+                ;;
             *)
-                    echo "Error: Unrecognized option '$2'"
-                    command=help
-                    ;;
+                echo "Error: Invalid mode '$mode'"
+                echo "Available modes: notebook, jupyterlab, interactive"
+                exit 1
+                ;;
         esac
-        shift
-    done
+        shift 2
     ;;
 	clean)
         echo
-        echo "Stops every container and delete the NEST Images."
+        echo "Stops every container and deletes the NEST Images."
         echo
-        docker stop $(docker ps -a -q)
-        docker images -a | grep "nest" | awk '{print $3}' | xargs docker rmi
+        docker stop $(docker ps -a -q) 2>/dev/null || true
+        docker images -a | grep "nest" | awk '{print $3}' | xargs docker rmi 2>/dev/null || true
 	    echo
 	    echo "Done!"
 	    echo

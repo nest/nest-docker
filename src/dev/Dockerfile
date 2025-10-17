@@ -38,8 +38,11 @@ RUN python3 -m venv /root/.env && \
     . /root/.env/bin/activate && \
     echo "source /root/.env/bin/activate" >> /root/.bashrc && \
     cd nest-simulator && \
-    pip install --no-cache-dir -r requirements.txt && \
-    pip install --no-cache-dir Cython numpy boost setuptools gsl wheel
+    pip install --upgrade pip wheel && \
+    pip install --no-cache-dir Cython numpy boost setuptools gsl meson-python ninja && \
+    pip install -v --no-cache-dir --no-build-isolation --force-reinstall --check-build-dependencies --no-binary pygsl pygsl && \
+    pip install --no-cache-dir -r requirements.txt
+
 
 # Build and install NEST
 RUN . /root/.env/bin/activate && \

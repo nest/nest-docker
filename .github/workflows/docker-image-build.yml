@@ -34,26 +34,26 @@ jobs:
           DOCKER_HUB_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
           DOCKER_HUB_ACCESS_TOKEN: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
 
-  build-3-9-rc1:
+  build-3-9:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Build 3.9-rc1 Docker image
+      - name: Build 3.9 Docker image
         run: |
-          docker build ./src/3.9 --tag nest/nest-simulator:3.9-rc1
+          docker build ./src/3.9 --tag nest/nest-simulator:3.9
 
-      - name: Check NEST 3.9-rc1
+      - name: Check NEST 3.9
         run: |
-          docker run --rm nest/nest-simulator:3.9-rc1 python3 -c "import nest" | grep "Version:"
+          docker run --rm nest/nest-simulator:3.9 python3 -c "import nest" | grep "Version:"
 
-      - name: Push 3.9-rc1 to Docker Hub
+      - name: Push 3.9 to Docker Hub
         uses: docker/build-push-action@v5
         with:
           context: ./src/3.9
           push: true
-          tags: nest/nest-simulator:3.9-rc1
+          tags: nest/nest-simulator:3.9
         env:
           DOCKER_HUB_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
           DOCKER_HUB_ACCESS_TOKEN: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}

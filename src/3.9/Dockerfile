@@ -1,7 +1,7 @@
 FROM ubuntu:24.04
 LABEL maintainer="s.graber@fz-juelich.de"
 
-ARG NEST_VERSION=3.9_rc1
+ARG NEST_VERSION=3.9
 ARG SRC_PATH=/tmp
 
 ENV TERM=xterm \
@@ -19,7 +19,7 @@ RUN apt-get update && \
         git cmake ccache make gcc g++ \
         libgsl-dev libboost-dev libltdl-dev libreadline-dev \
         libopenmpi-dev pkg-config wget nano \
-        libhdf5-dev \
+        libhdf5-dev swig \
         pandoc \
     && rm -rf /var/lib/apt/lists/*
 
@@ -33,9 +33,11 @@ RUN python3 -m venv /root/.env && \
     . /root/.env/bin/activate && \
     echo "source /root/.env/bin/activate" >> /root/.bashrc && \
     cd nest-simulator && \
-    pip install --no-cache-dir -r requirements.txt && \
-    pip install --no-cache-dir Cython numpy boost setuptools gsl wheel
-
+    pip install --upgrade pip wheel && \
+    pip install --no-cache-dir Cython numpy boost setuptools gsl meson-python ninja && \
+    pip install -v --no-cache-dir --no-build-isolation --force-reinstall --check-build-dependencies --no-binary pygsl pygsl && \
+    pip install --no-cache-dir -r requirements.txt
+    
 # Build and install NEST
 RUN . /root/.env/bin/activate && \
     mkdir ${SRC_PATH}/nest-build && cd ${SRC_PATH}/nest-build && \
