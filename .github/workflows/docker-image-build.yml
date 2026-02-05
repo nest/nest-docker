@@ -18,21 +18,26 @@ jobs:
 
       - name: Build DEV Docker image
         run: |
-          docker build ./src/dev --tag nest/nest-simulator:latest
+          docker build ./src/dev \
+            --tag nest/nest-simulator:latest \
+            --tag nest/nest-simulator:dev
 
       - name: Check NEST dev
         run: |
           docker run --rm nest/nest-simulator:latest python3 -c "import nest" | grep "Version:"
 
-      - name: Push DEV to Docker Hub
-        uses: docker/build-push-action@v5
+      - name: Login to Docker Hub
+        if: ${{ (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/master' }}
+        uses: docker/login-action@v3
         with:
-          context: ./src/dev
-          push: true
-          tags: nest/nest-simulator:dev
-        env:
-          DOCKER_HUB_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
-          DOCKER_HUB_ACCESS_TOKEN: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+
+      - name: Push DEV to Docker Hub
+        if: ${{ (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/master' }}
+        run: |
+          docker push nest/nest-simulator:latest
+          docker push nest/nest-simulator:dev
 
   build-2-20-2:
     runs-on: ubuntu-latest
@@ -48,15 +53,17 @@ jobs:
         run: |
           docker run --rm nest/nest-simulator:2.20.2 python3 -c "import nest" | grep "Version:"
 
-      - name: Push 2.20.2 to Docker Hub
-        uses: docker/build-push-action@v5
+      - name: Login to Docker Hub
+        if: ${{ (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/master' }}
+        uses: docker/login-action@v3
         with:
-          context: ./src/2.20.2
-          push: true
-          tags: nest/nest-simulator:2.20.2
-        env:
-          DOCKER_HUB_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
-          DOCKER_HUB_ACCESS_TOKEN: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+
+      - name: Push 2.20.2 to Docker Hub
+        if: ${{ (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/master' }}
+        run: |
+          docker push nest/nest-simulator:2.20.2
 
   build-3-9:
 
@@ -73,14 +80,16 @@ jobs:
         run: |
           docker run --rm nest/nest-simulator:3.9 python3 -c "import nest" | grep "Version:"
 
-      - name: Push 3.9 to Docker Hub
-        uses: docker/build-push-action@v5
+      - name: Login to Docker Hub
+        if: ${{ (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/master' }}
+        uses: docker/login-action@v3
         with:
-          context: ./src/3.9
-          push: true
-          tags: nest/nest-simulator:3.9
-        env:
-          DOCKER_HUB_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
-          DOCKER_HUB_ACCESS_TOKEN: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+
+      - name: Push 3.9 to Docker Hub
+        if: ${{ (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/master' }}
+        run: |
+          docker push nest/nest-simulator:3.9
 
 
