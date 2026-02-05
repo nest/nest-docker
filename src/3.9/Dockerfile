@@ -36,7 +36,15 @@ RUN python3 -m venv /root/.env && \
     pip install --upgrade pip wheel && \
     pip install --no-cache-dir Cython numpy boost setuptools gsl meson-python ninja && \
     pip install -v --no-cache-dir --no-build-isolation --force-reinstall --check-build-dependencies --no-binary pygsl pygsl && \
-    pip install --no-cache-dir -r requirements.txt
+    pip install --no-cache-dir -r requirements.txt && \
+    # Doc toolchain pinning: keep NEST userdoc build reproducible in CI.
+    # We force reinstall/upgrade to override any versions pulled in by requirements.txt.
+    pip install --no-cache-dir --upgrade --force-reinstall \
+        "Sphinx<8" \
+        "docutils<0.21" \
+        "sphinx-copybutton==0.5.2" \
+        "sphinx-material==0.0.36" \
+        "sphinx-notfound-page==1.1.0"
     
 # Build and install NEST
 RUN . /root/.env/bin/activate && \

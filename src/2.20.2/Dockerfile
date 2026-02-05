@@ -41,8 +41,8 @@ RUN wget -O nest-2.20.2.tar.gz https://github.com/nest/nest-simulator/archive/re
 
 ENV VIRTUAL_ENV=/opt/venv
 ENV PATH="/opt/venv/bin:/opt/nest/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
-ENV LD_LIBRARY_PATH="/opt/nest/lib:${LD_LIBRARY_PATH}"
-ENV PYTHONPATH="/opt/nest/lib/python3.10/site-packages:${PYTHONPATH}"
+ENV LD_LIBRARY_PATH="/opt/nest/lib"
+ENV PYTHONPATH="/opt/nest/lib/python3.10/site-packages"
 ENV NEST_INSTALL_DIR=/opt/nest
 # Allow OpenMPI/mpirun to run as root (needed for Docker test/CI)
 ENV OMPI_ALLOW_RUN_AS_ROOT=1
