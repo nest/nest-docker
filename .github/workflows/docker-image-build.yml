@@ -34,6 +34,30 @@ jobs:
           DOCKER_HUB_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
           DOCKER_HUB_ACCESS_TOKEN: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
 
+  build-2-20-2:
+    runs-on: ubuntu-2404
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Build 2.20.2 Docker image
+        run: |
+          docker build ./src/2.20.2 --tag nest/nest-simulator:2.20.2
+
+      - name: Check NEST 2.20.2
+        run: |
+          docker run --rm nest/nest-simulator:2.20.2 python3 -c "import nest" | grep "Version:"
+
+      - name: Push 2.20.2 to Docker Hub
+        uses: docker/build-push-action@v5
+        with:
+          context: ./src/2.20.2
+          push: true
+          tags: nest/nest-simulator:2.20.2
+        env:
+          DOCKER_HUB_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
+          DOCKER_HUB_ACCESS_TOKEN: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+
   build-3-9:
 
     runs-on: ubuntu-2404
