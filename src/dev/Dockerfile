@@ -1,7 +1,7 @@
 FROM ubuntu:24.04
 LABEL maintainer="s.graber@fz-juelich.de"
 
-ARG NEST_VERSION=master
+ARG NEST_VERSION=main
 ARG SRC_PATH=/tmp
 
 ENV TERM=xterm \
@@ -9,7 +9,7 @@ ENV TERM=xterm \
     DEBIAN_FRONTEND=noninteractive \
     OMPI_ALLOW_RUN_AS_ROOT=1 \
     OMPI_ALLOW_RUN_AS_ROOT_CONFIRM=1 \
-    PATH=/root/.local/bin:$PATH
+    PATH=/${HOME}/.local/bin:$PATH
 
 # Install all dependencies and clean up
 RUN apt-get update && \
@@ -17,7 +17,7 @@ RUN apt-get update && \
         ca-certificates locales tzdata \
         python3 python3-venv python3-pip python3-dev \
         git cmake ccache make gcc g++ \
-        libgsl-dev libboost-dev libltdl-dev libreadline-dev \
+        libgsl-dev libboost-dev libltdl-dev \
         libopenmpi-dev pkg-config wget nano \
         libhdf5-dev swig pandoc \
         libtool \
@@ -33,18 +33,15 @@ RUN git clone --branch ${NEST_VERSION} --depth 1 https://github.com/nest/nest-si
 #    ${SRC_PATH}/nest-simulator/build_support/install_music.sh
 
 # Set up Python virtual environment and install Python dependencies
-RUN python3 -m venv /root/.env && \
-    . /root/.env/bin/activate && \
-    echo "source /root/.env/bin/activate" >> /root/.bashrc && \
+RUN python3 -m venv /${HOME}/.env && \
+    . /${HOME}/.env/bin/activate && \
+    echo "source /${HOME}/.env/bin/activate" >> /${HOME}/.bashrc && \
     cd nest-simulator && \
-    pip install --upgrade pip wheel && \
-    pip install --no-cache-dir Cython numpy boost setuptools gsl meson-python ninja && \
-    pip install -v --no-cache-dir --no-build-isolation --force-reinstall --check-build-dependencies --no-binary pygsl pygsl && \
     pip install --no-cache-dir -r requirements.txt
 
 
 # Build and install NEST
-RUN . /root/.env/bin/activate && \
+RUN . /${HOME}/.env/bin/activate && \
     mkdir ${SRC_PATH}/nest-build && cd ${SRC_PATH}/nest-build && \
     cmake -Dwith-optimize="-O2" \
           -Dwith-warning=ON \
@@ -54,7 +51,7 @@ RUN . /root/.env/bin/activate && \
           -Dwith-gsl=ON \
           -Dwith-readline=ON \
           -Dwith-python=ON \
-          -DPYTHON_EXECUTABLE=/root/.env/bin/python3 \
+          -DPYTHON_EXECUTABLE=/${HOME}/.env/bin/python3 \
           -Dwith-mpi=OFF \
           -Dwith-openmp=ON \
           -Dwith-libneurosim=OFF \
@@ -64,12 +61,12 @@ RUN . /root/.env/bin/activate && \
           ${SRC_PATH}/nest-simulator && \
     make -j"$(nproc)" && \
     make install && \
-    cd / && rm -rf ${SRC_PATH}/nest-build ${SRC_PATH}/nest-simulator
+    cd ${HOME} && rm -rf ${SRC_PATH}/nest-build ${SRC_PATH}/nest-simulator
 
 # Upgrade and install additional Python tools in the venv
-RUN . /root/.env/bin/activate && \
+RUN . /${HOME}/.env/bin/activate && \
     pip install --no-cache-dir --upgrade nestml nest-desktop pandas jupyterlab notebook && \
-    find /root/.cache -type f -delete
+    find /${HOME}/.cache -type f -delete
 
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh

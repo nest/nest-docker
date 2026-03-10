@@ -3,13 +3,9 @@ set -e
 IP_ADDRESS=$(hostname --ip-address)
 
 # Python environment
-source /root/.env/bin/activate
+source /${HOME}/.env/bin/activate
 
-# NEST environment
-#source /opt/nest/bin/nest_vars.sh
-
-# Running NEST to test and to copy the .nestrc into /home/nest
-nest --help
+python3 -c "import nest; nest.help()"
 
 export MUSIC_ROOT_DIR='$HOME/.cache/music.install'
 export MUSIC_ROOT=${MUSIC_ROOT_DIR}
@@ -33,7 +29,7 @@ if [[ "${MODE}" = 'interactive' ]]; then
 
 elif [[ "${MODE}" = 'jupyterlab' ]]; then
     mkdir -p /opt/data; cd /opt/data
-    exec /root/.env/bin/jupyter-lab --ip="${IP_ADDRESS}" --port=8080 --no-browser --allow-root
+    exec /${HOME}/.env/bin/jupyter-lab --ip="${IP_ADDRESS}" --port=8080 --no-browser --allow-root
 
 elif [[ "${MODE}" = 'nest-desktop' ]]; then
     export NEST_DESKTOP_HOST="${NEST_DESKTOP_HOST:-0.0.0.0}"
@@ -77,7 +73,7 @@ elif [[ "${MODE}" = 'nestml-server' ]]; then
 
 elif [[ "${MODE}" = 'notebook' ]]; then
     mkdir -p /opt/data; cd /opt/data
-    exec /root/.env/bin/jupyter-notebook --ip="${IP_ADDRESS}" --port=8080 --no-browser --allow-root
+    exec /${HOME}/.env/bin/jupyter-notebook --ip="${IP_ADDRESS}" --port=8080 --no-browser --allow-root
 
 else
     exec "$@"
