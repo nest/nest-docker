@@ -100,7 +100,7 @@ JupyterLab with NEST 2.20.2:
 
 To use 'docker-compose' you need the definition file from the git repository. Download it:
 
-    wget https://raw.githubusercontent.com/nest/nest-docker/master/docker-compose.yml
+    wget https://raw.githubusercontent.com/nest/nest-docker/main/docker-compose.yml
 
 - NEST Server
 
@@ -155,7 +155,7 @@ To stop and delete running containers use `docker-compose down`.
 
 If you want to use the compose configuration for the dev NEST version, use the file option, e.g.:
 
-    wget https://raw.githubusercontent.com/steffengraber/nest-docker/master/docker-compose.yml
+    wget https://raw.githubusercontent.com/steffengraber/nest-docker/main/docker-compose.yml
     docker-compose -f docker-compose-dev.yml up nest-notebook
 
 ### On Windows
@@ -169,7 +169,7 @@ In Powershell, '%cd%' might not work for the current directory. Then
 you should explicitly specify a folder with existing write permissions.
 
 In any case, this will download the docker image with the pre-installed
-NEST master from docker-registry.ebrains.eu and start it. After booting, a URL is presented.
+NEST main from docker-registry.ebrains.eu and start it. After booting, a URL is presented.
 Click on it or copy it to your browser. Voilà! Jupyter notebook starts from
 the docker image.
 
