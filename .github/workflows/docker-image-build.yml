@@ -106,7 +106,7 @@ jobs:
 
       - name: Check NEST 3.10
         run: |
-          docker run --rm nest/nest-simulator:3.10 python3 -c "import nest" | grep "Version:"
+          docker run --rm nest/nest-simulator:3.10 _rc1 python3 -c "import nest" | grep "Version:"
 
       - name: Login to Docker Hub
         if: ${{ (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main' }}
