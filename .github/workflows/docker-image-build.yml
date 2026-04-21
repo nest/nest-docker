@@ -102,7 +102,7 @@ jobs:
 
       - name: Build 3.10 Docker image
         run: |
-          docker build ./src/3.10 --tag nest/nest-simulator:3.10
+          docker build ./src/3.10 --tag nest/nest-simulator:3.10_rc1
 
       - name: Check NEST 3.10
         run: |
@@ -118,6 +118,6 @@ jobs:
       - name: Push 3.10 to Docker Hub
         if: ${{ (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main' }}
         run: |
-          docker push nest/nest-simulator:3.10
+          docker push nest/nest-simulator:3.10_rc1
 
 
