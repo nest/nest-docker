@@ -65,7 +65,7 @@ RUN . /${HOME}/.env/bin/activate && \
 
 # Upgrade and install additional Python tools in the venv
 RUN . /${HOME}/.env/bin/activate && \
-    pip install --no-cache-dir --upgrade nestml nest-desktop pandas jupyterlab notebook && \
+    pip install --no-cache-dir --upgrade nestml==8.3.0-rc1 nest-desktop pandas jupyterlab notebook && \
     find /${HOME}/.cache -type f -delete
 
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
