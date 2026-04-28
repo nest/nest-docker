@@ -19,7 +19,7 @@ RUN apt-get update && \
         git cmake ccache make gcc g++ \
         libgsl-dev libboost-dev libltdl-dev \
         libopenmpi-dev pkg-config wget nano \
-        libhdf5-dev swig pandoc \
+        libhdf5-dev swig pandoc graphviz \
         libtool \
     && rm -rf /var/lib/apt/lists/*
 
