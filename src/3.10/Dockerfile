@@ -1,7 +1,7 @@
 FROM ubuntu:24.04
 LABEL maintainer="s.graber@fz-juelich.de"
 
-ARG NEST_VERSION=v3.10_rc1
+ARG NEST_VERSION=v3.10_rc2
 ARG SRC_PATH=/tmp
 
 ENV TERM=xterm \
@@ -37,7 +37,7 @@ RUN python3 -m venv /${HOME}/.env && \
     . /${HOME}/.env/bin/activate && \
     echo "source /${HOME}/.env/bin/activate" >> /${HOME}/.bashrc && \
     cd nest-simulator && \
-    git checkout v3.10_rc1 && \
+    git checkout v3.10_rc2 && \
     pip install --no-cache-dir -r requirements.txt
 
 
@@ -65,7 +65,7 @@ RUN . /${HOME}/.env/bin/activate && \
 
 # Upgrade and install additional Python tools in the venv
 RUN . /${HOME}/.env/bin/activate && \
-    pip install --no-cache-dir --upgrade nestml==8.3.0-rc1 nest-desktop pandas jupyterlab notebook && \
+    pip install --no-cache-dir --upgrade nestml==8.3.0-rc2 nest-desktop pandas jupyterlab notebook && \
     find /${HOME}/.cache -type f -delete
 
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
