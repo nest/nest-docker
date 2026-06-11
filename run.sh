@@ -8,7 +8,7 @@
 
 # Define version arrays for easier maintenance
 LEGACY_VERSIONS=("2.12.0" "2.14.0" "2.14.2" "2.16.0" "2.18.0" "2.20.0" "2.20.1" "2.20.2")
-NEST3_VERSIONS=("3.0" "3.1" "3.2" "3.3" "3.4" "3.5" "3.6" "3.7" "3.8" "3.9")
+NEST3_VERSIONS=("3.0" "3.1" "3.2" "3.3" "3.4" "3.5" "3.6" "3.7" "3.8" "3.9" "3.10")
 SPECIAL_VERSIONS=("dev" "latest_daint")
 ALL_VERSIONS=("${LEGACY_VERSIONS[@]}" "${NEST3_VERSIONS[@]}" "${SPECIAL_VERSIONS[@]}")
 
@@ -168,9 +168,9 @@ case $command in
             echo "Available versions: $(join_array ', ' "${ALL_VERSIONS[@]}")"
             echo
             echo "Examples:"
-            echo "  ./run.sh run notebook 3.9"
+            echo "  ./run.sh run notebook 3.1o"
             echo "  ./run.sh run jupyterlab dev"
-            echo "  ./run.sh run interactive 3.8"
+            echo "  ./run.sh run interactive 3.9"
             exit 1
         fi
         

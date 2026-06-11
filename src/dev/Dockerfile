@@ -4,12 +4,12 @@ LABEL maintainer="s.graber@fz-juelich.de"
 ARG NEST_VERSION=main
 ARG SRC_PATH=/tmp
 
-ENV TERM=xterm \
-    TZ=Europe/Berlin \
-    DEBIAN_FRONTEND=noninteractive \
-    OMPI_ALLOW_RUN_AS_ROOT=1 \
-    OMPI_ALLOW_RUN_AS_ROOT_CONFIRM=1 \
-    PATH=/${HOME}/.local/bin:$PATH
+ENV TERM=xterm 
+ENV TZ=Europe/Berlin 
+ENV DEBIAN_FRONTEND=noninteractive 
+ENV OMPI_ALLOW_RUN_AS_ROOT=1 
+ENV OMPI_ALLOW_RUN_AS_ROOT_CONFIRM=1 
+ENV PATH=/${HOME}/.local/bin:$PATH
 
 # Install all dependencies and clean up
 RUN apt-get update && \

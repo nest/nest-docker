@@ -1,15 +1,15 @@
 FROM ubuntu:24.04
 LABEL maintainer="s.graber@fz-juelich.de"
 
-ARG NEST_VERSION=v3.10_rc2
+ARG NEST_VERSION=v3.10
 ARG SRC_PATH=/tmp
 
-ENV TERM=xterm \
-    TZ=Europe/Berlin \
-    DEBIAN_FRONTEND=noninteractive \
-    OMPI_ALLOW_RUN_AS_ROOT=1 \
-    OMPI_ALLOW_RUN_AS_ROOT_CONFIRM=1 \
-    PATH=/${HOME}/.local/bin:$PATH
+ENV TERM=xterm
+ENV TZ=Europe/Berlin 
+ENV DEBIAN_FRONTEND=noninteractive 
+ENV OMPI_ALLOW_RUN_AS_ROOT=1 
+ENV OMPI_ALLOW_RUN_AS_ROOT_CONFIRM=1 
+ENV PATH=/${HOME}/.local/bin:${PATH}
 
 # Install all dependencies and clean up
 RUN apt-get update && \
@@ -37,7 +37,7 @@ RUN python3 -m venv /${HOME}/.env && \
     . /${HOME}/.env/bin/activate && \
     echo "source /${HOME}/.env/bin/activate" >> /${HOME}/.bashrc && \
     cd nest-simulator && \
-    git checkout v3.10_rc2 && \
+    git checkout v3.10 && \
     pip install --no-cache-dir -r requirements.txt
 
 
@@ -65,7 +65,7 @@ RUN . /${HOME}/.env/bin/activate && \
 
 # Upgrade and install additional Python tools in the venv
 RUN . /${HOME}/.env/bin/activate && \
-    pip install --no-cache-dir --upgrade nestml==8.3.0-rc2 nest-desktop pandas jupyterlab notebook && \
+    pip install --no-cache-dir --upgrade nestml==8.3.0rc3 nest-desktop pandas jupyterlab notebook && \
     find /${HOME}/.cache -type f -delete
 
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
