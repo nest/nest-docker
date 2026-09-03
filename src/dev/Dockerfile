@@ -18,7 +18,7 @@ RUN apt-get update && \
         python3 python3-venv python3-pip python3-dev \
         git cmake ccache make gcc g++ \
         libgsl-dev libboost-dev libltdl-dev \
-        libopenmpi-dev pkg-config wget nano \
+        libopenmpi-dev pkg-config curl wget nano \
         libhdf5-dev swig pandoc \
         libtool \
     && rm -rf /var/lib/apt/lists/*
@@ -73,6 +73,13 @@ RUN chmod +x /usr/local/bin/entrypoint.sh
 
 COPY test-nest.sh /opt/test-nest.sh
 RUN chmod +x /opt/test-nest.sh
+
+# Health check: curl the endpoint every 30 seconds
+# -f flag fails silently on HTTP errors (4xx, 5xx)
+# exit 1 signals failure to Docker if curl fails
+ENV HEALTHCHECK_PORT=52425
+HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
+   CMD curl -f http://localhost:${HEALTHCHECK_PORT} || exit 1
 
 EXPOSE 8080 52425 52426 54286
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
