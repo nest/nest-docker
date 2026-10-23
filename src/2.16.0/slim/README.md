@@ -36,12 +36,12 @@ You are logged in directly and can use SLI and python version of NEST
 
 ### Delete the build image
 
-If you only want to to delete your last build image, you have to find out 
+If you only want to delete your last build image, you have to find out 
 the IMAGE ID.
 
 	docker image 
 
-This give you a list auf all your images. The repository called '<none>' 
+This gives you a list of all your images. The repository called '<none>' 
 right before 'steffengraber/nest-docker:2.16-slim' is the one you are 
 searching for. Copy the IMAGE ID and delete the image with:
 
