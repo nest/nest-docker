@@ -9,7 +9,7 @@ ENV TZ=Europe/Berlin
 ENV DEBIAN_FRONTEND=noninteractive 
 ENV OMPI_ALLOW_RUN_AS_ROOT=1 
 ENV OMPI_ALLOW_RUN_AS_ROOT_CONFIRM=1 
-ENV PATH=/${HOME}/.local/bin:$PATH
+ENV PATH=${HOME}/.local/bin:$PATH
 
 # Install all dependencies and clean up
 RUN apt-get update && \
@@ -33,15 +33,15 @@ RUN git clone --branch ${NEST_VERSION} --depth 1 https://github.com/nest/nest-si
 #    ${SRC_PATH}/nest-simulator/build_support/install_music.sh
 
 # Set up Python virtual environment and install Python dependencies
-RUN python3 -m venv /${HOME}/.env && \
-    . /${HOME}/.env/bin/activate && \
-    echo "source /${HOME}/.env/bin/activate" >> /${HOME}/.bashrc && \
+RUN python3 -m venv ${HOME}/.env && \
+    . ${HOME}/.env/bin/activate && \
+    echo "source ${HOME}/.env/bin/activate" >> ${HOME}/.bashrc && \
     cd nest-simulator && \
     pip install --no-cache-dir -r requirements.txt
 
 
 # Build and install NEST
-RUN . /${HOME}/.env/bin/activate && \
+RUN . ${HOME}/.env/bin/activate && \
     mkdir ${SRC_PATH}/nest-build && cd ${SRC_PATH}/nest-build && \
     cmake -Dwith-optimize="-O2" \
           -Dwith-warning=ON \
@@ -51,7 +51,7 @@ RUN . /${HOME}/.env/bin/activate && \
           -Dwith-gsl=ON \
           -Dwith-readline=ON \
           -Dwith-python=ON \
-          -DPYTHON_EXECUTABLE=/${HOME}/.env/bin/python3 \
+          -DPYTHON_EXECUTABLE=${HOME}/.env/bin/python3 \
           -Dwith-mpi=OFF \
           -Dwith-openmp=ON \
           -Dwith-libneurosim=OFF \
@@ -64,9 +64,9 @@ RUN . /${HOME}/.env/bin/activate && \
     cd ${HOME} && rm -rf ${SRC_PATH}/nest-build ${SRC_PATH}/nest-simulator
 
 # Upgrade and install additional Python tools in the venv
-RUN . /${HOME}/.env/bin/activate && \
+RUN . ${HOME}/.env/bin/activate && \
     pip install --no-cache-dir --upgrade nestml nest-desktop pandas jupyterlab notebook && \
-    find /${HOME}/.cache -type f -delete
+    find ${HOME}/.cache -type f -delete
 
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
