@@ -63,9 +63,13 @@ RUN . /${HOME}/.env/bin/activate && \
     make install && \
     cd ${HOME} && rm -rf ${SRC_PATH}/nest-build ${SRC_PATH}/nest-simulator
 
+# NOTE: This line will be removed when nest-server is not part of nest-simulator (PR #3927).
+RUN mv /${HOME}/.env/bin/nest-server /${HOME}/.env/bin/nest-server-legacy
+
 # Upgrade and install additional Python tools in the venv
+# NOTE: The package nest-server will be removed when nest-desktop provides dependencies of nest-server.
 RUN . /${HOME}/.env/bin/activate && \
-    pip install --no-cache-dir --upgrade nestml nest-desktop pandas jupyterlab notebook && \
+    pip install --no-cache-dir --upgrade nestml nest-server==3.0.0b9 nest-desktop pandas jupyterlab notebook && \
     find /${HOME}/.cache -type f -delete
 
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
